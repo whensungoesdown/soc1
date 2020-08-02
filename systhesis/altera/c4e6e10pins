@@ -1,0 +1,10 @@
+
+# need at least one \n at the begining
+set_location_assignment PIN_23 -to clk
+set_location_assignment PIN_87 -to reset
+set_location_assignment PIN_142 -to vga_hsync
+set_location_assignment PIN_143 -to vga_vsync
+set_location_assignment PIN_144 -to vga_rgb[0]
+set_location_assignment PIN_1 -to vga_rgb[1]
+set_location_assignment PIN_2 -to vga_rgb[2]
+

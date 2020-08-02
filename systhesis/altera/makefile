@@ -35,6 +35,10 @@ SOURCE_FILES =  ../../soc/cpu6/defines.v \
 SOURCE_FILES_PARAMETER = $(addprefix --source=, $(SOURCE_FILES))
 ASSIGNMENT_FILES = soc_top.qpf soc_top.qsf 
 
+
+FAMILY = "Cyclone IV E"
+PART = EP4CE6E22C8
+BOARD = c4e6e10pins
 ###################################################################
 # Main Targets
 #
@@ -61,8 +65,8 @@ smart: smart.log
 # To compile, put CycloneIV here
 #MAP_ARGS = --family=CycloneII $(SOURCE_FILES_PARAMETER)
 #FIT_ARGS = --part=EP2C5T144C8i
-MAP_ARGS = --family="Cyclone IV E" $(SOURCE_FILES_PARAMETER)
-FIT_ARGS = --part=EP4CE6E22C8
+MAP_ARGS = --family=$(FAMILY) $(SOURCE_FILES_PARAMETER)
+FIT_ARGS = --part=$(PART)
 ASM_ARGS =
 STA_ARGS =
 
@@ -96,6 +100,7 @@ smart.log: $(ASSIGNMENT_FILES)
 
 $(ASSIGNMENT_FILES):
 	quartus_sh --prepare $(PROJECT)
+	-cat $(BOARD) >> $(PROJECT).qsf
 
 map.chg:
 	$(STAMP) map.chg
