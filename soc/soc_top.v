@@ -1,6 +1,6 @@
-`include "defines.v"
+`include "cpu6/defines.v"
 
-module top (
+module soc_top (
 	    input  clk,
 	    input  reset,
             output [2:0] vga_rgb,

@@ -5,35 +5,35 @@
 # File (.qsf), and the list of source files used.
 ###################################################################
 
-PROJECT = top
-SOURCE_FILES = ../hdl/defines.v ../hdl/cpu6_core.v \
-		../hdl/cpu6_controller.v \
-		../hdl/cpu6_maindec.v \
-		../hdl/cpu6_aludec.v \
-		../hdl/cpu6_datapath.v \
-		../hdl/cpu6_dffs.v \
-		../hdl/cpu6_adder.v \
-		../hdl/cpu6_sl1.v \
-		../hdl/cpu6_mux2.v \
-		../hdl/cpu6_regfile.v \
-		../hdl/cpu6_signext.v \
-		../hdl/cpu6_alu.v \
-		../hdl/cpu6_immdec.v \
-		../hdl/cpu6_branchdec.v \
-		../hdl/cpu6_pipelinereg_ifid.v \
-		../hdl/cpu6_pipelinereg_idex.v \
-		../hdl/cpu6_pipelinereg_exmem.v \
-		../hdl/cpu6_pipelinereg_memwb.v \
-		../hdl/cpu6_hazardcontrol.v \
-		../hdl/cpu6_hazardunit.v \
-		../hdl/top.v \
-		../hdl/ram.v \
-		../hdl/vga640x480.v \
-		../hdl/vgaram.v \
-		../testbenches/pseudo_icache.v
+PROJECT = soc_top
+SOURCE_FILES =  ../../soc/cpu6/defines.v \
+		../../soc/cpu6/cpu6_core.v \
+		../../soc/cpu6/cpu6_controller.v \
+		../../soc/cpu6/cpu6_maindec.v \
+		../../soc/cpu6/cpu6_aludec.v \
+		../../soc/cpu6/cpu6_datapath.v \
+		../../soc/cpu6/cpu6_dffs.v \
+		../../soc/cpu6/cpu6_adder.v \
+		../../soc/cpu6/cpu6_sl1.v \
+		../../soc/cpu6/cpu6_mux2.v \
+		../../soc/cpu6/cpu6_regfile.v \
+		../../soc/cpu6/cpu6_signext.v \
+		../../soc/cpu6/cpu6_alu.v \
+		../../soc/cpu6/cpu6_immdec.v \
+		../../soc/cpu6/cpu6_branchdec.v \
+		../../soc/cpu6/cpu6_pipelinereg_ifid.v \
+		../../soc/cpu6/cpu6_pipelinereg_idex.v \
+		../../soc/cpu6/cpu6_pipelinereg_exmem.v \
+		../../soc/cpu6/cpu6_pipelinereg_memwb.v \
+		../../soc/cpu6/cpu6_hazardcontrol.v \
+		../../soc/cpu6/cpu6_hazardunit.v \
+		../../soc/cpu6/ram.v \
+		../../soc/vga/vga640x480.v \
+		../../soc/vga/vgaram.v \
+		../../soc/soc_top.v \
 
 SOURCE_FILES_PARAMETER = $(addprefix --source=, $(SOURCE_FILES))
-ASSIGNMENT_FILES = top.qpf top.qsf 
+ASSIGNMENT_FILES = soc_top.qpf soc_top.qsf 
 
 ###################################################################
 # Main Targets
@@ -62,7 +62,7 @@ smart: smart.log
 #MAP_ARGS = --family=CycloneII $(SOURCE_FILES_PARAMETER)
 #FIT_ARGS = --part=EP2C5T144C8i
 MAP_ARGS = --family=CycloneIV $(SOURCE_FILES_PARAMETER)
-#FIT_ARGS = --part=EP4CE6E22C8
+FIT_ARGS = --part=EP4CE6E22C8
 ASM_ARGS =
 STA_ARGS =
 
