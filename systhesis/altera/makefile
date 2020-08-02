@@ -61,7 +61,7 @@ smart: smart.log
 # To compile, put CycloneIV here
 #MAP_ARGS = --family=CycloneII $(SOURCE_FILES_PARAMETER)
 #FIT_ARGS = --part=EP2C5T144C8i
-MAP_ARGS = --family=CycloneIV $(SOURCE_FILES_PARAMETER)
+MAP_ARGS = --family="Cyclone IV E" $(SOURCE_FILES_PARAMETER)
 FIT_ARGS = --part=EP4CE6E22C8
 ASM_ARGS =
 STA_ARGS =
