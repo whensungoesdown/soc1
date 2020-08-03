@@ -1,9 +1,9 @@
-`include "../hdl/defines.v"
+`include "../soc/cpu6/defines.v"
 
 // Modelsim-ASE requires a timescale directive
 `timescale 1 ns / 1 ns
 
-module top_tb();
+module soc_top_tb();
 
     reg clk;
     reg reset;
