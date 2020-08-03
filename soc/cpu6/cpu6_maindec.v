@@ -76,7 +76,7 @@ module cpu6_maindec (
    wire rv32_beq = op_b_branch & funct3_000;
    wire rv32_bne = op_b_branch & funct3_001;
    
-   wire rv32_jalr = (op == `CPU6_OPCODE_SIZE'b01100111) & funct3_000; // jalr i-type
+   wire rv32_jalr = (op == `CPU6_OPCODE_SIZE'b1100111) & funct3_000; // jalr i-type
    //wire rv32_jal = (op == `CPU6_OPCODE_SIZE'b01110011);
    
 //   wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_invalid_controls = {
