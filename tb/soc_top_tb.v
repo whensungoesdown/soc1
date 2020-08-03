@@ -12,7 +12,7 @@ module soc_top_tb();
     //wire memwrite;
 
     // instantiate device to be tested
-    top dut(clk, reset);
+    soc_top dut(clk, reset);
 
     // initialize test
     initial
