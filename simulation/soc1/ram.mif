@@ -1,0 +1,266 @@
+-- Copyright (C) 1991-2013 Altera Corporation
+-- Your use of Altera Corporation's design tools, logic functions 
+-- and other software and tools, and its AMPP partner logic 
+-- functions, and any output files from any of the foregoing 
+-- (including device programming or simulation files), and any 
+-- associated documentation or information are expressly subject 
+-- to the terms and conditions of the Altera Program License 
+-- Subscription Agreement, Altera MegaCore Function License 
+-- Agreement, or other applicable license agreement, including, 
+-- without limitation, that your use is for the sole purpose of 
+-- programming logic devices manufactured by Altera and sold by 
+-- Altera or its authorized distributors.  Please refer to the 
+-- applicable agreement for further details.
+
+-- Quartus II generated Memory Initialization File (.mif)
+
+WIDTH=32;
+DEPTH=2048;
+
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+
+CONTENT BEGIN
+
+
+-- <loop>:
+	0:		60002303;  --		lw x6 1536(x0)
+	1:		00400293;  --		addi x5 x0 4
+	2:		00000393;  --		addi x7 x0 0
+	3:		00600413;  --		addi x8 x0 6
+
+-- <drawline0>:
+	4:		00532823;  --		sw x5 16(x6)
+	5:		00130313;  --		addi x6 x6 1
+	6:		00138393;  --		addi x7 x7 1
+	7:		fe839ae3;  --		bne x7 x8 -12 <drawline0>
+	8:		60402303;  --		lw x6 1540(x0)
+	9:		00400293;  --		addi x5 x0 4
+	a:		00000393;  --		addi x7 x0 0
+	b:		00a00413;  --		addi x8 x0 10
+
+-- <drawline1>:
+	c:		005327a3;  --		sw x5 15(x6)
+	d:		00130313;  --		addi x6 x6 1
+	e:		00138393;  --		addi x7 x7 1
+	f:		fe839ae3;  --		bne x7 x8 -12 <drawline1>
+
+	10:		60802303;  --		lw x6 1544(x0)
+	11:		00000293;  --		addi x5 x0 0
+	12:		005327a3;  --		sw x5 15(x6)
+	13:		00532823;  --		sw x5 16(x6)
+	14:		005328a3;  --		sw x5 17(x6)
+	15:		00532aa3;  --		sw x5 21(x6)
+	16:		00600293;  --		addi x5 x0 6
+	17:		00532923;  --		sw x5 18(x6)
+	18:		005329a3;  --		sw x5 19(x6)
+	19:		00532a23;  --		sw x5 20(x6)
+	1a:		00532b23;  --		sw x5 22(x6)
+
+
+
+	1b:		60c02303;  --		lw x6 1548(x0)
+	1c:		00000293;  --		addi x5 x0 0
+	1d:		00532723;  --		sw x5 14(x6)
+	1e:		00532823;  --		sw x5 16(x6)
+	1f:		00532aa3;  --		sw x5 21(x6)
+	20:		00600293;  --		addi x5 x0 6
+	21:		005327a3;  --		sw x5 15(x6)
+	22:		005328a3;  --		sw x5 17(x6)
+	23:		00532923;  --		sw x5 18(x6)
+	24:		005329a3;  --		sw x5 19(x6)
+	25:		00532a23;  --		sw x5 20(x6)
+	26:		00532b23;  --		sw x5 22(x6)
+	27:		00532ba3;  --		sw x5 23(x6)
+	28:		00532c23;  --		sw x5 24(x6)
+
+	29:		61002303;  --		lw x6 1552(x0)
+	2a:		00000293;  --		addi x5 x0 0
+	2b:		00532723;  --		sw x5 14(x6)
+	2c:		00532823;  --		sw x5 16(x6)
+	2d:		005328a3;  --		sw x5 17(x6)
+	2e:		00532b23;  --		sw x5 22(x6)
+	2f:		00600293;  --		addi x5 x0 6
+	30:		005327a3;  --		sw x5 15(x6)
+	31:		00532923;  --		sw x5 18(x6)
+	32:		005329a3;  --		sw x5 19(x6)
+	33:		00532a23;  --		sw x5 20(x6)
+	34:		00532aa3;  --		sw x5 21(x6)
+	35:		00532ba3;  --		sw x5 23(x6)
+	36:		00532c23;  --		sw x5 24(x6)
+	37:		00532ca3;  --		sw x5 25(x6)
+
+	38:		61402303;  --		lw x6 1556(x0)
+	39:		00000293;  --		addi x5 x0 0
+	3a:		00532723;  --		sw x5 14(x6)
+	3b:		005327a3;  --		sw x5 15(x6)
+	3c:		00532aa3;  --		sw x5 21(x6)
+	3d:		00532b23;  --		sw x5 22(x6)
+	3e:		00532ba3;  --		sw x5 23(x6)
+	3f:		00532c23;  --		sw x5 24(x6)
+	40:		00600293;  --		addi x5 x0 6
+	41:		00532823;  --		sw x5 16(x6)
+	42:		005328a3;  --		sw x5 17(x6)
+	43:		00532923;  --		sw x5 18(x6)
+	44:		005329a3;  --		sw x5 19(x6)
+	45:		00532a23;  --		sw x5 20(x6)
+
+	46:		61802303;  --		lw x6 1560(x0)
+	47:		00600293;  --		addi x5 x0 6
+	48:		00532823;  --		sw x5 16(x6)
+	49:		005328a3;  --		sw x5 17(x6)
+	4a:		00532923;  --		sw x5 18(x6)
+	4b:		005329a3;  --		sw x5 19(x6)
+	4c:		00532a23;  --		sw x5 20(x6)
+	4d:		00532aa3;  --		sw x5 21(x6)
+	4e:		00532b23;  --		sw x5 22(x6)
+	4f:		00532ba3;  --		sw x5 23(x6)
+
+	50:		61c02303;  --		lw x6 1564(x0)
+	51:		00400293;  --		addi x5 x0 4
+	52:		005327a3;  --		sw x5 15(x6)
+	53:		00532823;  --		sw x5 16(x6)
+	54:		00532923;  --		sw x5 18(x6)
+	55:		005329a3;  --		sw x5 19(x6)
+	56:		00532a23;  --		sw x5 20(x6)
+	57:		00532aa3;  --		sw x5 21(x6)
+	58:		00100293;  --		addi x5 x0 1
+	59:		005328a3;  --		sw x5 17(x6)
+
+
+	5a:		62002303;  --		lw x6 1568(x0)
+	5b:		00400293;  --		addi x5 x0 4
+	5c:		00532723;  --		sw x5 14(x6)
+	5d:		005327a3;  --		sw x5 15(x6)
+	5e:		00532823;  --		sw x5 16(x6)
+	5f:		00532923;  --		sw x5 18(x6)
+	60:		005329a3;  --		sw x5 19(x6)
+	61:		00532aa3;  --		sw x5 21(x6)
+	62:		00532b23;  --		sw x5 22(x6)
+	63:		00532ba3;  --		sw x5 23(x6)
+	64:		00100293;  --		addi x5 x0 1
+	65:		005328a3;  --		sw x5 17(x6)
+	66:		00532a23;  --		sw x5 20(x6)
+
+
+	67:		62402303;  --		lw x6 1572(x0)
+	68:		00400293;  --		addi x5 x0 4
+	69:		005326a3;  --		sw x5 13(x6)
+	6a:		00532723;  --		sw x5 14(x6)
+	6b:		005327a3;  --		sw x5 15(x6)
+	6c:		00532823;  --		sw x5 16(x6)
+	6d:		00532aa3;  --		sw x5 21(x6)
+	6e:		00532b23;  --		sw x5 22(x6)
+	6f:		00532ba3;  --		sw x5 23(x6)
+	70:		00532c23;  --		sw x5 24(x6)
+	71:		00100293;  --		addi x5 x0 1
+	72:		005328a3;  --		sw x5 17(x6)
+	73:		00532923;  --		sw x5 18(x6)
+	74:		005329a3;  --		sw x5 19(x6)
+	75:		00532a23;  --		sw x5 20(x6)
+
+
+	76:		62802303;  --		lw x6 1576(x0)
+	77:		00600293;  --		addi x5 x0 6
+	78:		005326a3;  --		sw x5 13(x6)
+	79:		00532723;  --		sw x5 14(x6)
+	7a:		00532ba3;  --		sw x5 23(x6)
+	7b:		00532c23;  --		sw x5 24(x6)
+	7c:		00400293;  --		addi x5 x0 4
+	7d:		005327a3;  --		sw x5 15(x6)
+	7e:		00532b23;  --		sw x5 22(x6)
+	7f:		00100293;  --		addi x5 x0 1
+	80:		00532823;  --		sw x5 16(x6)
+	81:		00532923;  --		sw x5 18(x6)
+	82:		005329a3;  --		sw x5 19(x6)
+	83:		00532aa3;  --		sw x5 21(x6)
+	84:		00600293;  --		addi x5 x0 6
+	85:		005328a3;  --		sw x5 17(x6)
+	86:		00532a23;  --		sw x5 20(x6)
+
+	87:		62c02303;  --		lw x6 1580(x0)
+	88:		00600293;  --		addi x5 x0 6
+	89:		005326a3;  --		sw x5 13(x6)
+	8a:		00532723;  --		sw x5 14(x6)
+	8b:		005327a3;  --		sw x5 15(x6)
+	8c:		00532b23;  --		sw x5 22(x6)
+	8d:		00532ba3;  --		sw x5 23(x6)
+	8e:		00532c23;  --		sw x5 24(x6)
+	8f:		00100293;  --		addi x5 x0 1
+	90:		00532823;  --		sw x5 16(x6)
+	91:		005328a3;  --		sw x5 17(x6)
+	92:		00532923;  --		sw x5 18(x6)
+	93:		005329a3;  --		sw x5 19(x6)
+	94:		00532a23;  --		sw x5 20(x6)
+	95:		00532aa3;  --		sw x5 21(x6)
+
+	96:		63002303;  --		lw x6 1584(x0)
+	97:		00600293;  --		addi x5 x0 6
+	98:		005326a3;  --		sw x5 13(x6)
+	99:		00532723;  --		sw x5 14(x6)
+	9a:		00532ba3;  --		sw x5 23(x6)
+	9b:		00532c23;  --		sw x5 24(x6)
+	9c:		00100293;  --		addi x5 x0 1
+	9d:		005327a3;  --		sw x5 15(x6)
+	9e:		00532823;  --		sw x5 16(x6)
+	9f:		005328a3;  --		sw x5 17(x6)
+	a0:		00532923;  --		sw x5 18(x6)
+	a1:		005329a3;  --		sw x5 19(x6)
+	a2:		00532a23;  --		sw x5 20(x6)
+	a3:		00532aa3;  --		sw x5 21(x6)
+	a4:		00532b23;  --		sw x5 22(x6)
+
+	a5:		63402303;  --		lw x6 1588(x0)
+	a6:		00100293;  --		addi x5 x0 4
+	a7:		005327a3;  --		sw x5 15(x6)
+	a8:		00532823;  --		sw x5 16(x6)
+	a9:		005328a3;  --		sw x5 17(x6)
+	aa:		00532a23;  --		sw x5 20(x6)
+	ab:		00532aa3;  --		sw x5 21(x6)
+	ac:		00532b23;  --		sw x5 22(x6)
+
+	ad:		63802303;  --		lw x6 1592(x0)
+	ae:		00000293;  --		addi x5 x0 0
+	af:		00532723;  --		sw x5 14(x6)
+	b0:		005327a3;  --		sw x5 15(x6)
+	b1:		00532823;  --		sw x5 16(x6)
+	b2:		00532aa3;  --		sw x5 21(x6)
+	b3:		00532b23;  --		sw x5 22(x6)
+	b4:		00532ba3;  --		sw x5 23(x6)
+
+	b5:		63c02303;  --		lw x6 1596(x0)
+	b6:		00000293;  --		addi x5 x0 0
+	b7:		005326a3;  --		sw x5 13(x6)
+	b8:		00532723;  --		sw x5 14(x6)
+	b9:		005327a3;  --		sw x5 15(x6)
+	ba:		00532823;  --		sw x5 16(x6)
+	bb:		00532aa3;  --		sw x5 21(x6)
+	bc:		00532b23;  --		sw x5 22(x6)
+	bd:		00532ba3;  --		sw x5 23(x6)
+	be:		00532c23;  --		sw x5 24(x6)
+
+-- <halt>:
+	bf:		00000013;  --		nop
+	c0:		fe000ee3;  --		beq x0 x0 -4 <halt>
+
+
+	[c1..17F] :    00000000;
+	
+	180  :   00010000;      -- data line 0
+	181  :   00010100;      -- data line 1
+	182  :   00010200;      -- data line 2
+	183  :   00010300;      -- data line 3
+	184  :   00010400;      -- data line 4
+	185  :   00010500;      -- data line 5
+	186  :   00010600;      -- data line 6
+	187  :   00010700;      -- data line 7
+	188  :   00010800;      -- data line 8
+	189  :   00010900;      -- data line 9
+	18A  :   00010a00;      -- data line a
+	18B  :   00010b00;      -- data line b
+	18C  :   00010c00;      -- data line c
+	18D  :   00010d00;      -- data line d
+	18E  :   00010e00;      -- data line e
+	18F  :   00010f00;      -- data line f
+	[190..7FF]  :   00000000;
+END;
