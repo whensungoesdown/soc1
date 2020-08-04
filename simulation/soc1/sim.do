@@ -5,6 +5,7 @@ add list -decimal *
 radix -symbolic
 
 add wave *
+add wave dut.pc
 run 500ns
 
 # read in stimulus

@@ -8,16 +8,22 @@ module soc_top_tb();
     reg clk;
     reg reset;
 
+    wire [2:0] vga_rgb;
+    wire vga_hsync;
+    wire vga_vsync;
+
     //wire [`CPU6_XLEN-1:0] writedata, dataadr;
     //wire memwrite;
 
     // instantiate device to be tested
-    soc_top dut(clk, reset);
+    soc_top dut(clk, reset, vga_rgb, vga_hsync, vga_vsync);
 
     // initialize test
     initial
     begin
       $display("Start ...");
+      	dut.cpu_clk = 1;
+	dut.vga_clk = 1;
         reset <= 0; #22; reset <= 1;
     end
 
@@ -36,6 +42,9 @@ module soc_top_tb();
     always @(negedge clk)
     begin
         $display("-");
+	$display("pc %x", dut.pc);
+	$display("vga_rgb %b", vga_rgb);
+	$display("cpu_clk %b", dut.cpu_clk);
         // if (memwrite) begin
         //     if (dataadr === 84 & writedata === 7) begin
         //         $display("Simulation succeeded");
