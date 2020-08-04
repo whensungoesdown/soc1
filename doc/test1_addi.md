@@ -232,11 +232,11 @@ cpu6_core only uses cpu_clk, so I guess this is because of reset pin.
 
 Better show them with reset signal
 
-**dut.cpu_clk = 0;**
+**dut.cpu_clk = 1;**
 ![clk cpu_clk reset](image/cpu_clk_reset.png)
 
 
-**dut.cpu_clk = 1;**
+**dut.cpu_clk = 0;**
 ![clk cpu_clk reset 2](image/cpu_clk_reset2.png)
 
 
