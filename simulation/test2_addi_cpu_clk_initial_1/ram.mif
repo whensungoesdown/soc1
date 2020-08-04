@@ -23,10 +23,10 @@ DATA_RADIX=HEX;
 CONTENT BEGIN
 
 	0:		00128293;  --		addi x5 x5 1
-	1:		00128293;  --		addi x5 x5 1
-	2:		00128293;  --		addi x5 x5 1
-	3:		00128293;  --		addi x5 x5 1
-	4:		00128293;  --		addi x5 x5 1
+	1:		00228293;  --		addi x5 x5 2
+	2:		00328293;  --		addi x5 x5 3
+	3:		00428293;  --		addi x5 x5 4
+	4:		00528293;  --		addi x5 x5 5
 
 
 	[5..7FF]  :   00000013; -- nop

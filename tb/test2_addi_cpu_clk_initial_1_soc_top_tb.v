@@ -63,7 +63,7 @@ module soc_top_tb();
 
 	if (32'h00000020 === dut.pc) 	
 	begin
-		if (32'h5 === dut.core.dp.rf.regs[5].other_regs.rf_dffl.qout)
+		if (32'h0f === dut.core.dp.rf.regs[5].other_regs.rf_dffl.qout)
 		begin
 			$display("test2_addi_cpu_clk_initial_1 simulation SUCCESS");
 			$stop;

@@ -7,6 +7,7 @@ radix -symbolic
 #add wave *
 add wave dut.pc
 add wave dut.cpu_clk
+add wave dut.core.dp.instrE
 run 500ns
 
 # read in stimulus
