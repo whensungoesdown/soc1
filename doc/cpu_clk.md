@@ -42,7 +42,7 @@ Hence, in testbenches, set initial value.
 
 When the initial value of dut.cpu_clk is 1, the cpu_clk and clk looks like this.
 
-![clk cpu_clk](images/cpu_clk.jpg)
+![clk cpu_clk](image/cpu_clk.png)
 
 
 test1_addi is a very simple test.
