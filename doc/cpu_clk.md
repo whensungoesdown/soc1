@@ -1,5 +1,5 @@
 ## cpu_clk in testbench
---------------------
+
 The FPGA development board used is C4E6E10 which has a Cyclone IV E EP4CE6E22C8. Its pin 23 provides 50MHz clock.
 
 50MHz clk is too fast for this design. Runs at 25Mhz is fine.
@@ -64,7 +64,7 @@ END;
 ``````````````````````````
 
 
-And the result is a little weird.
+The result is a little weird.
 
 ````````````
 # Start ...
@@ -144,4 +144,86 @@ Because of the 4-stage pipeline implementation, that's when the Writeback stage 
 
 But at pc 0x10, the reg[5] is still 0x1. It should be 0x2.
 
+--------------------
+When set
+`````````` 
+dut.cpu_clk = 1;
+``````````
+The clk and cpu_clk is the following:
 
+![clk cpu_clk2](image/cpu_clk2.png)
+
+And the result is:
+
+``````````````
+# Start ...
+# +
+# -
+# reset 0
+# cpu_clk 0
+# pc 00000000
+# vga_rgb xxx
+# reg[5] 00000000
+# +
+# -
+# reset 1
+# cpu_clk 0
+# pc 00000004
+# vga_rgb xxx
+# reg[5] 00000000
+# +
+# -
+# reset 1
+# cpu_clk 0
+# pc 00000008
+# vga_rgb xxx
+# reg[5] 00000000
+# +
+# -
+# reset 1
+# cpu_clk 0
+# pc 0000000c
+# vga_rgb xxx
+# reg[5] 00000000
+# +
+# -
+# reset 1
+# cpu_clk 0
+# pc 00000010
+# vga_rgb xxx
+# reg[5] 00000001
+# +
+# -
+# reset 1
+# cpu_clk 0
+# pc 00000014
+# vga_rgb xxx
+# reg[5] 00000002
+# +
+# -
+# reset 1
+# cpu_clk 0
+# pc 00000018
+# vga_rgb xxx
+# reg[5] 00000003
+# +
+# -
+# reset 1
+# cpu_clk 0
+# pc 0000001c
+# vga_rgb xxx
+# reg[5] 00000004
+# +
+# -
+# reset 1
+# cpu_clk 0
+# pc 00000020
+# vga_rgb xxx
+# reg[5] 00000005
+``````````````
+
+----------------------------
+I noticed both times the core finished the program when cpu is 0x00000020.
+The first run actually 1 cycle earier loads 0x1 into reg[5].
+
+cpu6_core only uses cpu_clk, so I guess this is because of reset pin. 

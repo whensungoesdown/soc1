@@ -1,5 +1,4 @@
 ## simulation test framework
-----------------------------------------------------------
 
 Testbenches are all based on soc_top.
 run_all_tests.sh records all the test simulation to run,
