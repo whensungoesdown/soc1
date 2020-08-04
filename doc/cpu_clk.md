@@ -227,3 +227,14 @@ I noticed both times the core finished the program when cpu is 0x00000020.
 The first run actually 1 cycle earier loads 0x1 into reg[5].
 
 cpu6_core only uses cpu_clk, so I guess this is because of reset pin. 
+
+---------------------------
+
+Better show them with reset signal
+
+![clk cpu_clk reset](image/cpu_clk_reset.png)
+![clk cpu_clk reset 2](image/cpu_clk_reset2.png)
+
+
+Looks like the first run runs ahead 1 clock cycle, that means the first instruction is one stage ahead in the pipeline.
+But, the PC didn't move forward. So in the piple line, in the first case, the first instruction fill twice in the pipeline. 
