@@ -147,7 +147,7 @@ But at pc 0x10, the reg[5] is still 0x1. It should be 0x2.
 --------------------
 When set
 `````````` 
-dut.cpu_clk = 1;
+dut.cpu_clk = 0;
 ``````````
 The clk and cpu_clk is the following:
 
@@ -232,9 +232,23 @@ cpu6_core only uses cpu_clk, so I guess this is because of reset pin.
 
 Better show them with reset signal
 
+**dut.cpu_clk = 0;**
 ![clk cpu_clk reset](image/cpu_clk_reset.png)
+
+
+**dut.cpu_clk = 1;**
 ![clk cpu_clk reset 2](image/cpu_clk_reset2.png)
 
 
 Looks like the first run runs ahead 1 clock cycle, that means the first instruction is one stage ahead in the pipeline.
 But, the PC didn't move forward. So in the piple line, in the first case, the first instruction fill twice in the pipeline. 
+
+Also because I only print when cpu_clk is 0. So when the reset_n is high, the first run gets half more negative cycle to start with.
+
+---------------------------------------------
+
+The problem is that, on fpga, there is on way to tell the initial state of cpu_clk.
+
+Need to make a test that the first instruction is add x5, x5, 1
+See if the first instruction executes twice.
+Also I can use ModelSim GUI to debug this. But running one more test seems more fun ;)   

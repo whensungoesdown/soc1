@@ -61,7 +61,7 @@ module soc_top_tb();
         //     end
         // end    
 
-	if (32'h00000030 === dut.pc) 	
+	if (32'h00000020 === dut.pc) 	
 	begin
 		if (32'h5 === dut.core.dp.rf.regs[5].other_regs.rf_dffl.qout)
 		begin
