@@ -38,6 +38,9 @@ END;
 
 ```````````````````````````````
 
+Accumulate from 1 to 100, write result 0x13ba(5050) to address 0x80.
+jalr, then write 0x2c to address 0x54 and 0x5c.
+
 **Result:**
 
 
