@@ -40,8 +40,6 @@ END;
 **Result:**
 
 
-**cpu_clk 1**
-![write_ram](image/test3_writeram.png)
+![write ram](image/test3_writeram.png)
 
-**cpu_clk 0**
-![write_ram2](image/test2_writeram2.png)
+![write ram2](image/test3_writeram2.png)
