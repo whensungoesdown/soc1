@@ -8,3 +8,7 @@ cd ..
 cd test2_addi_cpu_clk_initial_1
 ./simulate.sh | grep simulation
 cd ..
+
+cd test3_bigloop
+./simulate.sh | grep simulation
+cd ..
