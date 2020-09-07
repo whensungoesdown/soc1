@@ -1,5 +1,4 @@
 # soc1 implementing...
---------------
 
 Currently, soc1 only has cpu6 and vga controller.
 
@@ -11,21 +10,19 @@ Video RAM 64KB  640 x 480  25MHz
 
 
 # Exception 
----------------
 illegal instruction
 
 
 # Interrupts
----------------
 
 
 # Vectors
--------------------
 Reset 0x00000000
 Trap  0x00000004
 
+----------------------------
+
 # Compile
------------------------------
 `````````````
 cd systhesis/altera
 make
@@ -33,7 +30,6 @@ make
  (or make map)
 
 # Run simulation tests
-----------------------------
 ```````````````
 cd simulation
 ./run_all_test.sh
