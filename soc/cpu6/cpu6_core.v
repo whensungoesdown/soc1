@@ -49,6 +49,20 @@ module cpu6_core (
    wire flashE;
 
 
+   wire illinstr;
+   wire excp_flush;
+   wire [`CPU6_XLEN-1:0] excp_flush_pc;
+   
+
+   cpu6_excp excp(
+      .clk           (clk  ),
+      .reset         (reset),
+      .illinstr      (illinstr  ),
+      .excp_flush    (excp_flush),
+      .excp_flush_pc (excp_flush_pc)
+      );
+      
+
    
    cpu6_hazardcontrol hazardcontrol(branchtype, jump, branchtypeE, jumpE, pcsrcE,
       stallF, flashE);
@@ -59,20 +73,27 @@ module cpu6_core (
    cpu6_dfflr#(`CPU6_XLEN) pcreg(!stallF, pcnextF, pcF, ~clk, reset);
    
    cpu6_adder pcadd4(pcF, 32'b100, pcplus4F); // next pc if no branch, no jump
-   cpu6_mux2#(`CPU6_XLEN) pcnextmux(pcplus4F, pcnextE, pcsrcE, pcnextF);  
+   
+   //cpu6_mux2#(`CPU6_XLEN) pcnextmux(pcplus4F, pcnextE, pcsrcE, pcnextF);
+   // 1. excp_flush has the highest priority. For example, illegal instruction, the excp module
+   //    need to set pc to trap vector.
+   // 2. There is a branch, the branch pc comes from EX stage because it needs calculation
+   // 3. pc+4  
+   assign pcnextF = 
+		    excp_flush ? excp_flush_pc:
+		    pcsrcE? pcnextE:
+		    pcplus4F;
    
    cpu6_controller c(instr[`CPU6_OPCODE_HIGH:`CPU6_OPCODE_LOW],
 		     instr[`CPU6_FUNCT3_HIGH:`CPU6_FUNCT3_LOW],
 		     instr[`CPU6_FUNCT7_HIGH:`CPU6_FUNCT7_LOW],
 		     memtoreg, memwrite, branchtype,
 		     alusrc, regwrite, jump,
-		     alucontrol, immtype);
+		     alucontrol, immtype, illinstr);
 
    
    //
-   // currently, it's 2 stages pipeline
-   // Need to flashE, but not by using reset, reset will even flash 
-   // the current ongoing instruction. it's too fast
+   // To flash the pipeline register, signal flashE. 
    // If no flash pipelinereg_idex, this branch instruction will go through the pipeline
    // twice, so it will branch twice, then the following instruction will also be
    // executed twice.

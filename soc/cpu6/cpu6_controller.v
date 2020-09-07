@@ -11,7 +11,8 @@ module cpu6_controller (
    output regwrite,
    output jump,
    output [`CPU6_ALU_CONTROL_SIZE-1:0] alucontrol,
-   output [`CPU6_IMMTYPE_SIZE-1:0] immtype
+   output [`CPU6_IMMTYPE_SIZE-1:0] immtype,
+   output illinstr
 );
    
    wire [`CPU6_ALU_OP_SIZE-1:0] aluop;
@@ -26,7 +27,7 @@ module cpu6_controller (
    cpu6_maindec md(op,funct3, funct7,
                    memtoreg, memwrite, branchtype,
 		   alusrc, regwrite, jump,
-		   aluop, immtype);
+		   aluop, immtype, illinstr);
 
    cpu6_aludec ad(funct3, funct7, aluop, alucontrol);
 

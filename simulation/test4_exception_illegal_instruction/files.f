@@ -25,5 +25,5 @@
 ../../soc/vga/vga640x480.v 
 ../../soc/vga/vgaram.v 
 ../../soc/soc_top.v
-../../tb/soc_top_tb.v
+../../tb/test4_exception_illegal_instruction_soc_top_tb.v
 

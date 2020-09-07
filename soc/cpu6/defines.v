@@ -82,3 +82,7 @@
 `define CPU6_BRANCHTYPE_BEQ       3'b010
 `define CPU6_BRANCHTYPE_BNE       3'b001
 // ...
+
+
+// Exception
+`define CPU6_MTVEC_TRAP_BASE      32'h00000004

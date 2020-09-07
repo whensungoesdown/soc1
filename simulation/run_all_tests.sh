@@ -12,3 +12,7 @@ cd ..
 cd test3_bigloop
 ./simulate.sh | grep simulation
 cd ..
+
+cd test4_exception_illegal_instruction
+./simulate.sh | grep simulation
+cd ..

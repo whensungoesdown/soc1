@@ -27,7 +27,8 @@ module cpu6_maindec (
 		     output regwrite,
 		     output jump,
 		     output [`CPU6_ALU_OP_SIZE-1:0] aluop,
-                     output [`CPU6_IMMTYPE_SIZE-1:0] immtype
+                     output [`CPU6_IMMTYPE_SIZE-1:0] immtype,
+                     output illinstr
 		     );
 
    wire [`MAINDEC_CONTROL_SIZE-1:0] controls;
@@ -78,6 +79,17 @@ module cpu6_maindec (
    
    wire rv32_jalr = (op == `CPU6_OPCODE_SIZE'b1100111) & funct3_000; // jalr i-type
    //wire rv32_jal = (op == `CPU6_OPCODE_SIZE'b01110011);
+   
+
+
+   assign illinstr = ~(rv32_lw | rv32_sw
+		     | rv32_addi
+		     | rv32_add | rv32_sub
+		     | rv32_beq | rv32_bne
+		     | rv32_jalr
+		     );
+
+
    
 //   wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_invalid_controls = {
 //				    1'b0, // memtoreg: no
