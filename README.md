@@ -23,6 +23,8 @@ Trap  0x00000004
 ----------------------------
 
 
+# Directoryies
+
 `````````````````
 soc1
 ├── doc  		# Documents of simulation test cases
@@ -31,8 +33,6 @@ soc1
 ├── soc			# Rtl code	
 ├── systhesis           # \altera\makefile                  
 └── tb			# Testbench files for simulation test cases
-
-
 `````````````````
 
 # Compile
