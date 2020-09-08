@@ -22,6 +22,19 @@ Trap  0x00000004
 
 ----------------------------
 
+
+`````````````````
+soc1
+├── doc  		# Documents of simulation test cases
+├── README.md
+├── simulation          # Simulation test cases, using modelsim
+├── soc			# Rtl code	
+├── systhesis           # \altera\makefile                  
+└── tb			# Testbench files for simulation test cases
+
+
+`````````````````
+
 # Compile
 `````````````
 cd systhesis/altera
