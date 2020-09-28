@@ -28,6 +28,7 @@ SOURCE_FILES =  ../../soc/cpu6/defines.v \
 		../../soc/cpu6/cpu6_hazardcontrol.v \
 		../../soc/cpu6/cpu6_hazardunit.v \
 		../../soc/cpu6/cpu6_excp.v \
+		../../soc/cpu6/cpu6_csr.v \
 		../../soc/cpu6/ram.v \
 		../../soc/vga/vga640x480.v \
 		../../soc/vga/vgaram.v \

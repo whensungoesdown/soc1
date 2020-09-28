@@ -16,3 +16,11 @@ cd ..
 cd test4_exception_illegal_instruction
 ./simulate.sh | grep simulation
 cd ..
+
+cd test5_csrrw
+./simulate.sh | grep simulation
+cd ..
+
+cd test6_2x_csrrw
+./simulate.sh | grep simulation
+cd ..

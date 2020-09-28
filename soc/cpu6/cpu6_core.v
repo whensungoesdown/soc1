@@ -17,7 +17,7 @@ module cpu6_core (
    wire memwrite;
    wire memtoreg;
    wire alusrc;
-   wire regdst;
+   //wire regdst;
    wire regwrite;
    wire jump;
    wire [`CPU6_BRANCHTYPE_SIZE-1:0] branchtype;
@@ -61,7 +61,7 @@ module cpu6_core (
       .excp_flush    (excp_flush),
       .excp_flush_pc (excp_flush_pc)
       );
-      
+       
 
    
    cpu6_hazardcontrol hazardcontrol(branchtype, jump, branchtypeE, jumpE, pcsrcE,
@@ -83,13 +83,41 @@ module cpu6_core (
 		    excp_flush ? excp_flush_pc:
 		    pcsrcE? pcnextE:
 		    pcplus4F;
+
+
+
+   // csr
+   wire csr;
+   wire csr_rs1uimm;
+   wire [`CPU6_CSR_WSC_SIZE-1:0] csr_wsc;
+
+   // csr signal pass to datapath IDEX
+   wire csrE;
+   wire csr_rs1uimmE;
+   wire [`CPU6_CSR_WSC_SIZE-1:0] csr_wscE;
+   //
+
+
    
-   cpu6_controller c(instr[`CPU6_OPCODE_HIGH:`CPU6_OPCODE_LOW],
-		     instr[`CPU6_FUNCT3_HIGH:`CPU6_FUNCT3_LOW],
-		     instr[`CPU6_FUNCT7_HIGH:`CPU6_FUNCT7_LOW],
-		     memtoreg, memwrite, branchtype,
-		     alusrc, regwrite, jump,
-		     alucontrol, immtype, illinstr);
+   cpu6_controller c(
+      .op          (instr[`CPU6_OPCODE_HIGH:`CPU6_OPCODE_LOW]),
+      .funct3      (instr[`CPU6_FUNCT3_HIGH:`CPU6_FUNCT3_LOW]),
+      .funct7      (instr[`CPU6_FUNCT7_HIGH:`CPU6_FUNCT7_LOW]),
+      // csr
+      .csr         (csr            ),
+      .csr_rs1uimm (csr_rs1uimm    ),
+      .csr_wsc     (csr_wsc        ),
+      //
+      .memtoreg    (memtoreg       ),
+      .memwrite    (memwrite       ),
+      .branchtype  (branchtype     ),
+      .alusrc      (alusrc         ),
+      .regwrite    (regwrite       ),
+      .jump        (jump           ),
+      .alucontrol  (alucontrol     ),
+      .immtype     (immtype        ),
+      .illinstr    (illinstr       )
+      );
 
    
    //
@@ -100,17 +128,67 @@ module cpu6_core (
    // So, need flashE, but not by reset, set an flash signal, it makes a bubble into
    // pipeline_idex in the next clock cycle.
    //
-   cpu6_pipelinereg_idex pipelinereg_idex(clk, reset,
-      flashE,
-      memwrite,
-      memtoreg, branchtype, alusrc, regwrite, jump, alucontrol, immtype,
-      pcF, instr,
-      memwriteE,
-      memtoregE, branchtypeE, alusrcE, regwriteE, jumpE, alucontrolE, immtypeE,
-      pcE, instrE);
+   
+   // todo
+   cpu6_pipelinereg_idex pipelinereg_idex(
+      .clk          (clk    ),
+      .reset        (reset  ),
+      .flash        (flashE ),
+      // csr
+      .csr          (csr    ),
+      .csr_rs1uimm  (csr_rs1uimm    ),
+      .csr_wsc      (csr_wsc        ),
+      //
+      .memwrite     (memwrite       ),
+      .memtoreg     (memtoreg       ),
+      .branchtype   (branchtype     ),
+      .alusrc       (alusrc         ),
+      .regwrite     (regwrite       ),
+      .jump         (jump           ),
+      .alucontrol   (alucontrol     ),
+      .immtype      (immtype        ),
+      .pc           (pcF     ),
+      .instr        (instr   ),
+      // csr
+      .csrE         (csrE    ),
+      .csr_rs1uimmE (csr_rs1uimmE   ),
+      .csr_wscE     (csr_wscE       ),
+      //
+      .memwriteE    (memwriteE      ),
+      .memtoregE    (memtoregE      ),
+      .branchtypeE  (branchtypeE    ),
+      .alusrcE      (alusrcE        ),
+      .regwriteE    (regwriteE      ),
+      .jumpE        (jumpE          ),
+      .alucontrolE  (alucontrolE    ),
+      .immtypeE     (immtypeE       ),
+      .pcE          (pcE      ),
+      .instrE       (instrE   )
+      );
   
-   cpu6_datapath dp(clk, reset, memwriteE, memtoregE, branchtypeE,
-		    alusrcE, regwriteE, jumpE,
-		    alucontrolE, immtypeE, pcE, pcnextE, pcsrcE, instrE,
-		    dataaddr, writedata, readdata, memwriteM);
+   cpu6_datapath dp(
+      .clk          (clk      ),
+      .reset        (reset    ),
+      .memwriteE    (memwriteE    ),
+      .memtoregE    (memtoregE    ),
+      .branchtypeE  (branchtypeE  ),
+      .alusrcE      (alusrcE      ),
+      .regwriteE    (regwriteE    ),
+      .jumpE        (jumpE        ),
+      .alucontrolE  (alucontrolE  ),
+      .immtypeE     (immtypeE     ),
+      .pcE          (pcE      ),
+      .pcnextE      (pcnextE  ),
+      .pcsrcE       (pcsrcE   ),
+      .instrE       (instrE   ),
+      // csr
+      .csrE         (csrE         ),
+      .csr_rs1uimmE (csr_rs1uimmE ),
+      .csr_wscE     (csr_wscE     ),
+      //
+      .dataaddrM    (dataaddr     ),
+      .writedataM   (writedata    ),
+      .readdataM    (readdata     ),
+      .memwriteM    (memwriteM    )
+      );
 endmodule   

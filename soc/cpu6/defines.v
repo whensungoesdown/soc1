@@ -86,3 +86,15 @@
 
 // Exception
 `define CPU6_MTVEC_TRAP_BASE      32'h00000004
+
+
+// CSR
+`define CPU6_CSR_SIZE             12
+
+`define CPU6_CSR_WSC_SIZE          2
+`define CPU6_CSR_WSC_W            2'b00
+`define CPU6_CSR_WSC_S            2'b01
+`define CPU6_CSR_WSC_C            2'b10  
+
+`define CPU6_CSR_RS1              1'b0
+`define CPU6_CSR_UIMM             1'b1

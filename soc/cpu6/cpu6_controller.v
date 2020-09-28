@@ -4,6 +4,11 @@ module cpu6_controller (
    input  [`CPU6_OPCODE_SIZE-1:0] op,
    input  [`CPU6_FUNCT3_SIZE-1:0] funct3,
    input  [`CPU6_FUNCT7_SIZE-1:0] funct7,
+   // csr
+   output csr, // csr enable
+   output csr_rs1uimm, // 0: rs1   1: rs1idx as uimm
+   output [`CPU6_CSR_WSC_SIZE-1:0] csr_wsc, //CSRRW CSRRS CSRRC
+   //
    output memtoreg,			
    output memwrite,
    output [`CPU6_BRANCHTYPE_SIZE-1:0] branchtype,
@@ -24,10 +29,25 @@ module cpu6_controller (
    // aluop is the way that cpu6_maindec tells cpu6_aludec what
    //    alucontrol it should give
    
-   cpu6_maindec md(op,funct3, funct7,
-                   memtoreg, memwrite, branchtype,
-		   alusrc, regwrite, jump,
-		   aluop, immtype, illinstr);
+   cpu6_maindec md(
+      .op        (op      ),
+      .funct3    (funct3  ),
+      .funct7    (funct7  ),
+      // csr
+      .csr           (csr        ),
+      .csr_rs1uimm   (csr_rs1uimm),
+      .csr_wsc       (csr_wsc    ),
+      //
+      .memtoreg      (memtoreg   ),
+      .memwrite      (memwrite   ),
+      .branchtype    (branchtype ),
+      .alusrc        (alusrc     ),
+      .regwrite      (regwrite   ),
+      .jump          (jump       ),
+      .aluop         (aluop      ),
+      .immtype       (immtype    ),
+      .illinstr      (illinstr   )
+      );
 
    cpu6_aludec ad(funct3, funct7, aluop, alucontrol);
 
@@ -90,3 +110,10 @@ endmodule
 //
 //fence       fm            pred succ     rs1 14..12=0 rd 6..2=0x03 1..0=3
 //fence.i     imm12                       rs1 14..12=1 rd 6..2=0x03 1..0=3
+//
+//csrrw   rd rs1       csr(imm12)   14..12=1
+//csrrs   rd rs1       csr(imm12)   14..12=2
+//csrrc   rd rs1       csr(imm12)   14..12=3
+//csrrwi  rd uimm      csr(imm12)   14..12=5
+//csrrsi  rd uimm      csr(imm12)   14..12=6
+//csrrci  rd uimm      csr(imm12)   14..12=7

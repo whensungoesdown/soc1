@@ -26,5 +26,5 @@
 ../../soc/vga/vga640x480.v 
 ../../soc/vga/vgaram.v 
 ../../soc/soc_top.v
-../../tb/test1_addi_soc_top_tb.v
+../../tb/test6_2x_csrrw_soc_top_tb.v
 
