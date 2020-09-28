@@ -47,4 +47,7 @@ make
 cd simulation
 ./run_all_test.sh
 ```````````````
+
+test2_addi_cpu_clk_initial_1 is supposed to fail. Others are not.
+
 see doc/test*.md for details
