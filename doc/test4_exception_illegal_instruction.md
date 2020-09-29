@@ -4,6 +4,9 @@ cpu6_excp is put at IFID stage, the first stage of pipeline.
 
 After decoding, if it is a illegal instruction, the nextpcF is simply set to the exception handler,
 which is from csr register mtvec. For now, mtvec is hardwired to 0x00000004.
+
+0x00000000 is the reset vector.
+
 `````````````
    //cpu6_mux2#(`CPU6_XLEN) pcnextmux(pcplus4F, pcnextE, pcsrcE, pcnextF);
    // 1. excp_flush has the highest priority. For example, illegal instruction, the excp module
