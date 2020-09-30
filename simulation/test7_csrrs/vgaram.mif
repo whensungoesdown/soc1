@@ -14,30 +14,21 @@
 
 -- Quartus II generated Memory Initialization File (.mif)
 
-WIDTH=32;
-DEPTH=2048;
+WIDTH=8;
+DEPTH=65536;
 
 ADDRESS_RADIX=HEX;
 DATA_RADIX=HEX;
 
 CONTENT BEGIN
-
-
-	0:		00000013;  --		nop
-	1:		00000013;  --		nop
-	2:		01000093;  --		addi x1 x0 16
-	3:		001081b3;  --		add x3 x1 x1
-	4:		34119173;  --		csrrw x2 mepc x3
-	5:		34109173;  --		csrrw x2 mepc x1
-	6:		00000013;  --		nop
-	7:		00000013;  --		nop  <---- test mepc === 0x0,  x3 === 0x20
-	8:		00000013;  --		nop  <---- test mepc === 0x20, x2 === 0x0
-	9:		00000013;  --		nop  <---- test mepc === 0x10, x2 === 0x20
-
--- 00000028 <loop>:
-	a:		00000063;  --		beq x0 x0 0 <loop>
-
-
-
-	[b..7FF]  :   00000013; -- nop
+	000  :   01;
+	001  :   02;
+	002  :   03;
+	003  :   04;
+	004  :   05;
+	005  :   06;
+	006  :	 07;
+	007  :	 00;
+	[008..0A0]  :   07;
+	[0A1..FFFF]  :   07;
 END;

@@ -21,7 +21,7 @@ module cpu6_csr (
    wire [`CPU6_XLEN-1:0] epc_r;
    wire [`CPU6_XLEN-1:0] epc_nxt = {csr_write_dat[`CPU6_XLEN-1:1], 1'b0};
 
-   cpu6_dfflr #(`CPU6_XLEN) epc_dfflr(wr_mepc, epc_nxt, epc_r, clk, reset);
+   cpu6_2x_dfflr #(`CPU6_XLEN) epc_dfflr(wr_mepc, epc_nxt, epc_r, clk, reset);
    
    wire [`CPU6_XLEN-1:0] csr_mepc;
    assign csr_mepc = epc_r;

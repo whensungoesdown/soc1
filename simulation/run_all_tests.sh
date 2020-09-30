@@ -24,3 +24,7 @@ cd ..
 cd test6_2x_csrrw
 ./simulate.sh | grep simulation
 cd ..
+
+cd test7_csrrs
+./simulate.sh | grep simulation
+cd ..

@@ -104,7 +104,8 @@ module cpu6_datapath (
    assign csr_rs1idx_uimm_0E = (csr_rs1idx_uimmE == 12'h000);
    
    assign csr_rd_enE = (csrE & (~csr_rdidx_x0E));
-   assign csr_wr_enE = (csrE & (~csr_rs1idx_uimm_0E));
+   
+   assign csr_wr_enE = (csrE & ((~csr_rs1idx_uimm_0E) | (csr_wscE == `CPU6_CSR_WSC_W)));
    //
    
    

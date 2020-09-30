@@ -44,6 +44,36 @@ module cpu6_dfflr # ( parameter DW = 32) (
 
 endmodule
 
+module cpu6_2x_dfflr # ( parameter DW = 32) (
+	input  lden,
+	input  [DW-1:0] dnxt,
+	output [DW-1:0] qout,
+	input  clk,
+	input  rst
+);
+        reg [DW-1:0] prev_qout_r;
+	reg [DW-1:0] qout_r;
+	
+	always @(posedge clk or posedge rst)
+	begin : dffl_proc
+		if (rst == 1'b1)
+		begin
+		        prev_qout_r <= {DW{1'b0}};
+			qout_r <= {DW{1'b0}};
+		end   
+		else if (lden == 1'b1)
+		begin
+		        prev_qout_r <= #1 qout_r;
+			qout_r <= #1 dnxt;
+		end
+	        else
+		        prev_qout_r <= #1 qout_r;	
+	end
+	
+	assign qout = prev_qout_r;
+
+endmodule // cpu6_2x_dfflr
+
 module cpu6_dffr # (parameter DW = 32) (
 	input  [DW-1:0] dnxt,
 	output [DW-1:0] qout,

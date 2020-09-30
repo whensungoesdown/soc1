@@ -22,22 +22,26 @@ DATA_RADIX=HEX;
 
 CONTENT BEGIN
 
-
 	0:		00000013;  --		nop
 	1:		00000013;  --		nop
 	2:		01000093;  --		addi x1 x0 16
-	3:		001081b3;  --		add x3 x1 x1
-	4:		34119173;  --		csrrw x2 mepc x3
-	5:		34109173;  --		csrrw x2 mepc x1
-	6:		00000013;  --		nop
-	7:		00000013;  --		nop  <---- test mepc === 0x0,  x3 === 0x20
-	8:		00000013;  --		nop  <---- test mepc === 0x20, x2 === 0x0
-	9:		00000013;  --		nop  <---- test mepc === 0x10, x2 === 0x20
+	3:		3410a173;  --		csrrs x2 mepc x1   
+	4:		00000013;  --		nop
+	5:		00000013;  --		nop
+	6:		00000013;  --		nop ; x2 should be 0, mepc should be 0x10
+	7:		00000013;  --		nop 
+	8:		341021f3;  --		csrrs x3 mepc x0 (csrr rd mepc)    
+	9:		00000013;  --		nop
+	a:		00000013;  --		nop
+	b:		00000013;  --		nop 
+	c:		00000013;  --		nop ; x3 should be 0x10, mepc should be 0x10 (csrr do not write mepc) 
+	d:		00000013;  --		nop
+	e:		00000013;  --		nop
 
--- 00000028 <loop>:
-	a:		00000063;  --		beq x0 x0 0 <loop>
+-- <loop>:
+	f:		00000063;  --		beq x0 x0 0 <loop>
 
 
 
-	[b..7FF]  :   00000013; -- nop
+	[10..7FF]  :   00000013; -- nop
 END;

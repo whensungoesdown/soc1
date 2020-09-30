@@ -54,9 +54,14 @@ module soc_top_tb();
 	       $display("reg[3] %x", dut.core.dp.rf.regs[3].other_regs.rf_dffl.qout);
 	       $display("dp.regwriteM %x", dut.core.dp.regwriteM);
 	       $display("dp.writeregM %x", dut.core.dp.writeregM);
+	       $display("dp.rdM %x", dut.core.dp.rdM);
+	       $display("dp.regwriteW %x", dut.core.dp.regwriteW);
+	       $display("dp.writeregW %x", dut.core.dp.writeregW);
+	       $display("dp.rdW %x", dut.core.dp.rdW);
 	       $display("dp.hazardunit.rs1idxE %x", dut.core.dp.hazardunit.rs1idxE);
 	       $display("dp.rs1forwardE %x", dut.core.dp.rs1forwardE);
 	       $display("csr.csr_idx %x", dut.core.dp.csr.csr_idx);
+	       $display("csr.csr_read_dat %x", dut.core.dp.csr.csr_read_dat);
 	       $display("csr.csr_write_dat %x", dut.core.dp.csr.csr_write_dat);
 	       $display("mepc %x", dut.core.dp.csr.epc_dfflr.qout);
 	       //$display("reg[5] %x", dut.core.dp.rf.rf_r[5]);
@@ -72,49 +77,32 @@ module soc_top_tb();
 
 	       if (32'h0000001c === dut.pc) 	
 		  begin
-		     if (32'h00000020 === dut.core.dp.rf.regs[3].other_regs.rf_dffl.qout
-			     && 32'h00000000 === dut.core.dp.csr.epc_dfflr.qout)
+		     if (32'h00000010 === dut.core.dp.csr.epc_dfflr.qout)
 			begin
-			   //$display("test6_2x_csrrw simulation SUCCESS");
+			   //$display("test7_csrrs simulation SUCCESS");
 			   //$stop;
 			end
 		     else
 			begin
-			   $display("test6_2x_csrrw simulation FAILED");
+			   $display("test7_csrrs simulation FAILED");
 			   $stop;
 			end
 		  end
 
-	       if (32'h00000020 === dut.pc) 	
+	       if (32'h00000030 === dut.pc) 	
 		  begin
-		     if (32'h00000000 === dut.core.dp.rf.regs[2].other_regs.rf_dffl.qout
-			     && 32'h00000020 === dut.core.dp.csr.epc_dfflr.qout)
+		     if (32'h00000010 === dut.core.dp.rf.regs[3].other_regs.rf_dffl.qout
+			&& 32'h00000010 === dut.core.dp.csr.epc_dfflr.qout)
 			begin
-			   //$display("test6_2x_csrrw simulation SUCCESS");
-			   //$stop;
-			end
-		     else
-			begin
-			   $display("test6_2x_csrrw simulation FAILED");
-			   $stop;
-			end
-		  end
-
-	       if (32'h00000024 === dut.pc) 	
-		  begin
-		     if (32'h00000020 === dut.core.dp.rf.regs[2].other_regs.rf_dffl.qout
-			     && 32'h00000010 === dut.core.dp.csr.epc_dfflr.qout)
-			begin
-			   $display("test6_2x_csrrw simulation SUCCESS");
+			   $display("test7_csrrs simulation SUCCESS");
 			   $stop;
 			end
 		     else
 			begin
-			   $display("test6_2x_csrrw simulation FAILED");
+			   $display("test7_csrrs simulation FAILED");
 			   $stop;
 			end
 		  end
-
 
 	    end
 
