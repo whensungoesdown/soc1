@@ -41,17 +41,17 @@ dp.regwriteM 1
 dp.writeregM 02
 dp.rdM 00000000
 `````````````````
-It indicates that write 0x0 to reg[2], which is correct
-Since it is a writting to the general registers, so it is should be done in WB stage.
-This three signals are pass forward through pipeline.
+It indicates that write 0x0 to reg[2], which is correct.
+Since it writes to the general registers, so this should be done in WB stage.
+These three signals are pass forward through the pipeline register.
 
-But in the next cycle,  dp.rdW becomes 00000010
+However, in the next cycle, dp.rdW suddenly becomes 00000010.
 
-Later, found out, it's because MEM-WB pipeline register works at the falling edge. The rdM changed due to csr_read_datM.
+Turns out, it's because MEM-WB pipeline register works at the falling edge. The rdM changes due to csr_read_datM changes.
 
 ![test7_waves](image/test7_waves.png)
 
-The root cause of this bug is that the read and write to the csr register act at the same time.
+The root cause of this bug is that the read and write to the csr registers at the same time.
 
 ``````````````
 module cpu6_csr (
@@ -95,7 +95,7 @@ Therefore, "csrrs x2 mepc x1" or "csrrw x2 mepc x1", x2 gets x1's value.
 
 To solve this, I doubled the cpu6_dfflr register, adding a prev_qout_r to store the previous value of this register.
 
-The current write value will be updated in the next clock.
+The current write value will be updated in the next cycle.
 
 ```````````````
 module cpu6_2x_dfflr # ( parameter DW = 32) (
@@ -132,7 +132,7 @@ endmodule // cpu6_2x_dfflr
 I am not sure if this is a good way to solve the problem.
 
 Another option is to put the write into the next pipeline stage (WB).
-But this may need to handle data harzard.
+But this also needs to consider handling data harzard.
 
 Now csr register will be updated one cycle late. From ip+2(MEM) to ip+3(WB).
 
