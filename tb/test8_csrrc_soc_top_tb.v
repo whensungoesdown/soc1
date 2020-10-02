@@ -99,7 +99,7 @@ module soc_top_tb();
 			end
 		     else
 			begin
-			   $display("test7_csrrc simulation FAILED");
+			   $display("test8_csrrc simulation FAILED");
 			   $stop;
 			end
 		  end
