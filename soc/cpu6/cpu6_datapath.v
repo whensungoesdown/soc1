@@ -264,11 +264,16 @@ module cpu6_datapath (
    // csr
    
    wire [`CPU6_XLEN-1:0] csr_write_datM;
+   wire [`CPU6_XLEN-1:0] csr_datM;
    
    //assign csr_write_datM = csr_rs1M;
 
-   assign csr_write_datM = (csr_wscM == `CPU6_CSR_WSC_C) ? (~csr_rs1M) :
-			                                   csr_rs1M;
+   // todo
+   assign csr_datM = (csr_rs1uimmM == `CPU6_CSR_RS1) ? csr_rs1M:
+		                                       csr_rs1idx_uimmM; // zero extend to CPU6_XLEN
+		                                       
+   assign csr_write_datM = (csr_wscM == `CPU6_CSR_WSC_C) ? (~csr_datM) :
+			                                   csr_datM;
    
    cpu6_csr csr(
       .clk           (clk  ),
