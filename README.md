@@ -4,6 +4,10 @@ Currently, soc1 only has cpu6 and vga controller.
 
 RISC-V RV32I(lw sw addi add sub beq bne jalr) four-stage pipeline. IFID, EX, MEM, WB.
 
+csr registers mepc mtvec
+
+csr instructions csrrw csrrs csrrc csrrwi csrrsi csrrci
+
 No cache, 2-port RAM. 64KB
 
 Video RAM 64KB  640 x 480  25MHz
