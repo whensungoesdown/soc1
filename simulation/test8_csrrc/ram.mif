@@ -28,8 +28,8 @@ CONTENT BEGIN
 	3:		3410b173;  --		csrrc x2 mepc x1   
 	4:		00000013;  --		nop
 	5:		00000013;  --		nop
-	6:		00000013;  --		nop ; x2 should be 0, mepc should be 0xffffffee (mepc last bit must be 0)
-	7:		00000013;  --		nop 
+	6:		00000013;  --		nop 
+	7:		00000013;  --		nop ; x2 should be 0, mepc should be 0xffffffee (mepc last bit must be 0)
 	8:		341031f3;  --		csrrc x3 mepc x0   
 	9:		00000013;  --		nop
 	a:		00000013;  --		nop
