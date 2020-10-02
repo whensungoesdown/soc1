@@ -28,8 +28,8 @@ CONTENT BEGIN
 	3:		3410a173;  --		csrrs x2 mepc x1   
 	4:		00000013;  --		nop
 	5:		00000013;  --		nop
-	6:		00000013;  --		nop ; x2 should be 0, mepc should be 0x10
-	7:		00000013;  --		nop 
+	6:		00000013;  --		nop 
+	7:		00000013;  --		nop ; x2 should be 0, mepc should be 0x10
 	8:		341021f3;  --		csrrs x3 mepc x0 (csrr rd mepc)    
 	9:		00000013;  --		nop
 	a:		00000013;  --		nop
