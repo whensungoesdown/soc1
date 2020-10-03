@@ -19,6 +19,8 @@ module cpu6_datapath (
                       input  csrE, // csr enable
                       input  csr_rs1uimmE, // uimm: rs1 field as uimm
                       input  [`CPU6_CSR_WSC_SIZE-1:0] csr_wscE, // CSRRW CSRRS CSRRC
+   
+                      output [`CPU6_XLEN-1:0] csr_mtvec,
                       
                       input  [`CPU6_XLEN-1:0] excp_mepc,
                       input  excp_mepc_ena,
@@ -288,7 +290,9 @@ module cpu6_datapath (
       .csr_write_dat (csr_write_datM),
 
       .excp_mepc     (excp_mepc     ),
-      .excp_mepc_ena (excp_mepc_ena )
+      .excp_mepc_ena (excp_mepc_ena ),
+
+      .csr_mtvec     (csr_mtvec     )
       );
 
    // 

@@ -11,9 +11,16 @@ module cpu6_csr (
    input  [`CPU6_XLEN-1:0] csr_write_dat,
 
    input  [`CPU6_XLEN-1:0] excp_mepc,
-   input  excp_mepc_ena
+   input  excp_mepc_ena,
+   
+   output [`CPU6_XLEN-1:0] csr_mtvec
    );
 
+
+   //
+   //  mtvec 
+   //
+   assign csr_mtvec = `CPU6_MTVEC_TRAP_BASE;
 
    //
    // 0x341 MRW mepc  Machine exception program counter

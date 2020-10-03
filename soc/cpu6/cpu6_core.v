@@ -59,6 +59,8 @@ module cpu6_core (
 
    wire [`CPU6_XLEN-1:0] excp_pc;
 
+   wire [`CPU6_XLEN-1:0] csr_mtvec;
+
    cpu6_excp excp(
       .clk              (clk     ),
       .reset            (reset   ),
@@ -67,7 +69,8 @@ module cpu6_core (
       .excp_flush_pc_ena    (excp_flush_pc_ena),
       .excp_flush_pc        (excp_flush_pc    ),
       .excp_mepc            (excp_mepc        ),
-      .excp_mepc_ena        (excp_mepc_ena    )
+      .excp_mepc_ena        (excp_mepc_ena    ),
+      .csr_mtvec            (csr_mtvec        )
       );
        
 
@@ -200,6 +203,8 @@ module cpu6_core (
       .csrE         (csrE         ),
       .csr_rs1uimmE (csr_rs1uimmE ),
       .csr_wscE     (csr_wscE     ),
+
+      .csr_mtvec    (csr_mtvec    ),
       
       .excp_mepc    (excp_mepc    ),
       .excp_mepc_ena(excp_mepc_ena),

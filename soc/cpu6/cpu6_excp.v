@@ -9,7 +9,9 @@ module cpu6_excp (
    output [`CPU6_XLEN-1:0] excp_flush_pc,
 
    output [`CPU6_XLEN-1:0] excp_mepc,
-   output excp_mepc_ena
+   output excp_mepc_ena,
+
+   input [`CPU6_XLEN-1:0] csr_mtvec
    );
 
 
@@ -21,7 +23,7 @@ module cpu6_excp (
 
    assign excp_mepc_ena = excp_flush_pc_ena;
    
-   assign excp_flush_pc = `CPU6_MTVEC_TRAP_BASE;
+   assign excp_flush_pc = csr_mtvec;
 
 endmodule // cpu6_csr
 
