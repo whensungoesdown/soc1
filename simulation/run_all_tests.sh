@@ -32,3 +32,15 @@ cd ..
 cd test8_csrrc
 ./simulate.sh | grep simulation
 cd ..
+
+cd test9_csrrwi
+./simulate.sh | grep simulation
+cd ..
+
+cd test10_csrrsi
+./simulate.sh | grep simulation
+cd ..
+
+cd test11_csrrci
+./simulate.sh | grep simulation
+cd ..
