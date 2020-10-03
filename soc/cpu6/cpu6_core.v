@@ -44,33 +44,48 @@ module cpu6_core (
    wire [`CPU6_XLEN-1:0] pcnextE;
    wire pcsrcE;
 
+   wire hazard_stallF;
 
    wire stallF;
    wire flashE;
 
 
-   wire illinstr;
-   wire excp_flush;
+   wire excp_illinstr;
+   wire excp_flush_pc_ena;
    wire [`CPU6_XLEN-1:0] excp_flush_pc;
-   
+
+   wire [`CPU6_XLEN-1:0] excp_mepc;
+   wire excp_mepc_ena;
+
+   wire [`CPU6_XLEN-1:0] excp_pc;
 
    cpu6_excp excp(
-      .clk           (clk  ),
-      .reset         (reset),
-      .illinstr      (illinstr  ),
-      .excp_flush    (excp_flush),
-      .excp_flush_pc (excp_flush_pc)
+      .clk              (clk     ),
+      .reset            (reset   ),
+      .excp_pc          (excp_pc ),
+      .excp_illinstr        (excp_illinstr    ),
+      .excp_flush_pc_ena    (excp_flush_pc_ena),
+      .excp_flush_pc        (excp_flush_pc    ),
+      .excp_mepc            (excp_mepc        ),
+      .excp_mepc_ena        (excp_mepc_ena    )
       );
        
 
    
    cpu6_hazardcontrol hazardcontrol(branchtype, jump, branchtypeE, jumpE, pcsrcE,
-      stallF, flashE);
+      hazard_stallF, flashE);
 
 
-   
+   assign stallF = hazard_stallF;// | excp_stallF;
    
    cpu6_dfflr#(`CPU6_XLEN) pcreg(!stallF, pcnextF, pcF, ~clk, reset);
+   
+   // It is a trick, pcF updated in the *falling edge* in order to be ahead of time,
+   // so pcF is ready for the RAM when the rasing edge comes.
+   // But other modules such as cpu6_excp still works on the rasing edge.
+   // When excp sends the pcF to csr to write, the pcF is already updated in the previous
+   // falling edge. So there have to be an extra pc to store the previous pcF value. 
+   cpu6_dfflr#(`CPU6_XLEN) excp_pc_reg(!stallF, pcF, excp_pc, ~clk, reset);
    
    cpu6_adder pcadd4(pcF, 32'b100, pcplus4F); // next pc if no branch, no jump
    
@@ -80,8 +95,8 @@ module cpu6_core (
    // 2. There is a branch, the branch pc comes from EX stage because it needs calculation
    // 3. pc+4  
    assign pcnextF = 
-		    excp_flush ? excp_flush_pc:
-		    pcsrcE? pcnextE:
+		    excp_flush_pc_ena ? excp_flush_pc :
+		    pcsrcE            ? pcnextE       :
 		    pcplus4F;
 
 
@@ -116,7 +131,7 @@ module cpu6_core (
       .jump        (jump           ),
       .alucontrol  (alucontrol     ),
       .immtype     (immtype        ),
-      .illinstr    (illinstr       )
+      .illinstr    (excp_illinstr  )
       );
 
    
@@ -185,6 +200,9 @@ module cpu6_core (
       .csrE         (csrE         ),
       .csr_rs1uimmE (csr_rs1uimmE ),
       .csr_wscE     (csr_wscE     ),
+      
+      .excp_mepc    (excp_mepc    ),
+      .excp_mepc_ena(excp_mepc_ena),
       //
       .dataaddrM    (dataaddr     ),
       .writedataM   (writedata    ),

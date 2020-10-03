@@ -44,3 +44,7 @@ cd ..
 cd test11_csrrci
 ./simulate.sh | grep simulation
 cd ..
+
+cd test12_exception_illinstr_mepc
+./simulate.sh | grep simulation
+cd ..

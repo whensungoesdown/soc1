@@ -68,16 +68,18 @@ module soc_top_tb();
 	       //     end
 	       // end    
 
-	       if (32'h00000040 === dut.pc) 	
+	       if (32'h0000003c === dut.pc) 	
 		  begin
-		     if (32'h0000000a === dut.core.dp.rf.regs[6].other_regs.rf_dffl.qout)
+		     if (32'h0000000a === dut.core.dp.rf.regs[6].other_regs.rf_dffl.qout
+			 && 32'h0000001c === dut.core.dp.csr.epc_dfflr.qout
+			 && 32'h0000001c === dut.core.dp.rf.regs[3].other_regs.rf_dffl.qout)
 			begin
-			   $display("test4_exception_illegal_instruction simulation SUCCESS");
+			   $display("test12_exception_illinstr_mepc simulation SUCCESS");
 			   $stop;
 			end
 		     else
 			begin
-			   $display("test4_exception_illegal_instruction simulation FAILED");
+			   $display("test12_exception_illinstr_mepc simulation FAILED");
 			   $stop;
 			end
 		  end
