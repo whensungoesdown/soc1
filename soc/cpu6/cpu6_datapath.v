@@ -25,6 +25,10 @@ module cpu6_datapath (
                       
                       input  [`CPU6_XLEN-1:0] excp_mepc,
                       input  excp_mepc_ena,
+                      
+                      // empty pipeline req ack
+                      input  empty_pipeline_reqE,
+                      output empty_pipeline_ackW,
                       //
 		      output [`CPU6_XLEN-1:0] dataaddrM,
 		      output [`CPU6_XLEN-1:0] writedataM,
@@ -206,6 +210,8 @@ module cpu6_datapath (
    //wire csr_rs1idx_uimm_0M;
    wire [`CPU6_XLEN-1:0] csr_read_datM;
 
+
+   wire empty_pipeline_reqM;
    
 //
 // pipeline EXMEM
@@ -225,14 +231,14 @@ module cpu6_datapath (
       // for csr
       .csrE        (csrE      ),
       .csr_wscE    (csr_wscE  ),
-      .csr_rs1uimmE     (csr_rs1uimmE    ), // use 'rs1' or 'rs1idx as uimm'
-      .forwardrs1_rs1E  (forwardrs1_rs1E ),
-      .csr_rs1idx_uimmE (csr_rs1idx_uimmE),
-      .csr_rd_enE       (csr_rd_enE      ),
-      .csr_wr_enE       (csr_wr_enE      ),
-      .csr_idxE         (csr_idxE        ),
-      //.csr_read_datE    (csr_read_datE   ),
+      .csr_rs1uimmE        (csr_rs1uimmE    ), // use 'rs1' or 'rs1idx as uimm'
+      .forwardrs1_rs1E     (forwardrs1_rs1E ),
+      .csr_rs1idx_uimmE    (csr_rs1idx_uimmE),
+      .csr_rd_enE          (csr_rd_enE      ),
+      .csr_wr_enE          (csr_wr_enE      ),
+      .csr_idxE            (csr_idxE        ),
       //
+      .empty_pipeline_reqE (empty_pipeline_reqE),
       
       .memwriteM   (memwriteM ),
       .writedataM  (writedataM),
@@ -245,14 +251,14 @@ module cpu6_datapath (
       // for csr
       .csrM        (csrM      ),
       .csr_wscM    (csr_wscM  ),
-      .csr_rs1uimmM      (csr_rs1uimmM    ), // use 'rs1' or 'rs1idx as uimm'
-      .csr_rs1M          (csr_rs1M        ), // solved data hazard
-      .csr_rs1idx_uimmM  (csr_rs1idx_uimmM),
-      .csr_rd_enM        (csr_rd_enM      ),
-      .csr_wr_enM        (csr_wr_enM      ),
-      .csr_idxM          (csr_idxM        )
-      //.csr_read_datM     (csr_read_datM   )
+      .csr_rs1uimmM        (csr_rs1uimmM    ), // use 'rs1' or 'rs1idx as uimm'
+      .csr_rs1M            (csr_rs1M        ), // solved data hazard
+      .csr_rs1idx_uimmM    (csr_rs1idx_uimmM),
+      .csr_rd_enM          (csr_rd_enM      ),
+      .csr_wr_enM          (csr_wr_enM      ),
+      .csr_idxM            (csr_idxM        ),
       //
+      .empty_pipeline_reqM (empty_pipeline_reqM)
       );
 //
 //
@@ -328,14 +334,25 @@ module cpu6_datapath (
 //   
 //  pipeline MEMWB
 
-   cpu6_pipelinereg_memwb pipeline_memwb(~clk, reset,
-      1'b0,
-      regwriteM,
-      writeregM,
-      rdM,
-      regwriteW,
-      writeregW,
-      rdW);
+
+   wire empty_pipeline_reqW;
+
+   cpu6_pipelinereg_memwb pipeline_memwb(
+      .clk           (~clk      ),
+      .reset         (reset     ),
+      .flashW        (1'b0      ),
+      .regwriteM           (regwriteM     ),
+      .writeregM           (writeregM     ),
+      .rdM                 (rdM           ),
+      .empty_pipeline_reqM (empty_pipeline_reqM),
+      
+      .regwriteW           (regwriteW     ),
+      .writeregW           (writeregW     ),
+      .rdW                 (rdW           ),
+      .empty_pipeline_reqW (empty_pipeline_reqW)
+      );
+
+   assign empty_pipeline_ackW = empty_pipeline_reqW;
       
 //    
 endmodule // cpu6_datapath

@@ -45,8 +45,11 @@ module cpu6_core (
    wire pcsrcE;
 
    wire hazard_stallF;
-   wire mret_stallF;
-   wire mret_emptypipe_reqF;
+   wire empty_pipeline_stallF;
+   // empty pipeline
+   wire empty_pipeline_req;
+   wire empty_pipeline_reqE;
+   wire empty_pipeline_ackW;
    
 
    wire stallF;
@@ -86,9 +89,9 @@ module cpu6_core (
       hazard_stallF, flashE);
 
 
-   //mret_stallF = mret_emptypipe_reqF & (~mret_emptypipe_ackW);
+   assign empty_pipeline_stallF = empty_pipeline_req & (~empty_pipeline_ackW);
    
-   assign stallF = hazard_stallF;// | mret_stallF;
+   assign stallF = hazard_stallF | empty_pipeline_stallF;
    
    cpu6_dfflr#(`CPU6_XLEN) pcreg(!stallF, pcnextF, pcF, ~clk, reset);
    
@@ -117,7 +120,7 @@ module cpu6_core (
 		    pcplus4F;
 
 
-   
+   assign empty_pipeline_req = mret | excp_flush_pc_ena; // (excp_active);
 
    // csr
    wire csr;
@@ -164,7 +167,6 @@ module cpu6_core (
    // pipeline_idex in the next clock cycle.
    //
    
-   // todo
    cpu6_pipelinereg_idex pipelinereg_idex(
       .clk          (clk    ),
       .reset        (reset  ),
@@ -184,6 +186,8 @@ module cpu6_core (
       .immtype      (immtype        ),
       .pc           (pcF     ),
       .instr        (instr   ),
+      .empty_pipeline_req  (empty_pipeline_req ),
+      
       // csr
       .csrE         (csrE    ),
       .csr_rs1uimmE (csr_rs1uimmE   ),
@@ -198,7 +202,8 @@ module cpu6_core (
       .alucontrolE  (alucontrolE    ),
       .immtypeE     (immtypeE       ),
       .pcE          (pcE      ),
-      .instrE       (instrE   )
+      .instrE       (instrE   ),
+      .empty_pipeline_reqE (empty_pipeline_reqE )
       );
   
    cpu6_datapath dp(
@@ -226,6 +231,10 @@ module cpu6_core (
       
       .excp_mepc    (excp_mepc    ),
       .excp_mepc_ena(excp_mepc_ena),
+      
+      // empty pipline req ack
+      .empty_pipeline_reqE  (empty_pipeline_reqE  ),
+      .empty_pipeline_ackW (empty_pipeline_ackW ),
       //
       .dataaddrM    (dataaddr     ),
       .writedataM   (writedata    ),

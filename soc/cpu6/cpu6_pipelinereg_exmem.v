@@ -21,8 +21,8 @@ module cpu6_pipelinereg_exmem (
    input  csr_rd_enE,
    input  csr_wr_enE,
    input  [`CPU6_CSR_SIZE-1:0] csr_idxE,
-   //input  [`CPU6_XLEN-1:0] csr_read_datE,
    //
+   input  empty_pipeline_reqE,
    
    
    output  memwriteM,
@@ -42,9 +42,9 @@ module cpu6_pipelinereg_exmem (
    output [`CPU6_RFIDX_WIDTH-1:0] csr_rs1idx_uimmM,
    output csr_rd_enM,
    output csr_wr_enM,
-   output [`CPU6_CSR_SIZE-1:0] csr_idxM
-   //output [`CPU6_XLEN-1:0] csr_read_datM
+   output [`CPU6_CSR_SIZE-1:0] csr_idxM,
    //
+   output empty_pipeline_reqM
 );
 
    cpu6_dffr#(1) memwrite_r({1{~flashM}} & memwriteE, memwriteM, clk, reset);
@@ -65,7 +65,7 @@ module cpu6_pipelinereg_exmem (
    cpu6_dffr#(1) csr_rd_en_r({1{~flashM}} & csr_rd_enE, csr_rd_enM, clk, reset);
    cpu6_dffr#(1) csr_wr_en_r({1{~flashM}} & csr_wr_enE, csr_wr_enM, clk, reset);
    cpu6_dffr#(`CPU6_CSR_SIZE) csr_idx_r({`CPU6_CSR_SIZE{~flashM}} & csr_idxE, csr_idxM, clk, reset);
-   //cpu6_dffr#(`CPU6_XLEN) csr_read_dat_r({`CPU6_XLEN{~flashM}} & csr_read_datE, csr_read_datM, clk, reset);
    //
+   cpu6_dffr#(1) empty_pipeline_req_r({1{~flashM}} & empty_pipeline_reqE, empty_pipeline_reqM, clk, reset);
    
 endmodule // cpu6_pipelinereg_exmem
