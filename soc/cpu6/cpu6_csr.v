@@ -13,7 +13,8 @@ module cpu6_csr (
    input  [`CPU6_XLEN-1:0] excp_mepc,
    input  excp_mepc_ena,
    
-   output [`CPU6_XLEN-1:0] csr_mtvec
+   output [`CPU6_XLEN-1:0] csr_mtvec,
+   output [`CPU6_XLEN-1:0] csr_mepc  // the current mepc output
    );
 
 
@@ -37,7 +38,7 @@ module cpu6_csr (
 
    cpu6_2x_dfflr #(`CPU6_XLEN) epc_dfflr(wr_mepc, epc_nxt, epc_r, clk, reset);
    
-   wire [`CPU6_XLEN-1:0] csr_mepc;
+   //wire [`CPU6_XLEN-1:0] csr_mepc;
    assign csr_mepc = epc_r;
 
    

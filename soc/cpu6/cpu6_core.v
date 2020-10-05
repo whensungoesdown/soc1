@@ -45,11 +45,15 @@ module cpu6_core (
    wire pcsrcE;
 
    wire hazard_stallF;
+   wire mret_stallF;
+   wire mret_emptypipe_reqF;
+   
 
    wire stallF;
    wire flashE;
 
-
+   wire mret;
+   
    wire excp_illinstr;
    wire excp_flush_pc_ena;
    wire [`CPU6_XLEN-1:0] excp_flush_pc;
@@ -60,7 +64,10 @@ module cpu6_core (
    wire [`CPU6_XLEN-1:0] excp_pc;
 
    wire [`CPU6_XLEN-1:0] csr_mtvec;
+   
+   wire [`CPU6_XLEN-1:0] csr_mepc;
 
+   
    cpu6_excp excp(
       .clk              (clk     ),
       .reset            (reset   ),
@@ -79,7 +86,9 @@ module cpu6_core (
       hazard_stallF, flashE);
 
 
-   assign stallF = hazard_stallF;// | excp_stallF;
+   //mret_stallF = mret_emptypipe_reqF & (~mret_emptypipe_ackW);
+   
+   assign stallF = hazard_stallF;// | mret_stallF;
    
    cpu6_dfflr#(`CPU6_XLEN) pcreg(!stallF, pcnextF, pcF, ~clk, reset);
    
@@ -92,17 +101,23 @@ module cpu6_core (
    
    cpu6_adder pcadd4(pcF, 32'b100, pcplus4F); // next pc if no branch, no jump
    
+
+   
+
+   
    //cpu6_mux2#(`CPU6_XLEN) pcnextmux(pcplus4F, pcnextE, pcsrcE, pcnextF);
    // 1. excp_flush has the highest priority. For example, illegal instruction, the excp module
    //    need to set pc to trap vector.
    // 2. There is a branch, the branch pc comes from EX stage because it needs calculation
    // 3. pc+4  
-   assign pcnextF = 
+   assign pcnextF =
+		    mret              ? csr_mepc      :
 		    excp_flush_pc_ena ? excp_flush_pc :
 		    pcsrcE            ? pcnextE       :
 		    pcplus4F;
 
 
+   
 
    // csr
    wire csr;
@@ -121,6 +136,8 @@ module cpu6_core (
       .op          (instr[`CPU6_OPCODE_HIGH:`CPU6_OPCODE_LOW]),
       .funct3      (instr[`CPU6_FUNCT3_HIGH:`CPU6_FUNCT3_LOW]),
       .funct7      (instr[`CPU6_FUNCT7_HIGH:`CPU6_FUNCT7_LOW]),
+
+      .mret        (mret           ),
       // csr
       .csr         (csr            ),
       .csr_rs1uimm (csr_rs1uimm    ),
@@ -205,6 +222,7 @@ module cpu6_core (
       .csr_wscE     (csr_wscE     ),
 
       .csr_mtvec    (csr_mtvec    ),
+      .csr_mepc     (csr_mepc     ),
       
       .excp_mepc    (excp_mepc    ),
       .excp_mepc_ena(excp_mepc_ena),

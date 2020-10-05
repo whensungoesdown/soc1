@@ -21,6 +21,7 @@ module cpu6_datapath (
                       input  [`CPU6_CSR_WSC_SIZE-1:0] csr_wscE, // CSRRW CSRRS CSRRC
    
                       output [`CPU6_XLEN-1:0] csr_mtvec,
+                      output [`CPU6_XLEN-1:0] csr_mepc,
                       
                       input  [`CPU6_XLEN-1:0] excp_mepc,
                       input  excp_mepc_ena,
@@ -292,7 +293,8 @@ module cpu6_datapath (
       .excp_mepc     (excp_mepc     ),
       .excp_mepc_ena (excp_mepc_ena ),
 
-      .csr_mtvec     (csr_mtvec     )
+      .csr_mtvec     (csr_mtvec     ),
+      .csr_mepc      (csr_mepc      )
       );
 
    // 

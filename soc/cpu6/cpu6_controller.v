@@ -4,6 +4,8 @@ module cpu6_controller (
    input  [`CPU6_OPCODE_SIZE-1:0] op,
    input  [`CPU6_FUNCT3_SIZE-1:0] funct3,
    input  [`CPU6_FUNCT7_SIZE-1:0] funct7,
+
+   output mret, // mret instruction
    // csr
    output csr, // csr enable
    output csr_rs1uimm, // 0: rs1   1: rs1idx as uimm
@@ -33,6 +35,8 @@ module cpu6_controller (
       .op        (op      ),
       .funct3    (funct3  ),
       .funct7    (funct7  ),
+
+      .mret          (mret       ),
       // csr
       .csr           (csr        ),
       .csr_rs1uimm   (csr_rs1uimm),
