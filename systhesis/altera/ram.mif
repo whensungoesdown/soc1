@@ -25,11 +25,11 @@ CONTENT BEGIN
         1:              02000263;  --           beq x0 x0 36 <trap>
 
 -- <reset>:
-        2:              00100093;  --           addi x1 x0 1
-        3:              00200113;  --           addi x2 x0 2
-        4:              00300193;  --           addi x3 x0 3
-        5:              00118213;  --           addi x4 x3 1
-        6:              00120293;  --           addi x5 x4 1
+        2:              61002303;  --		lw x6 0x610(x0)
+        3:              00100293;  --		addi x5 x0 1
+        4:              00532023;  --		sw x5 0(x6)
+        5:              08532023;  --           sw x5 0x80(x6)
+        6:              08532fa3;  --           sw x5 0x9f(x6)   159 is the end of the line. 640 / 4 = 160
         7:              00000000;  --           <------------- illegal instruction
         8:              00128313;  --           addi x6 x5 1
 
@@ -37,9 +37,9 @@ CONTENT BEGIN
         9:              00000063;  --           beq x0 x0 0 <loop_in_reset>
 
 -- <trap>:
-        a:              00a00313;  --           addi x6 x0 10
-        b:              00000013;  --           nop
-        c:              00000013;  --           nop
+        a:              61402303;  --           lw x6 0x614(x0)
+        b:              00400293;  --           addi x5 x0 4
+        c:              00532023;  --           sw x5 0(x6)
         d:              00000013;  --           nop
         e:              00000013;  --           nop
         f:              00000013;  --           nop
@@ -47,8 +47,24 @@ CONTENT BEGIN
 -- <loop_in_trap>:
         10:             00000063;  --           beq x0 x0 0 <loop_in_trap>
 
-
-
-        [11..7FF]  :   00000013; -- nop
+	[11..17F] :     00000000;
+	
+	180  :   00010000;      -- data line 0
+	181  :   00010100;      -- data line 1
+	182  :   00010200;      -- data line 2
+	183  :   00010300;      -- data line 3
+	184  :   00010400;      -- data line 4
+	185  :   00010500;      -- data line 5
+	186  :   00010600;      -- data line 6
+	187  :   00010700;      -- data line 7
+	188  :   00010800;      -- data line 8
+	189  :   00010900;      -- data line 9
+	18A  :   00010a00;      -- data line a
+	18B  :   00010b00;      -- data line b
+	18C  :   00010c00;      -- data line c
+	18D  :   00010d00;      -- data line d
+	18E  :   00010e00;      -- data line e
+	18F  :   00010f00;      -- data line f
+	[190..7FF]  :   00000000;
 
 END;
