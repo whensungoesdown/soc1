@@ -32,6 +32,10 @@ SOURCE_FILES =  ../../soc/cpu6/defines.v \
 		../../soc/cpu6/ram.v \
 		../../soc/vga/vga640x480.v \
 		../../soc/vga/vgaram.v \
+		../../soc/vga/text80x25.v \
+		../../soc/vga/hvsync.v \
+		../../soc/vga/vgatextram.v \
+		../../soc/vga/chrom.v \
 		../../soc/soc_top.v \
 
 SOURCE_FILES_PARAMETER = $(addprefix --source=, $(SOURCE_FILES))
