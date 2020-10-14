@@ -41,7 +41,6 @@ module soc_top (
    //pseudo_dcache dcache(clk, memwrite, dataaddr[9:2],
    //			writedata, readdata);
 
-   
 
    //
    //  text mode 80 * 25, character 8 * 16 pixels
