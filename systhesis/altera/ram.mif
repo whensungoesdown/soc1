@@ -50,12 +50,12 @@ CONTENT BEGIN
 	[11..17F] :     00000000;
 	
 	180  :   00010000;      -- data line 0
-	181  :   00010100;      -- data line 1
-	182  :   00010200;      -- data line 2
-	183  :   00010300;      -- data line 3
-	184  :   00010400;      -- data line 4
-	185  :   00010500;      -- data line 5
-	186  :   00010600;      -- data line 6
+	181  :   00010050;      -- data line 1
+	182  :   000100a0;      -- data line 2
+	183  :   000100f0;      -- data line 3
+	184  :   00010140;      -- data line 4
+	185  :   00010190;      -- data line 5
+	186  :   000101e0;      -- data line 6
 	187  :   00010700;      -- data line 7
 	188  :   00010800;      -- data line 8
 	189  :   00010900;      -- data line 9

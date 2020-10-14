@@ -40,7 +40,7 @@ module hvsync(
     begin
 	  // CounterXmaxed is the corner case for Counter = 0, the same for CounterYmaxed
         //inDisplayArea <= ((CounterX < 640) || CounterXmaxed) && ((CounterY < 480) || CounterYmaxed); // 640 * 480
-        inDisplayArea <= ((CounterX < 640) || CounterXmaxed) && ((CounterY < 400) || CounterYmaxed);   // 640 * 400
+        inDisplayArea <= ((CounterX < 640 - 1) || CounterXmaxed) && ((CounterY < 400 - 1) || CounterYmaxed);   // 640 * 400
     end
 
     assign vga_h_sync = ~vga_HS;
