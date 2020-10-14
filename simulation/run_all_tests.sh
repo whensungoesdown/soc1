@@ -52,3 +52,7 @@ cd ..
 cd test13_mret
 ./simulate.sh | grep simulation
 cd ..
+
+cd test14_excp_write_mepc_finish_in_time
+./simulate.sh | grep simulation
+cd ..

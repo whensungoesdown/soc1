@@ -25,6 +25,10 @@
 ../../soc/cpu6/ram.v 
 ../../soc/vga/vga640x480.v 
 ../../soc/vga/vgaram.v 
+../../soc/vga/text80x25.v
+../../soc/vga/hvsync.v
+../../soc/vga/vgatextram.v
+../../soc/vga/chrom.v
 ../../soc/soc_top.v
 ../../tb/test7_csrrs_soc_top_tb.v
 
