@@ -48,11 +48,11 @@ module soc_top (
    
    assign vgaram_en = dataaddr[16];
    
-   wire [10:0] vga_ramaddr_write;
-   wire [7:0] vga_data_write;
+   wire [8:0] vga_ramaddr_write;
+   wire [`CPU6_XLEN-1:0] vga_data_write;
    
-   assign vga_ramaddr_write = dataaddr[10:0];
-   assign vga_data_write = writedata[7:0];
+   assign vga_ramaddr_write = dataaddr[10:2];
+   assign vga_data_write = writedata;
    
    text80x25 textvga (
       .clk           (vga_clk       ),

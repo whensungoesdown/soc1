@@ -4,8 +4,8 @@ module text80x25 (
    output vga_vsync,
    output [2:0] vga_rgb,
 
-   input [10:0] write_address,
-   input [7:0] write_data,
+   input [8:0] write_address,
+   input [31:0] write_data,
    input write_en
    );
 
