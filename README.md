@@ -21,11 +21,62 @@ illegal instruction
 
 
 # Vectors
-Reset 0x00000000
-Trap  0x00000004
+Reset: 0x00000000
+
+Trap:  0x00000004
 
 ----------------------------
 
+# Memory Map
+
+```````````````
+    0x0  +------------+
+         |            |
+         |    RAM     |  64KB
+         |            |
+         |            |
+ 0xffff  |            |
+0x10000  +------------+
+         | Text RAM   |2KB
+0x107ff  +------------+   
+         |            |  64KB
+         | Reserved   |
+         | Graphic RAM| 
+0x20000  +------------+
+         |            |
+         |            |
+         |            |
+         |            |
+         |            |
+         .....
+```````````````
+
+# VGA Text Mode
+
+640x400 70Hz 
+
+80x25 screen
+
+2KB Vidoe RAM
+
+8x16 pixels per character
+
+127 ASCII characters
+
+![text mode](doc/image/textmode.jpg)
+
+
+# VGA Graphic Mode
+
+640x480 60Hz
+
+4 pixels as one big pixel
+
+64KB Video RAM
+
+8 colors
+
+![graphic mode](doc/image/graphicmode.jpg)
 
 # Directories
 
