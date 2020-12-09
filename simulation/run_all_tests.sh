@@ -56,3 +56,11 @@ cd ..
 cd test14_excp_write_mepc_finish_in_time
 ./simulate.sh | grep simulation
 cd ..
+
+cd test15_read_mtime
+./simulate.sh | grep simulation
+cd ..
+
+cd test16_read_write_mtimecmp
+./simulate.sh | grep simulation
+cd ..
