@@ -26,27 +26,27 @@ CONTENT BEGIN
 	1:		04000863;  --		beq x0 x0 80 <trap>
 
 -- <reset>:
-	2:		61002303;  --		lw x6 1552(x0)
-	3:		61c02283;  --		lw x5 1564(x0)
+	2:		61002303;  --		lw x6 1552(x0) ; 0x184 data line 4, load the line 4 address in textram 
+	3:		61c02283;  --		lw x5 1564(x0) ; 0x187  load Helloworld 
 	4:		00532023;  --		sw x5 0(x6)
 	5:		62002283;  --		lw x5 1568(x0)
 	6:		00532223;  --		sw x5 4(x6)
 	7:		62402283;  --		lw x5 1572(x0)
 	8:		00532423;  --		sw x5 8(x6)
 	9:		00000013;  --		nop
-	a:		61402303;  --		lw x6 1556(x0)
-	b:		62802383;  --		lw x7 1576(x0)
-	c:		0003a283;  --		lw x5 0(x7)
-	d:		62c02483;  --		lw x9 1580(x0)
-	e:		009282b3;  --		add x5 x5 x9
-	f:		00532023;  --		sw x5 0(x6)
+	a:		61402303;  --		lw x6 1556(x0) ; 0x185 textram line 5
+	b:		62802383;  --		lw x7 1576(x0) ; load mmio mtime address 0x20000
+	c:		0003a283;  --		lw x5 0(x7)    ; read mtime at address 0x20000
+	d:		62c02483;  --		lw x9 1580(x0) ; load data 0x30303030, 0x30 is ascii '0'
+	e:		009282b3;  --		add x5 x5 x9   ; add to the mtime, try to show it on screen
+	f:		00532023;  --		sw x5 0(x6)    ; write textram
 	10:		00000013;  --		nop
-	11:		0003a283;  --		lw x5 0(x7)
-	12:		009282b3;  --		add x5 x5 x9
-	13:		00532223;  --		sw x5 4(x6)
+	11:		0003a283;  --		lw x5 0(x7)    ; read mtime again
+	12:		009282b3;  --		add x5 x5 x9   ;
+	13:		00532223;  --		sw x5 4(x6)    ;
 	14:		00000013;  --		nop
 	15:		00000013;  --		nop
-	16:		00000013;  --		nop
+	16:		00000013;  --		nop            ; wait for pipeline to finish, so I can test on it
 	17:		00000013;  --		nop
 	18:		00000013;  --		nop
 

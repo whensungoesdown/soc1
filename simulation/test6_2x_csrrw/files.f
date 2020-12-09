@@ -29,6 +29,7 @@
 ../../soc/vga/hvsync.v
 ../../soc/vga/vgatextram.v
 ../../soc/vga/chrom.v
+../../soc/lic/lic.v
 ../../soc/soc_top.v
 ../../tb/test6_2x_csrrw_soc_top_tb.v
 

@@ -31,5 +31,5 @@
 ../../soc/vga/chrom.v
 ../../soc/lic/lic.v
 ../../soc/soc_top.v
-../../tb/test7_csrrs_soc_top_tb.v
+../../tb/test15_read_mtime_soc_top_tb.v
 

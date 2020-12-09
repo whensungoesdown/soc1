@@ -54,6 +54,10 @@ module soc_top_tb();
 	       $display("reg[3] %x", dut.core.dp.rf.regs[3].other_regs.rf_dffl.qout);
 	       $display("reg[4] %x", dut.core.dp.rf.regs[4].other_regs.rf_dffl.qout);
 	       $display("reg[5] %x", dut.core.dp.rf.regs[5].other_regs.rf_dffl.qout);
+	       $display("reg[6] %x", dut.core.dp.rf.regs[6].other_regs.rf_dffl.qout);
+	       $display("reg[7] %x", dut.core.dp.rf.regs[7].other_regs.rf_dffl.qout);
+	       $display("reg[8] %x", dut.core.dp.rf.regs[8].other_regs.rf_dffl.qout);
+	       $display("reg[9] %x", dut.core.dp.rf.regs[9].other_regs.rf_dffl.qout);
 	       $display("mepc %x", dut.core.dp.csr.epc_dfflr.qout);
 	       $display("dp.pcE %x", dut.core.dp.pcE);
 	       $display("dp.core.excp_illinstr %x", dut.core.excp_illinstr);
@@ -66,20 +70,38 @@ module soc_top_tb();
 	       //         $display("Simulation failed");
 	       //         $stop;
 	       //     end
-	       // end    
+	       // end     
 
-	       if (32'h0000003c === dut.pc) 	
+               // the mtime register do increase one on every clock cycle
+	       // the different from actually running on FPGA, the mtime value is 1 less
+	       // It could be because the inital value of mtime register on the first clock
+	       
+	       // Observered from this simulation, the value 0xe and 0x13 is chosen to
+	       // make the test.
+	       if (32'h00000040 === dut.pc) 	
 		  begin
-		     if (32'h0000000a === dut.core.dp.rf.regs[6].other_regs.rf_dffl.qout
-			 && 32'h0000001c === dut.core.dp.csr.epc_dfflr.qout
-			 && 32'h000000c8 === dut.core.dp.rf.regs[3].other_regs.rf_dffl.qout)
+		     if (32'h0000000e === dut.core.dp.rf.regs[5].other_regs.rf_dffl.qout)
 			begin
-			   $display("test14_excp_write_mepc_finish_in_time simulation SUCCESS");
+			   //$display("test15_read_mtime simulation SUCCESS");
+			   //$stop;
+			end
+		     else
+			begin
+			   $display("test15_read_mtime simulation FAILED");
+			   $stop;
+			end
+		  end
+
+	       if (32'h00000054 === dut.pc) 	
+		  begin
+		     if (32'h00000013 === dut.core.dp.rf.regs[5].other_regs.rf_dffl.qout)
+			begin
+			   $display("test15_read_mtime simulation SUCCESS");
 			   $stop;
 			end
 		     else
 			begin
-			   $display("test14_excp_write_mepc_finish_in_time simulation FAILED");
+			   $display("test15_read_mtime simulation FAILED");
 			   $stop;
 			end
 		  end
