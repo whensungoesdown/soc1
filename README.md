@@ -42,10 +42,13 @@ Trap:  0x00000004
          |            |  64KB
          | Reserved   |
          | Graphic RAM| 
-0x20000  +------------+
+0x20000  +------------+         0x20000  R    mtime
+         |            |         0x20004  RW   mtimecmp
+         |            |  64KB
+         | Device MMIO|
          |            |
-         |            |
-         |            |
+0x2ffff  |            |
+         +------------+
          |            |
          |            |
          .....
