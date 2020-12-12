@@ -26,10 +26,12 @@ module soc_top (
    wire [`CPU6_XLEN-1:0] dataaddr;
    wire [`CPU6_XLEN-1:0] writedata;
    wire memwrite;
+
+   wire lic_timer_interrupt;
    
    // instantiate processor and memories
    cpu6_core core(cpu_clk, !reset, pc, instr, memwrite,
-      dataaddr, writedata, readdata);
+      dataaddr, writedata, readdata, lic_timer_interrupt);
 
 
    wire vgaram_ena;
@@ -117,7 +119,7 @@ module soc_top (
    assign device_ena = (dataaddr[`CPU6_XLEN-1:17] == 15'b000000000000001);
 
    assign lic_mtime_ena = (dataaddr[`CPU6_XLEN-1:0] == 32'h00020000);
-   assign lic_mtimecmp_ena = (dataaddr[`CPU6_XLEN-1:0] == 32'h00020004);
+   assign lic_mtimecmp_ena = (dataaddr[`CPU6_XLEN-1:0] == 32'h00020008);
    assign lic_mtimecmp_write_ena = (lic_mtimecmp_ena & memwrite); 
    assign lic_mtimecmp_write = writedata;
 
@@ -132,7 +134,8 @@ module soc_top (
       .lic_mtime              (lic_mtime             ),
       .lic_mtimecmp_read      (lic_mtimecmp_read     ),
       .lic_mtimecmp_write     (lic_mtimecmp_write    ),
-      .lic_mtimecmp_write_ena (lic_mtimecmp_write_ena)
+      .lic_mtimecmp_write_ena (lic_mtimecmp_write_ena),
+      .lic_timer_interrupt    (lic_timer_interrupt   )
       );
 
 endmodule // top

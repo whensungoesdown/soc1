@@ -1,17 +1,19 @@
 `include "defines.v"
 
 module cpu6_core (
-		  input  clk,
-		  input  reset,
-   
-		  output [`CPU6_XLEN-1:0] pcF,
-		  input  [`CPU6_XLEN-1:0] instr,
-                  // write back to memory
-		  output memwriteM,
-		  output [`CPU6_XLEN-1:0] dataaddr,
-		  output [`CPU6_XLEN-1:0] writedata,
-                  // fetch data
-		  input  [`CPU6_XLEN-1:0] readdata
+   input  clk,
+   input  reset,
+
+   output [`CPU6_XLEN-1:0] pcF,
+   input  [`CPU6_XLEN-1:0] instr,
+   // write back to memory
+   output memwriteM,
+   output [`CPU6_XLEN-1:0] dataaddr,
+   output [`CPU6_XLEN-1:0] writedata,
+   // fetch data
+   input  [`CPU6_XLEN-1:0] readdata,
+
+   input  lic_timer_interrupt
 );
 
    wire memwrite;
@@ -75,7 +77,10 @@ module cpu6_core (
       .clk              (clk     ),
       .reset            (reset   ),
       .excp_pc          (excp_pc ),
+      
       .excp_illinstr        (excp_illinstr    ),
+      .lic_timer_interrupt  (lic_timer_interrupt),
+      
       .excp_flush_pc_ena    (excp_flush_pc_ena),
       .excp_flush_pc        (excp_flush_pc    ),
       .excp_mepc            (excp_mepc        ),

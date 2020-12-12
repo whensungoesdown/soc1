@@ -82,7 +82,7 @@ CONTENT BEGIN
 	187  :   6c6c6548;  -- "Hello World!"
 	188  :   6f57206f;
 	189  :   21646c72; 
-	18a  :   00020004;  -- mmio mtimecmp
+	18a  :   00020008;  -- mmio mtimecmp
 	18b  :   30303030;  -- 0x30 ascii '0' 
 
 	[18c..7FF]  :   00000000;
