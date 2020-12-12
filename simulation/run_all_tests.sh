@@ -64,3 +64,7 @@ cd ..
 cd test16_read_write_mtimecmp
 ./simulate.sh | grep simulation
 cd ..
+
+cd test17_read_write_mtime
+./simulate.sh | grep simulation
+cd ..

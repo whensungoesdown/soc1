@@ -108,7 +108,9 @@ module soc_top (
    
 
 
-   wire [`CPU6_XLEN-1:0] lic_mtime;
+   wire [`CPU6_XLEN-1:0] lic_mtime_read;
+   wire [`CPU6_XLEN-1:0] lic_mtime_write;
+   wire lic_mtime_write_ena;
    wire [`CPU6_XLEN-1:0] lic_mtimecmp_read;
    wire [`CPU6_XLEN-1:0] lic_mtimecmp_write;
    wire lic_mtimecmp_write_ena;
@@ -119,19 +121,24 @@ module soc_top (
    assign device_ena = (dataaddr[`CPU6_XLEN-1:17] == 15'b000000000000001);
 
    assign lic_mtime_ena = (dataaddr[`CPU6_XLEN-1:0] == 32'h00020000);
+   assign lic_mtime_write = writedata;
+   assign lic_mtime_write_ena = (lic_mtime_ena & memwrite);
+   
    assign lic_mtimecmp_ena = (dataaddr[`CPU6_XLEN-1:0] == 32'h00020008);
-   assign lic_mtimecmp_write_ena = (lic_mtimecmp_ena & memwrite); 
    assign lic_mtimecmp_write = writedata;
+   assign lic_mtimecmp_write_ena = (lic_mtimecmp_ena & memwrite); 
 
-   assign readdata = lic_mtime_ena      ? lic_mtime           :
+   assign readdata = lic_mtime_ena      ? lic_mtime_read     :
 		     lic_mtimecmp_ena   ? lic_mtimecmp_read   :
                                    // textram write only, no data read out
 		     ram_readdata; // default
 
    lic u_lic (
-      .clk                    (cpu_clk         ),
+      .clk                    (cpu_clk     ),
       .reset                  (!reset      ),
-      .lic_mtime              (lic_mtime             ),
+      .lic_mtime_read         (lic_mtime_read        ),
+      .lic_mtime_write        (lic_mtime_write       ),
+      .lic_mtime_write_ena    (lic_mtime_write_ena   ),
       .lic_mtimecmp_read      (lic_mtimecmp_read     ),
       .lic_mtimecmp_write     (lic_mtimecmp_write    ),
       .lic_mtimecmp_write_ena (lic_mtimecmp_write_ena),
