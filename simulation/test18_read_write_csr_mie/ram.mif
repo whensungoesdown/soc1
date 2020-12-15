@@ -1,0 +1,101 @@
+-- Copyright (C) 1991-2013 Altera Corporation
+-- Your use of Altera Corporation's design tools, logic functions 
+-- and other software and tools, and its AMPP partner logic 
+-- functions, and any output files from any of the foregoing 
+-- (including device programming or simulation files), and any 
+-- associated documentation or information are expressly subject 
+-- to the terms and conditions of the Altera Program License 
+-- Subscription Agreement, Altera MegaCore Function License 
+-- Agreement, or other applicable license agreement, including, 
+-- without limitation, that your use is for the sole purpose of 
+-- programming logic devices manufactured by Altera and sold by 
+-- Altera or its authorized distributors.  Please refer to the 
+-- applicable agreement for further details.
+
+-- Quartus II generated Memory Initialization File (.mif)
+
+WIDTH=32;
+DEPTH=2048;
+
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+
+CONTENT BEGIN
+
+	0:		00000463;  --		beq x0 x0 8 <reset>
+	1:		04000863;  --		beq x0 x0 80 <trap>
+
+-- <reset>:
+	2:		61002303;  --		lw x6 1552(x0) ; 0x184 data line 4, load the line 4 address in textram 
+	3:		61c02283;  --		lw x5 1564(x0) ; 0x187  load Helloworld 
+	4:		00532023;  --		sw x5 0(x6)
+	5:		62002283;  --		lw x5 1568(x0)
+	6:		00532223;  --		sw x5 4(x6)
+	7:		62402283;  --		lw x5 1572(x0)
+	8:		00532423;  --		sw x5 8(x6)
+	9:		00000013;  --		nop
+	a:		61402303;  --		lw x6 1556(x0) ; 0x185 textram line 5
+	b:		62802383;  --		lw x7 1576(x0) ; load mmio mtime address 0x20000
+	c:		0003a283;  --		lw x5 0(x7)    ; read mtime at address 0x20000
+	d:		62c02483;  --		lw x9 1580(x0) ; load data 0x30303030, 0x30 is ascii '0'
+	e:		009282b3;  --		add x5 x5 x9   ; add to the mtime value, try to show it on screen
+	f:		00532023;  --		sw x5 0(x6)    ; write textram
+	10:		00000013;  --		nop
+	11:		00000013;  --		nop
+	12:		00500293;  --		addi x5 x0 5   ; write 0x5 to mtime
+	13:		0053a023;  --		sw x5 0(x7)
+	14:		0003a283;  --		lw x5 0(x7)    ; read mtime again
+	15:		009282b3;  --		add x5 x5 x9   ;
+	16:		00532223;  --		sw x5 4(x6)    ;
+	17:		00000013;  --		nop
+	18:		00000013;  --		nop
+	19:		304021f3;  --           csrrs x3 mepc x0 (csrr rd mie)
+	1a:		0ff00193;  --		addi x3 x0 255
+	1b:		30419073;  --		csrrw x0 mepc x3 (csrw mie rs)
+	1c:		304021f3;  --           csrrs x3 mepc x0 (csrr rd mie)
+	1d:		00000013;  --		nop
+	1e:		00000013;  --		nop
+	1f:		00000013;  --		nop
+	20:		00000013;  --		nop
+	21:		00000013;  --		nop
+	22:		00000013;  --		nop
+	23:		00000013;  --		nop
+	24:		00000013;  --		nop            ; wait for pipeline to finish, so I can test on it
+	25:		00000013;  --		nop
+	26:		00000013;  --		nop
+
+-- <loop_in_reset>:
+	27:		00000063;  --		beq x0 x0 0 <loop_in_reset>
+
+-- <trap>:
+	28:		61402303;  --		lw x6 1556(x0)
+	29:		00400293;  --		addi x5 x0 4
+	2a:		00532023;  --		sw x5 0(x6)
+	2b:		00000013;  --		nop
+	2c:		00000013;  --		nop
+	2d:		00000013;  --		nop
+
+-- <loop_in_trap>:
+	2e:		00000063;  --		beq x0 x0 0 <loop_in_trap>
+
+	[2f..17F] :     00000000;
+
+-- <data>:
+
+	180  :   00010000;      -- data line 0
+	181  :   00010050;      -- data line 1
+	182  :   000100a0;      -- data line 2
+	183  :   000100f0;      -- data line 3
+	184  :   00010140;      -- data line 4
+	185  :   00010190;      -- data line 5
+	186  :   000101e0;      -- data line 6
+
+	187  :   6c6c6548;  -- "Hello World!"
+	188  :   6f57206f;
+	189  :   21646c72; 
+	18a  :   00020000;  -- mmio mtime
+	18b  :   30303030;  -- 0x30 ascii '0' 
+
+	[18c..7FF]  :   00000000;
+
+END;

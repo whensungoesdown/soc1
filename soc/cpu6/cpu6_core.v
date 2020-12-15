@@ -244,6 +244,8 @@ module cpu6_core (
       .dataaddrM    (dataaddr     ),
       .writedataM   (writedata    ),
       .readdataM    (readdata     ),
-      .memwriteM    (memwriteM    )
+      .memwriteM    (memwriteM    ),
+
+      .tmr_irq_r    (lic_timer_interrupt)
       );
 endmodule   
