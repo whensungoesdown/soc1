@@ -72,3 +72,7 @@ cd ..
 cd test18_read_write_csr_mie
 ./clean.sh
 cd ..
+
+cd test19_timer
+./clean.sh
+cd ..

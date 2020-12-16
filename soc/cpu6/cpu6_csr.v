@@ -11,6 +11,7 @@ module cpu6_csr (
    input  [`CPU6_XLEN-1:0] csr_write_dat,
 
    input  tmr_irq_r,
+   output csr_mtie_r,
 
    input  [`CPU6_XLEN-1:0] excp_mepc,
    input  excp_mepc_ena,
@@ -57,8 +58,8 @@ module cpu6_csr (
    assign mip_r[31:8] = 24'b0;
    assign mip_r[7] = mtip_r;
    assign mip_r[6:0] = 7'b0;
-   wire [`CPU6_XLEN-1:0] csr_mip = mip_r;
    
+   wire [`CPU6_XLEN-1:0] csr_mip = mip_r;
 
    
    //
@@ -69,6 +70,7 @@ module cpu6_csr (
    wire wr_mie = sel_mie & csr_wr_en;
 
    wire mtie_r; // timer enable
+   
    wire mtie_nxt = csr_write_dat[7];
    cpu6_dfflr #(1) mtie_dfflr(wr_mie, mtie_nxt, mtie_r, clk, reset);
    wire [`CPU6_XLEN-1:0] mie_r;
@@ -77,8 +79,10 @@ module cpu6_csr (
    assign mie_r[7] = mtie_r;
    assign mie_r[6:0] = 7'b0;
 
-   wire [`CPU6_XLEN-1:0] csr_mie = mie_r;
+   wire [`CPU6_XLEN-1:0] csr_mie;
 
+   assign csr_mie = mie_r;
+   assign csr_mtie_r = mtie_r;
    
        
 

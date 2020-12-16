@@ -30,9 +30,21 @@ module soc_top (
    wire lic_timer_interrupt;
    
    // instantiate processor and memories
-   cpu6_core core(cpu_clk, !reset, pc, instr, memwrite,
-      dataaddr, writedata, readdata, lic_timer_interrupt);
+   //cpu6_core core(cpu_clk, !reset, pc, instr, memwrite,
+   //   dataaddr, writedata, readdata, lic_timer_interrupt);
 
+   cpu6_core core (
+      .clk           (cpu_clk       ),
+      .reset         (!reset        ),
+      .pcF           (pc            ),
+      .instr         (instr         ),
+      .memwriteM     (memwrite      ),
+      .dataaddr      (dataaddr      ),
+      .writedata     (writedata     ),
+      .readdata      (readdata      ),
+      
+      .tmr_irq_r     (lic_timer_interrupt)
+      );
 
    wire vgaram_ena;
    wire device_ena;

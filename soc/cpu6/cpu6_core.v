@@ -13,7 +13,7 @@ module cpu6_core (
    // fetch data
    input  [`CPU6_XLEN-1:0] readdata,
 
-   input  lic_timer_interrupt
+   input  tmr_irq_r
 );
 
    wire memwrite;
@@ -72,6 +72,8 @@ module cpu6_core (
    
    wire [`CPU6_XLEN-1:0] csr_mepc;
 
+   wire csr_mtie_r;
+
    
    cpu6_excp excp(
       .clk              (clk     ),
@@ -79,7 +81,8 @@ module cpu6_core (
       .excp_pc          (excp_pc ),
       
       .excp_illinstr        (excp_illinstr    ),
-      .lic_timer_interrupt  (lic_timer_interrupt),
+      .tmr_irq_r            (tmr_irq_r        ),
+      .csr_mtie_r           (csr_mtie_r       ),
       
       .excp_flush_pc_ena    (excp_flush_pc_ena),
       .excp_flush_pc        (excp_flush_pc    ),
@@ -96,7 +99,8 @@ module cpu6_core (
 
    assign empty_pipeline_stallF = empty_pipeline_req & (~empty_pipeline_ackW);
    
-   assign stallF = hazard_stallF | empty_pipeline_stallF;
+   //assign stallF = hazard_stallF | empty_pipeline_stallF;
+   assign stallF = (~excp_flush_pc_ena & (hazard_stallF | empty_pipeline_stallF));
    
    cpu6_dfflr#(`CPU6_XLEN) pcreg(!stallF, pcnextF, pcF, ~clk, reset);
    
@@ -123,7 +127,6 @@ module cpu6_core (
 		    excp_flush_pc_ena ? excp_flush_pc :
 		    pcsrcE            ? pcnextE       :
 		    pcplus4F;
-
 
    assign empty_pipeline_req = mret | excp_flush_pc_ena; // (excp_active);
 
@@ -246,6 +249,7 @@ module cpu6_core (
       .readdataM    (readdata     ),
       .memwriteM    (memwriteM    ),
 
-      .tmr_irq_r    (lic_timer_interrupt)
+      .tmr_irq_r    (tmr_irq_r    ),
+      .csr_mtie_r   (csr_mtie_r   )
       );
 endmodule   

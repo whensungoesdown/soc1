@@ -35,7 +35,8 @@ module cpu6_datapath (
 		      input  [`CPU6_XLEN-1:0] readdataM,
                       output memwriteM,
 
-                      input tmr_irq_r
+                      input  tmr_irq_r,
+                      output csr_mtie_r
 		      );
 
    wire [`CPU6_XLEN-1:0] aluoutE;
@@ -299,6 +300,7 @@ module cpu6_datapath (
       .csr_write_dat (csr_write_datM),
 
       .tmr_irq_r     (tmr_irq_r     ),
+      .csr_mtie_r    (csr_mtie_r    ),
       
       .excp_mepc     (excp_mepc     ),
       .excp_mepc_ena (excp_mepc_ena ),
@@ -306,7 +308,7 @@ module cpu6_datapath (
       .csr_mtvec     (csr_mtvec     ),
       .csr_mepc      (csr_mepc      )
       );
-
+   
    // 
    // csrM, csr_wcsM, csr_read_datM,
    // according to csrM, csr_wcsM, detemine what should put into rdM
