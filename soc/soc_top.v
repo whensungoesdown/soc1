@@ -191,8 +191,8 @@ module soc_top (
       );
    
    uart u_uart (
-      .clk          (clk          ),
-      .rst          (!reset        ),
+      .clk          (cpu_clk      ),
+      .rst          (!reset       ),
       .tx_data      (tx_data      ),
       .tx_data_valid(tx_data_valid),
       .tx_data_ack  (tx_data_ack  ),

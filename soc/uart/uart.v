@@ -159,7 +159,7 @@ module uart (clk,rst,
    tx_data,tx_data_valid,tx_data_ack,txd,
    rx_data,rx_data_fresh,rxd);
 
-   parameter CLK_HZ = 50_000_000;
+   parameter CLK_HZ = 25_000_000;
    parameter BAUD = 115200;
    parameter BAUD_DIVISOR = CLK_HZ / BAUD;
 
