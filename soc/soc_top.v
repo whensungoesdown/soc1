@@ -6,7 +6,8 @@ module soc_top (
    output [2:0] vga_rgb,
    output vga_hsync,
    output vga_vsync,
-   input  uart_rxd
+   input  uart_rxd,
+   output uart_txd
    );
    
    reg cpu_clk;
@@ -165,21 +166,16 @@ module soc_top (
 
    wire [7:0] rx_data;
    wire rx_data_fresh;
-   wire uart_rxd_tmp;
    wire [7:0] uart_rx;
 
    wire [7:0] tx_data;
    wire tx_data_valid;
    wire tx_data_ack;
-   wire uart_txd;
 
    assign uart_readdata = {23'h0, uart_rx};
-   //assign uart_readdata = {32'h00000035};
 
-   assign tx_data = 8'h36;
-   assign tx_data_valid = 1'b1;
-
-   assign uart_rxd_tmp = uart_txd;
+   assign tx_data = writedata[7:0];
+   assign tx_data_valid = (uart_ena & memwrite);
 
    
    cpu6_dfflr#(8) uart_rx_reg(

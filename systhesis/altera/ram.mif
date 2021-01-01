@@ -37,30 +37,31 @@ CONTENT BEGIN
 	a:		61402303;  --		lw x6 1556(x0) ; 0x185 textram line 5
 
 -- <read_key>:	
-	b:		62802383;  --		lw x7 1576(x0) ; load mmio mtime address 0x21000
-	c:		0003a283;  --		lw x5 0(x7)    ; read mtime at address 0x21000
+	b:		62802383;  --		lw x7 1576(x0) ; load uartdr address 0x21000
+	c:		0003a283;  --		lw x5 0(x7)    ; read uartdr
 	d:		00532023;  --		sw x5 0(x6)    ; write textram
-	e:		fe000ae3;  --		beq x0 x0 -12 <read_key>
-	f:		00000013;  --		nop
+	e:		0053a023;  --		sw x5 0(x7)    ; write uartdr, echo back
+	f:		fe000ae3;  --		beq x0 x0 -16 <read_key>
 	10:		00000013;  --		nop
 	11:		00000013;  --		nop
 	12:		00000013;  --		nop
+	13:		00000013;  --		nop
 
 -- <loop_in_reset>:
-	13:		00000063;  --		beq x0 x0 0 <loop_in_reset>
+	14:		00000063;  --		beq x0 x0 0 <loop_in_reset>
 
 -- <trap>:
-	14:		61802303;  --		lw x6 1560(x0)                  ; at textram line 6
-	15:		63402283;  --		lw x5 1588(x0)                  ; show "****"
-	16:		00532023;  --		sw x5 0(x6)
-	17:		00830313;  --		addi x6 x6 5
-	18:		60602c23;  --		sw x6 1560(x0)
-	19:		30200073;  --           mret
+	15:		61802303;  --		lw x6 1560(x0)                  ; at textram line 6
+	16:		63402283;  --		lw x5 1588(x0)                  ; show "****"
+	17:		00532023;  --		sw x5 0(x6)
+	18:		00830313;  --		addi x6 x6 5
+	19:		60602c23;  --		sw x6 1560(x0)
+	1a:		30200073;  --           mret
 
 -- <loop_in_trap>:
-	1a:		00000063;  --		beq x0 x0 0 <loop_in_trap>
+	1b:		00000063;  --		beq x0 x0 0 <loop_in_trap>
 
-	[1b..17F] :     00000000;
+	[1c..17F] :     00000000;
 
 -- <data>:
 
