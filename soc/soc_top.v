@@ -5,7 +5,8 @@ module soc_top (
    input  reset,
    output [2:0] vga_rgb,
    output vga_hsync,
-   output vga_vsync
+   output vga_vsync,
+   input  uart_rxd
    );
    
    reg cpu_clk;
@@ -140,10 +141,6 @@ module soc_top (
    assign lic_mtimecmp_write = writedata;
    assign lic_mtimecmp_write_ena = (lic_mtimecmp_ena & memwrite); 
 
-   assign readdata = lic_mtime_ena      ? lic_mtime_read     :
-		     lic_mtimecmp_ena   ? lic_mtimecmp_read   :
-                                   // textram write only, no data read out
-		     ram_readdata; // default
 
    lic u_lic (
       .clk                    (cpu_clk     ),
@@ -157,4 +154,59 @@ module soc_top (
       .lic_timer_interrupt    (lic_timer_interrupt   )
       );
 
+
+
+   //
+   // uart
+   //
+
+   wire uart_ena = (dataaddr[`CPU6_XLEN-1:0] == 32'h00021000);
+   wire [`CPU6_XLEN-1:0] uart_readdata;
+
+   wire [7:0] rx_data;
+   wire rx_data_fresh;
+   wire uart_rxd_tmp;
+   wire [7:0] uart_rx;
+
+   wire [7:0] tx_data;
+   wire tx_data_valid;
+   wire tx_data_ack;
+   wire uart_txd;
+
+   assign uart_readdata = {23'h0, uart_rx};
+   //assign uart_readdata = {32'h00000035};
+
+   assign tx_data = 8'h36;
+   assign tx_data_valid = 1'b1;
+
+   assign uart_rxd_tmp = uart_txd;
+
+   
+   cpu6_dfflr#(8) uart_rx_reg(
+      .lden       (rx_data_fresh   ),
+      .dnxt       (rx_data         ),
+      .qout       (uart_rx         ),
+      .clk        (clk             ),
+      .rst        (!reset           )
+      );
+   
+   uart u_uart (
+      .clk          (clk          ),
+      .rst          (!reset        ),
+      .tx_data      (tx_data      ),
+      .tx_data_valid(tx_data_valid),
+      .tx_data_ack  (tx_data_ack  ),
+      .txd          (uart_txd     ),
+      .rx_data      (rx_data      ),
+      .rx_data_fresh(rx_data_fresh),
+      .rxd          (uart_rxd     )  // uty: test
+      );
+      
+
+
+   assign readdata = lic_mtime_ena      ? lic_mtime_read      :
+		     lic_mtimecmp_ena   ? lic_mtimecmp_read   :
+		     uart_ena           ? uart_readdata       :
+                                   // textram write only, no data read out
+		     ram_readdata; // default
 endmodule // top

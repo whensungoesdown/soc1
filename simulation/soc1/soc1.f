@@ -30,6 +30,7 @@
 ../../soc/vga/vgatextram.v
 ../../soc/vga/chrom.v
 ../../soc/lic/lic.v
+../../soc/uart/uart.v
 ../../soc/soc_top.v
 ../../tb/soc_top_tb.v
 
