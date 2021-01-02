@@ -13,7 +13,8 @@ module cpu6_core (
    // fetch data
    input  [`CPU6_XLEN-1:0] readdata,
 
-   input  tmr_irq_r
+   input  tmr_irq_r,
+   input  ext_irq_r
 );
 
    wire memwrite;
@@ -82,6 +83,7 @@ module cpu6_core (
       
       .excp_illinstr        (excp_illinstr    ),
       .tmr_irq_r            (tmr_irq_r        ),
+      .ext_irq_r            (ext_irq_r        ),
       .csr_mtie_r           (csr_mtie_r       ),
       
       .excp_flush_pc_ena    (excp_flush_pc_ena),

@@ -45,7 +45,8 @@ module soc_top (
       .writedata     (writedata     ),
       .readdata      (readdata      ),
       
-      .tmr_irq_r     (lic_timer_interrupt)
+      .tmr_irq_r     (lic_timer_interrupt),
+      .ext_irq_r     (rx_data_fresh )
       );
 
    wire vgaram_ena;

@@ -6,7 +6,9 @@ module cpu6_excp (
    input  [`CPU6_XLEN-1:0] excp_pc,
 
    input  excp_illinstr,
-   input  tmr_irq_r,
+   input  tmr_irq_r, // bug: tmr_irq_r ext_irq_r are not _r, change names
+   input  ext_irq_r,
+   
    input  csr_mtie_r,
 
    output excp_flush_pc_ena,
@@ -24,6 +26,7 @@ module cpu6_excp (
 
    wire irq_req_raw = (
 	               (tmr_irq_r & csr_mtie_r)
+                      |(ext_irq_r)
 	              //| (ext_irq_r & csr_meie_r)
 	);
    
