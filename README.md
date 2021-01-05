@@ -1,12 +1,18 @@
 # soc1 implementing...
 
-Currently, soc1 only has cpu6 and vga controller.
+Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
 
-RISC-V RV32I(lw sw addi add sub beq bne jalr) four-stage pipeline. IFID, EX, MEM, WB.
+
+Cpu6 is a RISC-V core that has four-stage pipeline. IFID, EX, MEM, WB.
+
+It is not fully implemented yet.
+
+RV32I(lw sw addi add sub beq bne jalr) 
 
 csr registers mepc mtvec mie mip
 
 csr instructions csrrw csrrs csrrc csrrwi csrrsi csrrci
+
 
 No cache, 2-port RAM. 64KB
 
