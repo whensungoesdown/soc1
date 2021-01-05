@@ -118,4 +118,4 @@ see doc/test*.md for details
 
 # Game
 Tic-Tac-Toe
-![tic-tac-toe](image/timer_test.jpg)
+![tic-tac-toe](doc/image/tic-tac-toe.jpg)
