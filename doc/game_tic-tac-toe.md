@@ -311,4 +311,4 @@ nop            # mret 30200073
 
 screen shot
 
-![test19_timer](image/tic-tac-toe.jpg)
+![tic-tac-toe](image/tic-tac-toe.jpg)
