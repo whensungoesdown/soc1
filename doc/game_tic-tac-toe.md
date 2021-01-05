@@ -13,7 +13,7 @@ On x86, when an interrupt happens, the processor hardware stores CS: EIP,  SS: E
 When interrupt reenters, the register used in the interrupt handler corrupts. That is why I set the baud-rate at 9600 instead of 115200 to give the handler more time to finish. But still, when pressing the key too fast, the game may freeze.
 
 
-assembly code
+### Assembly code ###
 ````````
 beq x0 x0 reset
 beq x0 x0 trap
@@ -309,6 +309,6 @@ nop            # mret 30200073
 
 ````````
 
-screen shot
+### Screenshot ###
 
 ![tic-tac-toe](image/tic-tac-toe.jpg)
