@@ -28,7 +28,9 @@ illegal instruction
 
 # Interrupts
 
-UART interrupt, no mcause value yet
+Timer interrupt
+
+UART interrupt
 
 
 # Vectors
