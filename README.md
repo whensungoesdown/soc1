@@ -4,7 +4,7 @@ Currently, soc1 only has cpu6 and vga controller.
 
 RISC-V RV32I(lw sw addi add sub beq bne jalr) four-stage pipeline. IFID, EX, MEM, WB.
 
-csr registers mepc mtvec
+csr registers mepc mtvec mie mip
 
 csr instructions csrrw csrrs csrrc csrrwi csrrsi csrrci
 
@@ -12,12 +12,17 @@ No cache, 2-port RAM. 64KB
 
 Video RAM 64KB  640 x 480  25MHz
 
+Timer0  (mtime mtimecmp)
+
+UART0   (9600 8n1)
 
 # Exception 
 illegal instruction
 
 
 # Interrupts
+
+UART interrupt, no mcause value yet
 
 
 # Vectors
@@ -45,7 +50,7 @@ Trap:  0x00000004
 0x20000  +------------+         0x20000  RW   mtime      (64-bit register, now only use low 32-bit)
          |            |         0x20008  RW   mtimecmp   (64-bit register, now only use low 32-bit)
          |            |  64KB
-         | Device MMIO|
+         | Device MMIO|         0x21000  RW   uartdr     (32-bit register, low 8 bits are used to transmit and receive data)
          |            |
 0x2ffff  |            |
          +------------+
@@ -109,3 +114,8 @@ cd simulation
 test2_addi_cpu_clk_initial_1 is supposed to fail. Others are not.
 
 see doc/test*.md for details
+
+
+# Game
+Tic-Tac-Toe
+![tic-tac-toe](image/timer_test.jpg)
