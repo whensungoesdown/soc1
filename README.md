@@ -1,4 +1,4 @@
-# soc1 implementing...
+# SOC1 implementing...
 
 Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
 
@@ -22,24 +22,24 @@ Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
 
 * UART0   (9600 8n1)
 
-# Exceptions
+## Exceptions
 * illegal instruction
 
 
-# Interrupts
+## Interrupts
 
 * Timer interrupt
 
 * UART interrupt
 
 
-# Vectors
+## Vectors
 * Reset: 0x00000000
 
 * Trap:  0x00000004
 
 
-# Memory Map
+## Memory Map
 
 ```````````````
     0x0  +------------+
@@ -66,7 +66,7 @@ Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
          .....
 ```````````````
 
-# VGA Text Mode
+## VGA Text Mode
 
 * 640x400 70Hz 
 
@@ -81,7 +81,7 @@ Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
 ![text mode](doc/image/textmode.jpg)
 
 
-# VGA Graphic Mode
+## VGA Graphic Mode
 
 * 640x480 60Hz
 
@@ -93,7 +93,7 @@ Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
 
 ![graphic mode](doc/image/graphicmode.jpg)
 
-# Directories
+## Directory Structure
 
 `````````````````
 soc1
@@ -105,14 +105,14 @@ soc1
 └── tb			# Testbench files for simulation test cases
 `````````````````
 
-# Compile
+## Compile
 `````````````
 cd systhesis/altera
 make
 `````````````
  (or make map)
 
-# Run simulation tests
+## Run simulation tests
 ```````````````
 cd simulation
 ./run_all_test.sh
@@ -123,6 +123,6 @@ test2_addi_cpu_clk_initial_1 is supposed to fail. Others are not.
 See doc/test*.md for details
 
 
-# Game
-Tic-Tac-Toe
+## Game
+### Tic-Tac-Toe
 ![tic-tac-toe](doc/image/tic-tac-toe.jpg)
