@@ -38,7 +38,6 @@ illegal instruction
 
 * Trap:  0x00000004
 
-----------------------------
 
 # Memory Map
 
