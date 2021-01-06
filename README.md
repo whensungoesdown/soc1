@@ -3,24 +3,24 @@
 Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
 
 
-Cpu6 is a RISC-V core that has four-stage pipeline. IFID, EX, MEM, WB.
+* Cpu6 is a RISC-V core that has four-stage pipeline. IFID, EX, MEM, WB.
 
-It is not fully implemented yet.
+    * RV32I: lw sw addi add sub beq bne jalr ... implementing 
+    
+    * CSR instructions:  csrrw csrrs csrrc csrrwi csrrsi csrrci
 
-RV32I(lw sw addi add sub beq bne jalr) 
+    * CSR registers: mepc mtvec mie mip
 
-csr registers mepc mtvec mie mip
-
-csr instructions csrrw csrrs csrrc csrrwi csrrsi csrrci
+    
 
 
-No cache, 2-port RAM. 64KB
+* No cache, 2-port RAM. 64KB
 
-Video RAM 64KB  640 x 480  25MHz
+* Video RAM 64KB  640 x 480  25MHz
 
-Timer0  (mtime mtimecmp)
+* Timer0  (mtime mtimecmp)
 
-UART0   (9600 8n1)
+* UART0   (9600 8n1)
 
 # Exception 
 illegal instruction
@@ -28,15 +28,15 @@ illegal instruction
 
 # Interrupts
 
-Timer interrupt
+* Timer interrupt
 
-UART interrupt
+* UART interrupt
 
 
 # Vectors
-Reset: 0x00000000
+* Reset: 0x00000000
 
-Trap:  0x00000004
+* Trap:  0x00000004
 
 ----------------------------
 
@@ -69,15 +69,15 @@ Trap:  0x00000004
 
 # VGA Text Mode
 
-640x400 70Hz 
+* 640x400 70Hz 
 
-80x25 screen
+* 80x25 screen
 
-2KB Vidoe RAM
+* 2KB Vidoe RAM
 
-8x16 pixels per character
+* 8x16 pixels per character
 
-127 ASCII characters
+* 127 ASCII characters
 
 ![text mode](doc/image/textmode.jpg)
 
