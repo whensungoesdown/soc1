@@ -14,16 +14,16 @@ Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
     
 
 
-* No cache, 2-port RAM. 64KB
+* No cache, 2-port SRAM 64KB
 
-* Video RAM 64KB  640 x 480  25MHz
+* Video RAM 64KB, 640 x 480, 25MHz
 
 * Timer0  (mtime mtimecmp)
 
 * UART0   (9600 8n1)
 
-# Exception 
-illegal instruction
+# Exceptions
+* illegal instruction
 
 
 # Interrupts
@@ -83,13 +83,13 @@ illegal instruction
 
 # VGA Graphic Mode
 
-640x480 60Hz
+* 640x480 60Hz
 
-4 pixels as one big pixel
+* 4 pixels as one big pixel
 
-64KB Video RAM
+* 64KB Video RAM
 
-8 colors
+* 8 colors
 
 ![graphic mode](doc/image/graphicmode.jpg)
 
@@ -120,7 +120,7 @@ cd simulation
 
 test2_addi_cpu_clk_initial_1 is supposed to fail. Others are not.
 
-see doc/test*.md for details
+See doc/test*.md for details
 
 
 # Game
