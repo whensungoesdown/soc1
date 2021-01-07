@@ -185,8 +185,8 @@ module soc_top (
       .lden       (rx_data_fresh   ),
       .dnxt       (rx_data         ),
       .qout       (uart_rx         ),
-      .clk        (clk             ),
-      .rst        (!reset           )
+      .clk        (cpu_clk         ),
+      .rst        (!reset          )
       );
    
    uart u_uart (
