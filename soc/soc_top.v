@@ -30,6 +30,7 @@ module soc_top (
    wire memwrite;
 
    wire lic_timer_interrupt;
+   wire ext_irq_r;
    
    // instantiate processor and memories
    //cpu6_core core(cpu_clk, !reset, pc, instr, memwrite,
@@ -46,7 +47,7 @@ module soc_top (
       .readdata      (readdata      ),
       
       .tmr_irq_r     (lic_timer_interrupt),
-      .ext_irq_r     (rx_data_fresh )
+      .ext_irq_r     (ext_irq_r     )
       );
 
    wire vgaram_ena;
@@ -178,6 +179,7 @@ module soc_top (
    assign tx_data = writedata[7:0];
    assign tx_data_valid = (uart_ena & memwrite);
 
+   assign ext_irq_r = rx_data_fresh;
    
    cpu6_dfflr#(8) uart_rx_reg(
       .lden       (rx_data_fresh   ),
