@@ -49,10 +49,10 @@ CONTENT BEGIN
 	16:		00532223;  --		sw x5 4(x6)    ;
 	17:		00000013;  --		nop
 	18:		00000013;  --		nop
-	19:		304021f3;  --           csrrs x3 mepc x0 (csrr rd mie)
+	19:		304021f3;  --           csrrs x3 mmie x0 (csrr rd mie)
 	1a:		0ff00193;  --		addi x3 x0 255
-	1b:		30419073;  --		csrrw x0 mepc x3 (csrw mie rs)
-	1c:		304021f3;  --           csrrs x3 mepc x0 (csrr rd mie)
+	1b:		30419073;  --		csrrw x0 mie x3 (csrw mie rs)
+	1c:		304021f3;  --           csrrs x3 mie x0 (csrr rd mie)
 	1d:		00000013;  --		nop
 	1e:		00000013;  --		nop
 	1f:		00000013;  --		nop
