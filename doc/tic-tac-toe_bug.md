@@ -38,7 +38,7 @@ the pipeline. It will be actually executed when mret return to it.
 
 
 
-## test21_add1to4_interrupt
+### test21_add1to4_interrupt
 ````````````
 CONTENT BEGIN
 
@@ -72,3 +72,56 @@ CONTENT BEGIN
 
 END;
 ````````````
+
+In the test bench, interrupt is added.
+
+### test21_add1to4_interrupt_soc_top_tb.v
+``````````````
+   // initialize test
+   initial
+      begin
+	 $display("Start ...");
+	 dut.cpu_clk = 0;
+	 dut.vga_clk = 0;
+	 reset <= 0; #22; reset <= 1;
+	 dut.u_uart.urx.rx_data_fresh <= 0; #140; dut.u_uart.urx.rx_data_fresh <= 1;
+      end
+``````````````
+
+![interrupt.png](image/interrupt.png)
+
+For test20, the following image shows mstatus_mie_r works fine. It is 0 until the CSR instruction enables it and then it becomes 0 during the trap handler.
+
+![mstatus_mie_r_works.png](image/mstatus_mie_r_works.png)
+
+### Interrupt: re-execute the faulting instruction
+The interrupt happens when the pc is 0x0000001c. The trap vectors is at 0x0000004.
+
+After the trap handler finished, where the last instruction is mret at 0x00000048, the processor resumes at 0x0000001c.
+
+The problem is that 0x0000001c executes twice. The instruction is 00328293, which is *addi x5 x5 3*.
+
+![instr_part0.png](image/instr_part0.png)
+
+![instr_part1.png](image/instr_part1.png)
+
+### Solution
+In cpu6_core, thi following code solves the issue.
+
+``````````
+   // for interrupt, after trap handler, the faulting pc will be re-executed
+   // so here, since the instruction is already fetched, 
+   // Replace it with NOP
+   assign instrF = (csr_mstatus_mie_r & (tmr_irq_r | ext_irq_r)) ? `NOP : instr;
+``````````
+If the global interrupt is enabled, during timer or external interrupt, It replaces the fetched instruction with NOP, which is 32'h00000000.
+
+Therefore, this instruction will not be executed, even though it is already fetched.
+
+Why is it already fetched? Because in cpu6, the pcF, which is the instruction address, is generated half a cycle earlier than the IFID stage (falling edge). When the clock positive edge comes, the instruction will be fetched from the SRAM, and the combinational logic works afterward.
+
+In the following two images, the pc value 0000001c still shows twice; one before 00000004, the other after 00000048. However, the instruction *instrF* is 0000000 in the former.
+
+![instrF_part0.png](image/instrF_part0.png)
+
+![instrF_part1.png](image/instrF_part1.png)
