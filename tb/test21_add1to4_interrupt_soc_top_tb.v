@@ -25,12 +25,14 @@ module soc_top_tb();
 	 dut.cpu_clk = 0;
 	 dut.vga_clk = 0;
 	 reset <= 0; #22; reset <= 1;
+	 dut.u_uart.urx.rx_data_fresh <= 0; #140; dut.u_uart.urx.rx_data_fresh <= 1;
       end
 
    // generate clock to sequence tests
    always
       begin
 	 clk <= 1; #5 ;clk <= 0; #5;
+	 //dut.u_uart.urx.rx_data_fresh <= 1; #20; dut.u_uart.urx.rx_data_fresh <= 0; #20;
       end
 
    // check results
@@ -82,7 +84,9 @@ module soc_top_tb();
 	       $display("excp.excp_flush_pc %x", dut.core.excp.excp_flush_pc);
 	       $display("core.pcnextF %x", dut.core.pcnextF);
 	       $display("core.pcF %x", dut.core.pcF);
-	       $display("core.stallF %x", dut.core.stallF);
+	       $display("core.tmr_irq_r %x", dut.core.tmr_irq_r);
+	       $display("core.ext_irq_r %x", dut.core.ext_irq_r);
+	       $display("csr.mstatus.mie %x", dut.core.dp.csr.csr_mstatus_mie_r);
 	       //$display("reg[5] %x", dut.core.dp.rf.rf_r[5]);
 	       // if (memwrite) begin
 	       //     if (dataadr === 84 & writedata === 7) begin
@@ -94,50 +98,21 @@ module soc_top_tb();
 	       //     end
 	       // end     
 
-		if (255 === dut.u_lic.mtime_dfflr.qout)
+
+		if (32'h00000030 == dut.pc) 
 		  begin
-		     if (1'b1 === dut.u_lic.lic_timer_interrupt && 32'h00000004 === dut.pc)
+		     if (32'h0000000a == dut.core.dp.rf.regs[5].other_regs.rf_dffl.qout)
 			begin
-			   //$display("test19_timer simulation SUCCESS");
-			   //$stop;
+			   $display("test21_add1to4_interrupt simulation SUCCESS");
+			   $stop;
 			end
 		     else
 			begin
-			   $display("000000000000");
-			   $display("test19_timer simulation FAILED");
+			   $display("test21_add1to4_interrupt simulation FAILED");
 			   $stop;
 			end
 		  end
 
-		if (258 === dut.u_lic.mtime_dfflr.qout)
-		  begin
-		     if (32'h000000a0 === dut.pc)
-			begin
-			   //$display("test19_timer simulation SUCCESS");
-			   //$stop;
-			end
-		     else
-			begin
-			   $display("1111111111111");
-			   $display("test19_timer simulation FAILED");
-			   $stop;
-			end
-		  end
-
-		if (267 === dut.u_lic.mtime_dfflr.qout)
-		  begin
-		     if (32'h0000009c === dut.pc)
-			begin
-			   $display("test19_timer simulation SUCCESS");
-			   $stop;
-			end
-		     else
-			begin
-			   $display("222222222222222222");
-			   $display("test19_timer simulation FAILED");
-			   $stop;
-			end
-		  end
 
 	       //if (32'h00000024 === dut.pc) $stop; 	
 

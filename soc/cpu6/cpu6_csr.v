@@ -10,8 +10,12 @@ module cpu6_csr (
    output [`CPU6_XLEN-1:0] csr_read_dat,
    input  [`CPU6_XLEN-1:0] csr_write_dat,
 
+   input  mret_ena,
+   
    input  tmr_irq_r,
+   input  ext_irq_r,
    output csr_mtie_r,
+   output csr_mstatus_mie_r,
 
    input  [`CPU6_XLEN-1:0] excp_mepc,
    input  excp_mepc_ena,
@@ -86,11 +90,53 @@ module cpu6_csr (
    
        
 
+   //
+   // 0x300 MRW mstatus  Machine status register
+   //
+   wire sel_mstatus = (csr_idx == 12'h300);
+   wire rd_mstatus = sel_mstatus & csr_rd_en;
+   wire wr_mstatus = sel_mstatus & csr_wr_en;
+
+   wire mstatus_mie_r; // global interrupt-enable
+   wire mstatus_mie_ena =
+	// The CSR is written by CSR instruction
+	wr_mstatus |
+	// the mret instruction committed
+	mret_ena   |
+	// interrupt
+	(tmr_irq_r | ext_irq_r);
+   //wire mstatus_mie_nxt = csr_write_dat[3];
+   wire mstatus_mie_nxt =
+	(tmr_irq_r | ext_irq_r) ? 1'b0               :
+	mret_ena                ? 1'b1               :
+	wr_mstatus              ? csr_write_dat[3]   :
+	mstatus_mie_r; // unchanged
+   
+   cpu6_dfflr #(1) mstatus_mie_dfflr(
+      .lden      (mstatus_mie_ena  ),
+      .dnxt      (mstatus_mie_nxt  ),
+      .qout      (mstatus_mie_r    ),
+      .clk       (clk     ),
+      .rst       (reset   )
+      );
+
+   wire [`CPU6_XLEN-1:0] mstatus_r;
+   assign mstatus_r[31:4] = 28'b0;
+   assign mstatus_r[3] = mstatus_mie_r;
+   assign mstatus_r[2:0] = 3'b0;
+
+   wire [`CPU6_XLEN-1:0] csr_mstatus;
+   assign csr_mstatus = mstatus_r;
+
+   assign csr_mstatus_mie_r = mstatus_mie_r;
+
+   
    
    assign csr_read_dat = `CPU6_XLEN'b0
 			 | ({`CPU6_XLEN{rd_mepc}} & csr_mepc)
 			 | ({`CPU6_XLEN{rd_mip }} & csr_mip )
                          | ({`CPU6_XLEN{rd_mie }} & csr_mie )
+			 | ({`CPU6_XLEN{rd_mstatus}} & csr_mstatus)
 			    //| ({`CPU6_XLEN{rd_mtvec}} & csr_mtvec)
 			    ; 
 

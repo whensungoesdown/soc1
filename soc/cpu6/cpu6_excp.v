@@ -10,6 +10,7 @@ module cpu6_excp (
    input  ext_irq_r,
    
    input  csr_mtie_r,
+   input  csr_mstatus_mie_r,
 
    output excp_flush_pc_ena,
    output [`CPU6_XLEN-1:0] excp_flush_pc,
@@ -26,14 +27,20 @@ module cpu6_excp (
 
    wire irq_req_raw = (
 	               (tmr_irq_r & csr_mtie_r)
-                      |(ext_irq_r)
-	              //| (ext_irq_r & csr_meie_r)
+                      |(ext_irq_r & csr_mstatus_mie_r) // prevent reentry
+	              //| (ext_irq_r & csr_meie_r & csr_mstatus_mie_r)
 	);
+   
+
    
    assign excp_flush_pc_ena = excp_illinstr
                             | irq_req_raw
 		       //|
 		          ;
+   
+   // only traps such as ebreak ecall resume at pc+4, exception re-execute pc
+   // interrupts next instruction is not necessarily pc+4
+   // for example, the interrupt happens on a beq.
 
    assign excp_mepc = excp_pc;
 

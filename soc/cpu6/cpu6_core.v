@@ -29,6 +29,8 @@ module cpu6_core (
    wire [`CPU6_ALU_CONTROL_SIZE-1:0] alucontrol;
    wire [`CPU6_IMMTYPE_SIZE-1:0] immtype;
 
+   wire [`CPU6_XLEN-1:0] instrF;
+
    wire memwriteE;
    wire memtoregE;
    wire [`CPU6_BRANCHTYPE_SIZE-1:0] branchtypeE;
@@ -58,6 +60,9 @@ module cpu6_core (
    wire stallF;
    wire flashE;
 
+   wire hazard_flashE;
+   //wire irq_flashE;
+
    wire mret;
    
    wire excp_illinstr;
@@ -74,6 +79,7 @@ module cpu6_core (
    wire [`CPU6_XLEN-1:0] csr_mepc;
 
    wire csr_mtie_r;
+   wire csr_mstatus_mie_r;
 
    
    cpu6_excp excp(
@@ -85,6 +91,7 @@ module cpu6_core (
       .tmr_irq_r            (tmr_irq_r        ),
       .ext_irq_r            (ext_irq_r        ),
       .csr_mtie_r           (csr_mtie_r       ),
+      .csr_mstatus_mie_r    (csr_mstatus_mie_r),
       
       .excp_flush_pc_ena    (excp_flush_pc_ena),
       .excp_flush_pc        (excp_flush_pc    ),
@@ -96,13 +103,21 @@ module cpu6_core (
 
    
    cpu6_hazardcontrol hazardcontrol(branchtype, jump, branchtypeE, jumpE, pcsrcE,
-      hazard_stallF, flashE);
+      hazard_stallF, hazard_flashE);
 
 
    assign empty_pipeline_stallF = empty_pipeline_req & (~empty_pipeline_ackW);
    
    //assign stallF = hazard_stallF | empty_pipeline_stallF;
    assign stallF = (~excp_flush_pc_ena & (hazard_stallF | empty_pipeline_stallF));
+
+
+   // for interrupt, after trap handler, the faulting pc will be re-executed
+   // so here, since the instruction is already fetched, 
+   // Replace it with NOP
+   assign instrF = (csr_mstatus_mie_r & (tmr_irq_r | ext_irq_r)) ? `NOP : instr;
+   
+   assign flashE = hazard_flashE;
    
    cpu6_dfflr#(`CPU6_XLEN) pcreg(!stallF, pcnextF, pcF, ~clk, reset);
    
@@ -115,9 +130,7 @@ module cpu6_core (
    
    cpu6_adder pcadd4(pcF, 32'b100, pcplus4F); // next pc if no branch, no jump
    
-
-   
-
+  
    
    //cpu6_mux2#(`CPU6_XLEN) pcnextmux(pcplus4F, pcnextE, pcsrcE, pcnextF);
    // 1. excp_flush has the highest priority. For example, illegal instruction, the excp module
@@ -146,9 +159,9 @@ module cpu6_core (
 
    
    cpu6_controller c(
-      .op          (instr[`CPU6_OPCODE_HIGH:`CPU6_OPCODE_LOW]),
-      .funct3      (instr[`CPU6_FUNCT3_HIGH:`CPU6_FUNCT3_LOW]),
-      .funct7      (instr[`CPU6_FUNCT7_HIGH:`CPU6_FUNCT7_LOW]),
+      .op          (instrF[`CPU6_OPCODE_HIGH:`CPU6_OPCODE_LOW]),
+      .funct3      (instrF[`CPU6_FUNCT3_HIGH:`CPU6_FUNCT3_LOW]),
+      .funct7      (instrF[`CPU6_FUNCT7_HIGH:`CPU6_FUNCT7_LOW]),
 
       .mret        (mret           ),
       // csr
@@ -195,7 +208,7 @@ module cpu6_core (
       .alucontrol   (alucontrol     ),
       .immtype      (immtype        ),
       .pc           (pcF     ),
-      .instr        (instr   ),
+      .instrF       (instrF   ),
       .empty_pipeline_req  (empty_pipeline_req ),
       
       // csr
@@ -252,6 +265,10 @@ module cpu6_core (
       .memwriteM    (memwriteM    ),
 
       .tmr_irq_r    (tmr_irq_r    ),
-      .csr_mtie_r   (csr_mtie_r   )
+      .ext_irq_r    (ext_irq_r    ),
+      .csr_mtie_r   (csr_mtie_r   ),
+      .csr_mstatus_mie_r (csr_mstatus_mie_r),
+      .mret_ena     (mret         ) // execute mret instruction, 
+                                    // mret does not go down the pipeline further than D
       );
 endmodule   

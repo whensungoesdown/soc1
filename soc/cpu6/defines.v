@@ -1,6 +1,8 @@
 `define CPU6_ADDR_SIZE    32
 //`define CPU6_PC_SIZE      32
 
+`define NOP               32'h00000000
+
 `define CPU6_RFREG_NUM    32
 `define CPU6_RFIDX_WIDTH  5
 `define CPU6_XLEN         32

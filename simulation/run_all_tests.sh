@@ -76,3 +76,11 @@ cd ..
 cd test19_timer
 ./simulate.sh | grep simulation
 cd ..
+
+cd test20_mstatus_mie
+./simulate.sh | grep simulation
+cd ..
+
+cd test21_add1to4_interrupt
+./simulate.sh | grep simulation
+cd ..

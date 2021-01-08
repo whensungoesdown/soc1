@@ -76,3 +76,11 @@ cd ..
 cd test19_timer
 ./clean.sh
 cd ..
+
+cd test20_mstatus_mie
+./clean.sh
+cd ..
+
+cd test21_add1to4_interrupt
+./clean.sh
+cd ..

@@ -36,7 +36,10 @@ module cpu6_datapath (
                       output memwriteM,
 
                       input  tmr_irq_r,
-                      output csr_mtie_r
+                      input  ext_irq_r,
+                      output csr_mtie_r,
+                      output csr_mstatus_mie_r,
+                      input  mret_ena
 		      );
 
    wire [`CPU6_XLEN-1:0] aluoutE;
@@ -299,8 +302,12 @@ module cpu6_datapath (
       .csr_read_dat  (csr_read_datM),
       .csr_write_dat (csr_write_datM),
 
-      .tmr_irq_r     (tmr_irq_r     ),
-      .csr_mtie_r    (csr_mtie_r    ),
+      .mret_ena          (mret_ena         ),
+      
+      .tmr_irq_r         (tmr_irq_r        ),
+      .ext_irq_r         (ext_irq_r        ),
+      .csr_mtie_r        (csr_mtie_r       ),
+      .csr_mstatus_mie_r (csr_mstatus_mie_r),
       
       .excp_mepc     (excp_mepc     ),
       .excp_mepc_ena (excp_mepc_ena ),

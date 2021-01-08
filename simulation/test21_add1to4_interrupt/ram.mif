@@ -1,0 +1,53 @@
+-- Copyright (C) 1991-2013 Altera Corporation
+-- Your use of Altera Corporation's design tools, logic functions 
+-- and other software and tools, and its AMPP partner logic 
+-- functions, and any output files from any of the foregoing 
+-- (including device programming or simulation files), and any 
+-- associated documentation or information are expressly subject 
+-- to the terms and conditions of the Altera Program License 
+-- Subscription Agreement, Altera MegaCore Function License 
+-- Agreement, or other applicable license agreement, including, 
+-- without limitation, that your use is for the sole purpose of 
+-- programming logic devices manufactured by Altera and sold by 
+-- Altera or its authorized distributors.  Please refer to the 
+-- applicable agreement for further details.
+
+-- Quartus II generated Memory Initialization File (.mif)
+
+WIDTH=32;
+DEPTH=2048;
+
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+
+CONTENT BEGIN
+
+	0:		00000463;  --		beq x0 x0 8 <reset>
+	1:		02000a63;  --		beq x0 x0 52 <trap>
+
+--  <reset>:
+	2:		0ff00193;  --		addi x3 x0 0x8    ; enable interrupt
+	3:		30019073;  --		csrrw x0 mstatus x3 (csrw mstatus rs)
+	4:		00000293;  --		addi x5 x0 0
+	5:		00128293;  --		addi x5 x5 1
+	6:		00228293;  --		addi x5 x5 2
+	7:		00328293;  --		addi x5 x5 3
+	8:		00428293;  --		addi x5 x5 4
+	9:		00000013;  --		nop
+	a:		00000013;  --		nop
+	b:		00000013;  --		nop
+	c:		00000013;  --		nop
+
+--  <loop_in_rest>:
+	d:		00000063;  --		beq x0 x0 0 <loop_in_rest>
+
+--  <trap>:
+	e:		00000013;  --		nop
+	f:		00000013;  --		nop
+	10:		00000013;  --		nop
+	11:		00000013;  --		nop
+	12:		30200073;  --		mret
+
+	[13..7FF]  :   00000000;
+
+END;
