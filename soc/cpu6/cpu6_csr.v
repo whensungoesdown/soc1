@@ -107,8 +107,8 @@ module cpu6_csr (
 	(tmr_irq_r | ext_irq_r);
    //wire mstatus_mie_nxt = csr_write_dat[3];
    wire mstatus_mie_nxt =
-	(tmr_irq_r | ext_irq_r) ? 1'b0               :
 	mret_ena                ? 1'b1               :
+	(tmr_irq_r | ext_irq_r) ? 1'b0               :
 	wr_mstatus              ? csr_write_dat[3]   :
 	mstatus_mie_r; // unchanged
    

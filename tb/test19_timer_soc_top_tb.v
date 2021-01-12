@@ -124,9 +124,11 @@ module soc_top_tb();
 			end
 		  end
 
-		if (267 === dut.u_lic.mtime_dfflr.qout)
+		// if mtime or mtimecmp are not reset in trap handler, the timer keeps pending
+		// it reenters trap until the pending get cleared.
+		if (300 === dut.u_lic.mtime_dfflr.qout)
 		  begin
-		     if (32'h0000009c === dut.pc)
+		     if (32'h00010208 === dut.core.dp.rf.regs[6].other_regs.rf_dffl.qout)
 			begin
 			   $display("test19_timer simulation SUCCESS");
 			   $stop;

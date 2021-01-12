@@ -34,6 +34,18 @@ module lic (
    // if mtime or mtimecmp are not reset in trap handler, the pending
    // keeps on. Then mstatus.mie will also keeps zero, global interrupt
    // disabled.
+   //
+   // The above implementation has an issue. When external timer enters
+   // trap handler, during which the timer burst and signal tmr_irq_r.
+   // Then, even after the external interrupt trap ends, the global
+   // interrupt is still disabled.
+   //
+   // Change to: if timer pending, then timer trap keeps coming back
+   //
+   // Now in cpu6_csr mret_ena has higher priority than ext_irq_r |
+   // tmr_irq_r. When mret instruction finishes, the mstatus.mie will be
+   // set to 1, global instruction enabled.
+   //
    assign lic_timer_interrupt = (mtime < lic_mtimecmp_read) ? 1'b0 : 1'b1;
    assign lic_tmr_irq_r = lic_timer_interrupt & csr_mtie_r;
 
