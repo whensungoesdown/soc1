@@ -84,3 +84,7 @@ cd ..
 cd test21_add1to4_interrupt
 ./simulate.sh | grep simulation
 cd ..
+
+cd test22_mip.MTIP
+./simulate.sh | grep simulation
+cd ..

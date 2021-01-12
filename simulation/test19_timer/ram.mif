@@ -52,8 +52,8 @@ CONTENT BEGIN
 	19:		63002383;  --		lw x7 1584(x0)                  ; set mtimecmp to 255
 	1a:		0ff00293;  --		addi x5 x0 255
 	1b:		0053a023;  --		sw x5 0(x7)
-	1c:		00000013;  --		nop
-	1d:		00000013;  --		nop
+	1c:		0ff00193;  --		addi x3 x0 0x8    ; enable interrupt
+	1d:		30019073;  --		csrrw x0 mstatus x3 (csrw mstatus rs)
 	1e:		304021f3;  --           csrrs x3 mepc x0 (csrr rd mie)  ; enable timer
 	1f:		0ff00193;  --		addi x3 x0 255
 	20:		30419073;  --		csrrw x0 mepc x3 (csrw mie rs)

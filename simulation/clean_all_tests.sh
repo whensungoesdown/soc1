@@ -84,3 +84,7 @@ cd ..
 cd test21_add1to4_interrupt
 ./clean.sh
 cd ..
+
+cd test22_mip.MTIP
+./clean.sh
+cd ..

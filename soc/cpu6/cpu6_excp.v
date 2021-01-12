@@ -9,7 +9,6 @@ module cpu6_excp (
    input  tmr_irq_r, // bug: tmr_irq_r ext_irq_r are not _r, change names
    input  ext_irq_r,
    
-   input  csr_mtie_r,
    input  csr_mstatus_mie_r,
 
    output excp_flush_pc_ena,
@@ -26,7 +25,8 @@ module cpu6_excp (
    // for each exception and timer interrupt
 
    wire irq_req_raw = (
-	               (tmr_irq_r & csr_mtie_r)
+	               //(tmr_irq_r & csr_mtie_r & csr_mstatus_mie_r)
+	               (tmr_irq_r & csr_mstatus_mie_r)
                       |(ext_irq_r & csr_mstatus_mie_r) // prevent reentry
 	              //| (ext_irq_r & csr_meie_r & csr_mstatus_mie_r)
 	);

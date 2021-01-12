@@ -29,7 +29,8 @@ module soc_top (
    wire [`CPU6_XLEN-1:0] writedata;
    wire memwrite;
 
-   wire lic_timer_interrupt;
+   wire csr_mtie_r;
+   wire lic_tmr_irq_r;
    wire ext_irq_r;
    
    // instantiate processor and memories
@@ -46,7 +47,8 @@ module soc_top (
       .writedata     (writedata     ),
       .readdata      (readdata      ),
       
-      .tmr_irq_r     (lic_timer_interrupt),
+      .csr_mtie_r    (csr_mtie_r    ),
+      .tmr_irq_r     (lic_tmr_irq_r ),
       .ext_irq_r     (ext_irq_r     )
       );
 
@@ -154,7 +156,9 @@ module soc_top (
       .lic_mtimecmp_read      (lic_mtimecmp_read     ),
       .lic_mtimecmp_write     (lic_mtimecmp_write    ),
       .lic_mtimecmp_write_ena (lic_mtimecmp_write_ena),
-      .lic_timer_interrupt    (lic_timer_interrupt   )
+
+      .csr_mtie_r             (csr_mtie_r            ),
+      .lic_tmr_irq_r          (lic_tmr_irq_r         )
       );
 
 

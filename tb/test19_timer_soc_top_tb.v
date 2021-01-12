@@ -109,7 +109,7 @@ module soc_top_tb();
 			end
 		  end
 
-		if (258 === dut.u_lic.mtime_dfflr.qout)
+		if (257 === dut.u_lic.mtime_dfflr.qout)
 		  begin
 		     if (32'h000000a0 === dut.pc)
 			begin
