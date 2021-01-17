@@ -13,8 +13,8 @@ module cpu6_core (
    // fetch data
    input  [`CPU6_XLEN-1:0] readdata,
 
-
    output csr_mtie_r,
+   output csr_meie_r,
    input  tmr_irq_r,
    input  ext_irq_r
 );
@@ -266,6 +266,7 @@ module cpu6_core (
       .tmr_irq_r    (tmr_irq_r    ),
       .ext_irq_r    (ext_irq_r    ),
       .csr_mtie_r   (csr_mtie_r   ),
+      .csr_meie_r   (csr_meie_r   ),
       .csr_mstatus_mie_r (csr_mstatus_mie_r),
       .mret_ena     (mret         ) // execute mret instruction, 
                                     // mret does not go down the pipeline further than D

@@ -32,9 +32,11 @@ CONTENT BEGIN
 	4:		00532023;  --		sw x5 0(x6)
 	5:		62002283;  --		lw x5 1568(x0)
 	6:		00532223;  --		sw x5 4(x6)
+--	7:		62402283;  --		lw x5 1572(x0)
+--	8:		00532423;  --		sw x5 8(x6)
 	7:		62402283;  --		lw x5 1572(x0)
-	8:		00532423;  --		sw x5 8(x6)
-	9:		00000013;  --		nop
+	8:		005001b3;  --		add x3 x0 x5
+	9:		30419073;  --		csrrw x0 mie x3 (csrw mie rs) ; enable external interrupt
 
 	a:		0ff00193;  --		addi x3 x0 0x8    ; enable interrupt
 	b:		30019073;  --		csrrw x0 mstatus x3 (csrw mstatus rs)
@@ -274,7 +276,8 @@ CONTENT BEGIN
 
 	187  :   2d636954;  -- "Tic-Tac-Toe"
 	188  :   2d636154;
-	189  :   03656f54; 
+--	189  :   03656f54; 
+	189  :   00000800;  -- used to enable external interrupt 
 	18a  :   00021000;  -- mmio uartdr
 	18b  :   000101e0;  -- current line, line 6
 	18c  :   00000000;  -- current column

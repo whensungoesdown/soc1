@@ -31,6 +31,7 @@ module soc_top (
 
    wire csr_mtie_r;
    wire lic_tmr_irq_r;
+   wire csr_meie_r;
    wire ext_irq_r;
    
    // instantiate processor and memories
@@ -48,6 +49,7 @@ module soc_top (
       .readdata      (readdata      ),
       
       .csr_mtie_r    (csr_mtie_r    ),
+      .csr_meie_r    (csr_meie_r    ),
       .tmr_irq_r     (lic_tmr_irq_r ),
       .ext_irq_r     (ext_irq_r     )
       );
@@ -183,7 +185,8 @@ module soc_top (
    assign tx_data = writedata[7:0];
    assign tx_data_valid = (uart_ena & memwrite);
 
-   assign ext_irq_r = rx_data_fresh;
+   //assign ext_irq_r = rx_data_fresh;
+   assign ext_irq_r = rx_data_fresh & csr_meie_r;
    
    cpu6_dfflr#(8) uart_rx_reg(
       .lden       (rx_data_fresh   ),

@@ -38,6 +38,7 @@ module cpu6_datapath (
                       input  tmr_irq_r,
                       input  ext_irq_r,
                       output csr_mtie_r,
+                      output csr_meie_r,
                       output csr_mstatus_mie_r,
                       input  mret_ena
 		      );
@@ -307,6 +308,7 @@ module cpu6_datapath (
       .tmr_irq_r         (tmr_irq_r        ),
       .ext_irq_r         (ext_irq_r        ),
       .csr_mtie_r        (csr_mtie_r       ),
+      .csr_meie_r        (csr_meie_r       ),
       .csr_mstatus_mie_r (csr_mstatus_mie_r),
       
       .excp_mepc     (excp_mepc     ),
