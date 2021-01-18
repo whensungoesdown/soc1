@@ -44,6 +44,7 @@ module cpu6_datapath (
 		      );
 
    wire [`CPU6_XLEN-1:0] aluoutE;
+   wire [`CPU6_XLEN-1:0] aluout_typeuimmE;
 
   
    // writeregE shoudl be writeregW, later 
@@ -78,7 +79,7 @@ module cpu6_datapath (
    
 
    //wire writedataM;
-   wire [`CPU6_XLEN-1:0] aluoutM;
+   wire [`CPU6_XLEN-1:0] aluout_typeuimmM;
    wire [`CPU6_RFIDX_WIDTH-1:0] writeregM;
    wire regwriteM;
    wire memtoregM;
@@ -194,10 +195,31 @@ module cpu6_datapath (
    // ALU logic
    //cpu6_mux2#(`CPU6_XLEN) srcbmux(rs2E, signimmE, alusrcE, rs2_immE);
    //cpu6_alu alu(rs1E, rs2_immE, alucontrolE, aluoutE, zeroE);
-   cpu6_mux2#(`CPU6_XLEN) srcbmux(forwardrs2_rs2E, signimmE, alusrcE, rs2_immE);
-   cpu6_alu alu(forwardrs1_rs1E, rs2_immE, alucontrolE, aluoutE, zeroE);
-	
+   cpu6_mux2#(`CPU6_XLEN) srcbmux(
+      .d0     (        forwardrs2_rs2E),
+      .d1     (               signimmE),
+      .s      (                alusrcE),
+      .y      (               rs2_immE)
+      );
+   
+   cpu6_alu alu(
+      .a      (        forwardrs1_rs1E),
+      .b      (               rs2_immE),
+      .control(            alucontrolE),
+      .y      (                aluoutE),
+      .zero   (                  zeroE)
+      );
 
+
+   wire imm_type_u;
+   assign imm_type_u = (`CPU6_IMMTYPE_U == immtypeE);
+
+   cpu6_mux2#(`CPU6_XLEN) aluouttypuimmmux(
+      .d0     (aluoutE          ),
+      .d1     (signimmE         ),
+      .s      (imm_type_u       ),
+      .y      (aluout_typeuimmE )
+      );
 
 
 
@@ -224,48 +246,48 @@ module cpu6_datapath (
 // pipeline EXMEM
    
    cpu6_pipelinereg_exmem pipelinereg_exmem(
-      .clk         (~clk  ), 
-      .reset       (reset ),
-      .flashM      (1'b0  ),
-      .memwriteE   (memwriteE ),
-      .writedataE  (writedataE),
-      .aluoutE     (aluoutE   ), // used in MEM, but also pass to WB
-      .writeregE   (writeregE ), // not used in MEM, pass to WB
-      .regwriteE   (regwriteE ), // not used in MEM, pass to WB
-      .memtoregE   (memtoregE ), // not used in MEM, pass to WB
-      .pcplus4E    (pcplus4E  ),  // used in MEM, jump need pc+4 in the very last, write to rd
-      .jumpE       (jumpE     ),     // used in MEM
+      .clk                  (~clk  ), 
+      .reset                (reset ),
+      .flashM               (1'b0  ),
+      .memwriteE            (memwriteE ),
+      .writedataE           (writedataE),
+      .aluout_typeuimmE     (aluout_typeuimmE   ), // used in MEM, but also pass to WB
+      .writeregE            (writeregE          ), // not used in MEM, pass to WB
+      .regwriteE            (regwriteE          ), // not used in MEM, pass to WB
+      .memtoregE            (memtoregE          ), // not used in MEM, pass to WB
+      .pcplus4E             (pcplus4E           ),  // used in MEM, jump need pc+4 in the very last, write to rd
+      .jumpE                (jumpE              ),     // used in MEM
       // for csr
-      .csrE        (csrE      ),
-      .csr_wscE    (csr_wscE  ),
-      .csr_rs1uimmE        (csr_rs1uimmE    ), // use 'rs1' or 'rs1idx as uimm'
-      .forwardrs1_rs1E     (forwardrs1_rs1E ),
-      .csr_rs1idx_uimmE    (csr_rs1idx_uimmE),
-      .csr_rd_enE          (csr_rd_enE      ),
-      .csr_wr_enE          (csr_wr_enE      ),
-      .csr_idxE            (csr_idxE        ),
+      .csrE                 (csrE      ),
+      .csr_wscE             (csr_wscE  ),
+      .csr_rs1uimmE         (csr_rs1uimmE    ), // use 'rs1' or 'rs1idx as uimm'
+      .forwardrs1_rs1E      (forwardrs1_rs1E ),
+      .csr_rs1idx_uimmE     (csr_rs1idx_uimmE),
+      .csr_rd_enE           (csr_rd_enE      ),
+      .csr_wr_enE           (csr_wr_enE      ),
+      .csr_idxE             (csr_idxE        ),
       //
-      .empty_pipeline_reqE (empty_pipeline_reqE),
+      .empty_pipeline_reqE  (empty_pipeline_reqE),
       
-      .memwriteM   (memwriteM ),
-      .writedataM  (writedataM),
-      .aluoutM     (aluoutM   ),
-      .writeregM   (writeregM ),
-      .regwriteM   (regwriteM ),
-      .memtoregM   (memtoregM ),
-      .pcplus4M    (pcplus4M  ),
-      .jumpM       (jumpM     ),
+      .memwriteM            (memwriteM          ),
+      .writedataM           (writedataM         ),
+      .aluout_typeuimmM     (aluout_typeuimmM   ),
+      .writeregM            (writeregM          ),
+      .regwriteM            (regwriteM          ),
+      .memtoregM            (memtoregM          ),
+      .pcplus4M             (pcplus4M           ),
+      .jumpM                (jumpM              ),
       // for csr
-      .csrM        (csrM      ),
-      .csr_wscM    (csr_wscM  ),
-      .csr_rs1uimmM        (csr_rs1uimmM    ), // use 'rs1' or 'rs1idx as uimm'
-      .csr_rs1M            (csr_rs1M        ), // solved data hazard
-      .csr_rs1idx_uimmM    (csr_rs1idx_uimmM),
-      .csr_rd_enM          (csr_rd_enM      ),
-      .csr_wr_enM          (csr_wr_enM      ),
-      .csr_idxM            (csr_idxM        ),
+      .csrM                 (csrM            ),
+      .csr_wscM             (csr_wscM        ),
+      .csr_rs1uimmM         (csr_rs1uimmM    ), // use 'rs1' or 'rs1idx as uimm'
+      .csr_rs1M             (csr_rs1M        ), // solved data hazard
+      .csr_rs1idx_uimmM     (csr_rs1idx_uimmM),
+      .csr_rd_enM           (csr_rd_enM      ),
+      .csr_wr_enM           (csr_wr_enM      ),
+      .csr_idxM             (csr_idxM        ),
       //
-      .empty_pipeline_reqM (empty_pipeline_reqM)
+      .empty_pipeline_reqM  (empty_pipeline_reqM)
       );
 //
 //
@@ -324,8 +346,8 @@ module cpu6_datapath (
    //
    // for csrrw, csr_read_datM --> rdM
    
-   
-   assign dataaddrM = aluoutM;
+ 
+   assign dataaddrM = aluout_typeuimmM;
        
    // memtoreg: 1 means it's a LW, data comes from memory,
    // otherwise the alu_mem comes from ALU
@@ -338,10 +360,10 @@ module cpu6_datapath (
    //cpu6_mux2#(`CPU6_XLEN) jumpmux(alu_memM, pcplus4M, jumpM, rdM);
 
 
-   assign rdM = csrM      ? csr_read_datM  :
-		jumpM     ? pcplus4M       :
-		memtoregM ? readdataM      :
-		            aluoutM        ;
+   assign rdM = csrM      ? csr_read_datM    :
+		jumpM     ? pcplus4M         :
+		memtoregM ? readdataM        :
+		            aluout_typeuimmM ;
 
 
 

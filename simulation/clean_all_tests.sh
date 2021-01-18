@@ -88,3 +88,7 @@ cd ..
 cd test22_mip.MTIP
 ./clean.sh
 cd ..
+
+cd test23_lui
+./clean.sh
+cd ..

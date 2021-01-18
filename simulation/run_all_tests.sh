@@ -88,3 +88,7 @@ cd ..
 cd test22_mip.MTIP
 ./simulate.sh | grep simulation
 cd ..
+
+cd test23_lui
+./simulate.sh | grep simulation
+cd ..

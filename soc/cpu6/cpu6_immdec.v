@@ -25,10 +25,16 @@ module cpu6_immdec (
 			 instr[`CPU6_B_IMM2_HIGH:`CPU6_B_IMM2_LOW],
 			 instr[`CPU6_B_IMM1_HIGH:`CPU6_B_IMM1_LOW]
 			 };
+   
+   wire [`CPU6_XLEN-1:0] u_imm = {
+			instr[`CPU6_U_IMM_HIGH:`CPU6_U_IMM_LOW],
+			12'b0
+			};
 
    assign signimm = ({`CPU6_XLEN{immtype == `CPU6_IMMTYPE_I}} & i_imm)
                   | ({`CPU6_XLEN{immtype == `CPU6_IMMTYPE_S}} & s_imm)
                   | ({`CPU6_XLEN{immtype == `CPU6_IMMTYPE_B}} & b_imm)
+                  | ({`CPU6_XLEN{immtype == `CPU6_IMMTYPE_U}} & u_imm)
 		     ;
 
 endmodule // cpu6_immdec
