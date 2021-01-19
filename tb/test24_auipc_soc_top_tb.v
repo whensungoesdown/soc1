@@ -52,6 +52,7 @@ module soc_top_tb();
 	      // $display("core.pcreg %x", dut.core.pcreg.qout);
 	      // $display("core.stallF %x", dut.core.stallF);
 	       $display("dp.pcE %x", dut.core.dp.pcE);
+	       $display("dp.pc_auipcE %x", dut.core.dp.pc_auipcE);
 		end
       end
    
@@ -75,6 +76,7 @@ module soc_top_tb();
 	       $display("reg[9] %x", dut.core.dp.rf.regs[9].other_regs.rf_dffl.qout);
 	       $display("mepc %x", dut.core.dp.csr.epc_dfflr.qout);
 	       $display("dp.pcE %x", dut.core.dp.pcE);
+	       $display("dp.pc_auipcE %x", dut.core.dp.pc_auipcE);
 	       $display("dp.core.excp_illinstr %x", dut.core.excp_illinstr);
 	       $display("lic.mtime %d", dut.u_lic.mtime_dfflr.qout);
 	       $display("lic.mtimecmp %d", dut.u_lic.mtimecmp_dfflr.qout);
