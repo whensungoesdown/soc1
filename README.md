@@ -5,7 +5,7 @@ Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
 
 * Cpu6 is a RISC-V core that has four-stage pipeline. IFID, EX, MEM, WB.
 
-    * RV32I: lw sw addi add sub beq bne jalr lui ... implementing 
+    * RV32I: lw sw addi add sub beq bne jalr lui auipc ... implementing 
     
     * CSR instructions:  csrrw csrrs csrrc csrrwi csrrsi csrrci
 
@@ -57,8 +57,8 @@ Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
 0x20000  +------------+         0x20000  RW   mtime      (64-bit register, now only use low 32-bit)
          |            |         0x20008  RW   mtimecmp   (64-bit register, now only use low 32-bit)
          |            |  64KB
-         | Device MMIO|         0x21000  RW   uartdr     (32-bit register, low 8 bits are used to transmit and receive data)
-         |            |
+         | Device MMIO|         0x21000  RW   uartdr     (32-bit register, 
+         |            |                                   low 8 bits are used to transmit and receive data)
 0x2ffff  |            |
          +------------+
          |            |
