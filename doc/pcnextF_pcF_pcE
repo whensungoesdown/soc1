@@ -1,0 +1,62 @@
+It is a mess.
+
+# core.pcF 00000010
+# core.tmr_irq_r 0
+# core.ext_irq_r 0
+# csr.mstatus.mie 0
+# +
+# dp.pcE 0000000c              <---------
+# -
+# reset 1
+# cpu_clk 0
+# pc 00000014
+# vga_rgb xxx
+# reg[1] 00000000
+# reg[2] 00000000
+# reg[3] 00000000
+# reg[4] 00000000
+# reg[5] 00000000
+# reg[6] 00000000
+# reg[7] 00000000
+# reg[8] 00000000
+# reg[9] 00000000
+# mepc 00000000
+# dp.pcE 00000010               <---------
+# dp.core.excp_illinstr 0
+# lic.mtime          4
+# lic.mtimecmp          0
+# csr.mie 00000000
+# csr.mtie_r 0
+# lic.lic_timer_interrupt 1
+# excp.excp_flush_pc_ena 0
+# excp.excp_flush_pc 00000004
+# core.pcnextF 00000018
+# core.pcF 00000014
+# core.tmr_irq_r 0
+# core.ext_irq_r 0
+
+
+
+# +
+# dp.pcE 0000000c              <--
+# dp.pc_auipcE 00000008        <--
+# -
+# reset 1
+# cpu_clk 0
+# pc 00000014
+# vga_rgb xxx
+# reg[1] 00000000
+# reg[2] 00000000
+# reg[3] 00000000
+# reg[4] 00000000
+# reg[5] 00000000
+# reg[6] 00000000
+# reg[7] 00000000
+# reg[8] 00000000
+# reg[9] 00000000
+# mepc 00000000
+# dp.pcE 00000010           <--
+# dp.pc_auipcE 0000000c     <--
+# dp.core.excp_illinstr 0
+# lic.mtime          4
+
