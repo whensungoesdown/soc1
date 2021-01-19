@@ -106,6 +106,7 @@ module cpu6_maindec (
    wire rv32_mret = (op == `CPU6_OPCODE_SIZE'b1110011) & funct3_000 & funct7_0011000;
 
    wire rv32_lui = (op == `CPU6_OPCODE_SIZE'b0110111);
+   wire rv32_auipc = (op == `CPU6_OPCODE_SIZE'b0010111);
 
    assign illinstr = ~(rv32_lw | rv32_sw
 		     | rv32_addi
@@ -115,7 +116,7 @@ module cpu6_maindec (
 		     | rv32_csrrw | rv32_csrrs | rv32_csrrc
 		     | rv32_csrrwi | rv32_csrrsi | rv32_csrrci
 		     | rv32_mret
-		     | rv32_lui
+		     | rv32_lui | rv32_auipc
 		     );
 
 
@@ -399,7 +400,7 @@ module cpu6_maindec (
 				    };
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_lui_controls = {
-				    1'b1, // lui: no
+				    1'b1, // lui: yes
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b0, // csr: no
@@ -415,6 +416,22 @@ module cpu6_maindec (
 				    `CPU6_IMMTYPE_U // immtype: CPU6_IMMTYPE_U 
 				    };
    
+   wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_auipc_controls = {
+				    1'b0, // lui: no
+				    1'b1, // auipc: yes
+				    1'b0, // mret: no
+				    1'b0, // csr: no
+				    1'b0, // csr
+				    2'b00,// csr
+				    1'b0, // memtoreg: no
+				    1'b0, // memwrite: no
+				    `CPU6_BRANCHTYPE_NOBRANCH, // branch: no
+				    `MAINDEC_CONTROL_ALUSRC_IMM, // alusrc: imm
+				    1'b1, // regwrite: yes
+				    1'b0, // jump: no
+				    `CPU6_ALU_OP_ADD, // aluop: add
+				    `CPU6_IMMTYPE_U // immtype: CPU6_IMMTYPE_U 
+				    };
    assign controls = //({`MAINDEC_CONTROL_SIZE{rv32_invalid}} & rv32_invalid_controls)
                      ({`MAINDEC_CONTROL_SIZE{rv32_lw}} & rv32_lw_controls)
                    | ({`MAINDEC_CONTROL_SIZE{rv32_sw}} & rv32_sw_controls)
@@ -432,6 +449,7 @@ module cpu6_maindec (
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_csrrci}} & rv32_csrrci_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_mret}} & rv32_mret_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_lui}} & rv32_lui_controls)
+		   | ({`MAINDEC_CONTROL_SIZE{rv32_auipc}} & rv32_auipc_controls)
 		     ;
 endmodule
 

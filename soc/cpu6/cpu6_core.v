@@ -70,6 +70,7 @@ module cpu6_core (
 
    wire luiE;
    wire auipcE;
+   wire [`CPU6_XLEN-1:0] pc_auipcE;
    
    wire mret;
    
@@ -205,6 +206,7 @@ module cpu6_core (
 
       .lui          (lui    ),
       .auipc        (auipc  ),
+      .pc_auipc     (excp_pc),
       // csr
       .csr          (csr    ),
       .csr_rs1uimm  (csr_rs1uimm    ),
@@ -218,12 +220,13 @@ module cpu6_core (
       .jump         (jump           ),
       .alucontrol   (alucontrol     ),
       .immtype      (immtype        ),
-      .pc           (pcF     ),
-      .instrF       (instrF   ),
+      .pc           (pcF            ),
+      .instrF       (instrF         ),
       .empty_pipeline_req  (empty_pipeline_req ),
 
-      .luiE         (luiE    ),
-      .auipcE       (auipcE  ),
+      .luiE         (luiE           ),
+      .auipcE       (auipcE         ),
+      .pc_auipcE    (pc_auipcE      ),
       // csr
       .csrE         (csrE    ),
       .csr_rs1uimmE (csr_rs1uimmE   ),
@@ -260,6 +263,7 @@ module cpu6_core (
 
       .luiE         (luiE         ),
       .auipcE       (auipcE       ),
+      .pc_auipcE    (pc_auipcE    ), // the current pc value for EX stage, just for the use of auipc instruction
       // csr
       .csrE         (csrE         ),
       .csr_rs1uimmE (csr_rs1uimmE ),

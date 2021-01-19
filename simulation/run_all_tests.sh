@@ -92,3 +92,7 @@ cd ..
 cd test23_lui
 ./simulate.sh | grep simulation
 cd ..
+
+cd test24_auipc
+./simulate.sh | grep simulation
+cd ..

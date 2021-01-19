@@ -92,3 +92,7 @@ cd ..
 cd test23_lui
 ./clean.sh
 cd ..
+
+cd test24_auipc
+./clean.sh
+cd ..

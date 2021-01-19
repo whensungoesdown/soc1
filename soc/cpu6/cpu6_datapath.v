@@ -18,6 +18,7 @@ module cpu6_datapath (
 
                       input  luiE, // instruction lui
                       input  auipcE, // instruction auipc
+                      input  [`CPU6_XLEN-1:0] pc_auipcE, // pcE value for auipc instruction
                       // csr
                       input  csrE, // csr enable
                       input  csr_rs1uimmE, // uimm: rs1 field as uimm
@@ -219,7 +220,7 @@ module cpu6_datapath (
    
    cpu6_mux2#(`CPU6_XLEN) auipcmux(
       .d0     (forwardrs1_rs1_zeroE    ),
-      .d1     (pcE                     ),
+      .d1     (pc_auipcE               ), // pcE changes at the falling edge, due to the way that impements branch
       .s      (auipcE                  ),
       .y      (forwardrs1_rs1_zero_pcE )
       );
