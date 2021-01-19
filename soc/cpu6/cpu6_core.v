@@ -64,6 +64,13 @@ module cpu6_core (
 
    wire hazard_flashE;
 
+
+   wire lui;  // instruction lui, goes to EX
+   wire auipc; // instruction auipc, goes to EX
+
+   wire luiE;
+   wire auipcE;
+   
    wire mret;
    
    wire excp_illinstr;
@@ -162,6 +169,8 @@ module cpu6_core (
       .funct3      (instrF[`CPU6_FUNCT3_HIGH:`CPU6_FUNCT3_LOW]),
       .funct7      (instrF[`CPU6_FUNCT7_HIGH:`CPU6_FUNCT7_LOW]),
 
+      .lui         (lui            ),
+      .auipc       (auipc          ),
       .mret        (mret           ),
       // csr
       .csr         (csr            ),
@@ -193,6 +202,9 @@ module cpu6_core (
       .clk          (clk    ),
       .reset        (reset  ),
       .flash        (flashE ),
+
+      .lui          (lui    ),
+      .auipc        (auipc  ),
       // csr
       .csr          (csr    ),
       .csr_rs1uimm  (csr_rs1uimm    ),
@@ -209,7 +221,9 @@ module cpu6_core (
       .pc           (pcF     ),
       .instrF       (instrF   ),
       .empty_pipeline_req  (empty_pipeline_req ),
-      
+
+      .luiE         (luiE    ),
+      .auipcE       (auipcE  ),
       // csr
       .csrE         (csrE    ),
       .csr_rs1uimmE (csr_rs1uimmE   ),
@@ -243,6 +257,9 @@ module cpu6_core (
       .pcnextE      (pcnextE  ),
       .pcsrcE       (pcsrcE   ),
       .instrE       (instrE   ),
+
+      .luiE         (luiE         ),
+      .auipcE       (auipcE       ),
       // csr
       .csrE         (csrE         ),
       .csr_rs1uimmE (csr_rs1uimmE ),

@@ -5,6 +5,8 @@ module cpu6_controller (
    input  [`CPU6_FUNCT3_SIZE-1:0] funct3,
    input  [`CPU6_FUNCT7_SIZE-1:0] funct7,
 
+   output lui,  // lui instruction
+   output auipc,// auipc instruction
    output mret, // mret instruction
    // csr
    output csr, // csr enable
@@ -36,6 +38,8 @@ module cpu6_controller (
       .funct3    (funct3  ),
       .funct7    (funct7  ),
 
+      .lui           (lui        ),
+      .auipc         (auipc      ),
       .mret          (mret       ),
       // csr
       .csr           (csr        ),

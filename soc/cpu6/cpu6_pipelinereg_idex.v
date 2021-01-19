@@ -5,6 +5,8 @@ module cpu6_pipelinereg_idex (
    input  reset,
    input  flash,
 
+   input  lui,
+   input  auipc,
    // csr
    input  csr,
    input  csr_rs1uimm,
@@ -23,6 +25,8 @@ module cpu6_pipelinereg_idex (
    input  [`CPU6_XLEN-1:0] instrF,
    input  empty_pipeline_req,
 
+   output luiE,
+   output auipcE,
    // csr
    output csrE,
    output csr_rs1uimmE,
@@ -42,6 +46,9 @@ module cpu6_pipelinereg_idex (
    output empty_pipeline_reqE
    );
 
+   cpu6_dffr#(1) lui_r({1{~flash}} & lui, luiE, clk, reset);
+   cpu6_dffr#(1) auipc_r({1{~flash}} & auipc, auipcE, clk, reset);
+   
    cpu6_dffr#(1) csr_r({1{~flash}} & csr, csrE, clk, reset);
    cpu6_dffr#(1) csr_rs1uimm_r({1{~flash}} & csr_rs1uimm, csr_rs1uimmE, clk, reset);
    cpu6_dffr#(`CPU6_CSR_WSC_SIZE) csr_wsc_r({`CPU6_CSR_WSC_SIZE{~flash}} & csr_wsc, csr_wscE, clk, reset);

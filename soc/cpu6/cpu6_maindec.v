@@ -1,6 +1,6 @@
 `include "defines.v"
 
-`define MAINDEC_CONTROL_SIZE          18
+`define MAINDEC_CONTROL_SIZE          20
 
 
 `define MAINDEC_CONTROL_ALUSRC_RS2     1'b0
@@ -21,6 +21,8 @@ module cpu6_maindec (
                      input  [`CPU6_FUNCT3_SIZE-1:0] funct3,
                      input  [`CPU6_FUNCT7_SIZE-1:0] funct7,
 
+                     output lui,
+                     output auipc,
                      output mret, // later there will be URET SRET MRET 
                      // csr
                      output csr, // csr enable
@@ -40,7 +42,9 @@ module cpu6_maindec (
 
    wire [`MAINDEC_CONTROL_SIZE-1:0] controls;
 
-   assign mret= controls[17];
+   assign lui = controls[19];
+   assign auipc = controls[18];
+   assign mret = controls[17];
    assign csr = controls[16];
    assign csr_rs1uimm = controls[15];
    assign csr_wsc = controls[14:13];
@@ -117,6 +121,9 @@ module cpu6_maindec (
 
    
 //   wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_invalid_controls = {
+//				    1'b0, // lui: no
+//				    1'b0, // auipc: no
+//				    1'b0, // mret: no
 //				    1'b0, // csr: no
 //				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
 //				    `CPU6_CSR_WSC_W, // csr_wsc: CSRW
@@ -131,6 +138,8 @@ module cpu6_maindec (
 //				    };
 
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_lw_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b0, // csr: no
 				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
@@ -146,6 +155,8 @@ module cpu6_maindec (
 				    };
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_sw_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b0, // csr: no
 				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
@@ -161,6 +172,8 @@ module cpu6_maindec (
 				    };
 
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_addi_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b0, // csr: no
 				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
@@ -176,6 +189,8 @@ module cpu6_maindec (
 				    };
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_add_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b0, // csr: no
 				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
@@ -191,6 +206,8 @@ module cpu6_maindec (
 				    };
 
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_sub_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b0, // csr: no
 				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
@@ -206,6 +223,8 @@ module cpu6_maindec (
 				    };
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_beq_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b0, // csr: no
 				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
@@ -221,6 +240,8 @@ module cpu6_maindec (
 				    };
 
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_bne_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b0, // csr: no
 				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
@@ -237,6 +258,8 @@ module cpu6_maindec (
 
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_jalr_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b0, // csr: no
 				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
@@ -253,6 +276,8 @@ module cpu6_maindec (
 
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_csrrw_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b1, // csr: yes
 				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
@@ -269,6 +294,8 @@ module cpu6_maindec (
    
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_csrrs_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b1, // csr: yes
 				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
@@ -285,6 +312,8 @@ module cpu6_maindec (
 
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_csrrc_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b1, // csr: yes
 				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
@@ -300,6 +329,8 @@ module cpu6_maindec (
 				    };
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_csrrwi_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b1, // csr: yes
 				    `CPU6_CSR_UIMM, // csr_rs1uimm: 1 uimm
@@ -316,6 +347,8 @@ module cpu6_maindec (
    
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_csrrsi_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b1, // csr: yes
 				    `CPU6_CSR_UIMM, // csr_rs1uimm: 1 uimm
@@ -332,6 +365,8 @@ module cpu6_maindec (
 
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_csrrci_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b1, // csr: yes
 				    `CPU6_CSR_UIMM, // csr_rs1uimm: 1 uimm
@@ -347,6 +382,8 @@ module cpu6_maindec (
 				    };
 
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_mret_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
 				    1'b1, // mret: yes
 				    1'b0, // csr: no
 				    1'b0, // 
@@ -362,6 +399,8 @@ module cpu6_maindec (
 				    };
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_lui_controls = {
+				    1'b1, // lui: no
+				    1'b0, // auipc: no
 				    1'b0, // mret: no
 				    1'b0, // csr: no
 				    1'b0, // csr

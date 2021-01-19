@@ -15,6 +15,9 @@ module cpu6_datapath (
                       output [`CPU6_XLEN-1:0] pcnextE,
                       output pcsrcE,
 		      input  [`CPU6_XLEN-1:0] instrE,
+
+                      input  luiE, // instruction lui
+                      input  auipcE, // instruction auipc
                       // csr
                       input  csrE, // csr enable
                       input  csr_rs1uimmE, // uimm: rs1 field as uimm
@@ -44,7 +47,6 @@ module cpu6_datapath (
 		      );
 
    wire [`CPU6_XLEN-1:0] aluoutE;
-   wire [`CPU6_XLEN-1:0] aluout_typeuimmE;
 
   
    // writeregE shoudl be writeregW, later 
@@ -79,7 +81,7 @@ module cpu6_datapath (
    
 
    //wire writedataM;
-   wire [`CPU6_XLEN-1:0] aluout_typeuimmM;
+   wire [`CPU6_XLEN-1:0] aluoutM;
    wire [`CPU6_RFIDX_WIDTH-1:0] writeregM;
    wire regwriteM;
    wire memtoregM;
@@ -202,25 +204,35 @@ module cpu6_datapath (
       .y      (               rs2_immE)
       );
    
+
+   // too many mux, should be a better way
+
+   wire [`CPU6_XLEN-1:0] forwardrs1_rs1_zeroE;
+   wire [`CPU6_XLEN-1:0] forwardrs1_rs1_zero_pcE;
+
+   cpu6_mux2#(`CPU6_XLEN) luimux(
+      .d0     (forwardrs1_rs1E     ),
+      .d1     (`CPU6_XLEN'b0       ),
+      .s      (luiE                ),
+      .y      (forwardrs1_rs1_zeroE)
+      );
+   
+   cpu6_mux2#(`CPU6_XLEN) auipcmux(
+      .d0     (forwardrs1_rs1_zeroE    ),
+      .d1     (pcE                     ),
+      .s      (auipcE                  ),
+      .y      (forwardrs1_rs1_zero_pcE )
+      );
+
+   
    cpu6_alu alu(
-      .a      (        forwardrs1_rs1E),
-      .b      (               rs2_immE),
-      .control(            alucontrolE),
-      .y      (                aluoutE),
-      .zero   (                  zeroE)
+      //.a      (        forwardrs1_rs1E),
+      .a      (forwardrs1_rs1_zero_pcE),
+      .b      (rs2_immE               ),
+      .control(alucontrolE            ),
+      .y      (aluoutE                ),
+      .zero   (zeroE                  )
       );
-
-
-   wire imm_type_u;
-   assign imm_type_u = (`CPU6_IMMTYPE_U == immtypeE);
-
-   cpu6_mux2#(`CPU6_XLEN) aluouttypuimmmux(
-      .d0     (aluoutE          ),
-      .d1     (signimmE         ),
-      .s      (imm_type_u       ),
-      .y      (aluout_typeuimmE )
-      );
-
 
 
 
@@ -251,7 +263,7 @@ module cpu6_datapath (
       .flashM               (1'b0  ),
       .memwriteE            (memwriteE ),
       .writedataE           (writedataE),
-      .aluout_typeuimmE     (aluout_typeuimmE   ), // used in MEM, but also pass to WB
+      .aluoutE              (aluoutE            ), // used in MEM, but also pass to WB
       .writeregE            (writeregE          ), // not used in MEM, pass to WB
       .regwriteE            (regwriteE          ), // not used in MEM, pass to WB
       .memtoregE            (memtoregE          ), // not used in MEM, pass to WB
@@ -271,7 +283,7 @@ module cpu6_datapath (
       
       .memwriteM            (memwriteM          ),
       .writedataM           (writedataM         ),
-      .aluout_typeuimmM     (aluout_typeuimmM   ),
+      .aluoutM              (aluoutM            ),
       .writeregM            (writeregM          ),
       .regwriteM            (regwriteM          ),
       .memtoregM            (memtoregM          ),
@@ -307,9 +319,7 @@ module cpu6_datapath (
    wire [`CPU6_XLEN-1:0] csr_write_datM;
    wire [`CPU6_XLEN-1:0] csr_datM;
    
-   //assign csr_write_datM = csr_rs1M;
 
-   // todo
    assign csr_datM = (csr_rs1uimmM == `CPU6_CSR_RS1) ? csr_rs1M:
 		                                       csr_rs1idx_uimmM; // zero extend to CPU6_XLEN
 		                                       
@@ -347,7 +357,7 @@ module cpu6_datapath (
    // for csrrw, csr_read_datM --> rdM
    
  
-   assign dataaddrM = aluout_typeuimmM;
+   assign dataaddrM = aluoutM;
        
    // memtoreg: 1 means it's a LW, data comes from memory,
    // otherwise the alu_mem comes from ALU
@@ -363,7 +373,7 @@ module cpu6_datapath (
    assign rdM = csrM      ? csr_read_datM    :
 		jumpM     ? pcplus4M         :
 		memtoregM ? readdataM        :
-		            aluout_typeuimmM ;
+		            aluoutM ;
 
 
 
