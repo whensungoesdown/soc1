@@ -19,12 +19,12 @@ module cpu6_controller (
    output alusrc,
    output regwrite,
    output jump,
-   output [`CPU6_ALU_CONTROL_SIZE-1:0] alucontrol,
+   output [`CPU6_ALUCONTROL_SIZE-1:0] alucontrol,
    output [`CPU6_IMMTYPE_SIZE-1:0] immtype,
    output illinstr
 );
    
-   wire [`CPU6_ALU_OP_SIZE-1:0] aluop;
+   wire [`CPU6_ALUOP_SIZE-1:0] aluop;
 
    // risc-v
    // op determinss what to do, read from/to memory or
@@ -57,7 +57,13 @@ module cpu6_controller (
       .illinstr      (illinstr   )
       );
 
-   cpu6_aludec ad(funct3, funct7, aluop, alucontrol);
+   cpu6_aludec ad(
+      .op            (op         ),
+      .funct3        (funct3     ),
+      .funct7        (funct7     ),
+      .aluop         (aluop      ),
+      .alucontrol    (alucontrol )
+      );
 
 endmodule
 			

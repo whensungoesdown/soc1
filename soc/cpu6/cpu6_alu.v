@@ -3,7 +3,7 @@
 module cpu6_alu (
 	input  [`CPU6_XLEN-1:0] a,
 	input  [`CPU6_XLEN-1:0] b,
-	input  [`CPU6_ALU_CONTROL_SIZE-1:0] control,
+	input  [`CPU6_ALUCONTROL_SIZE-1:0] control,
 	output [`CPU6_XLEN-1:0] y,
 	output zero
 	);
@@ -15,8 +15,8 @@ module cpu6_alu (
 	wire [`CPU6_XLEN-1:0] sub_result;
 	
 	
-	assign control_add = (control[`CPU6_ALU_CONTROL_SIZE-1:0] == `CPU6_ALU_CONTROL_SIZE'b010);
-	assign control_sub = (control[`CPU6_ALU_CONTROL_SIZE-1:0] == `CPU6_ALU_CONTROL_SIZE'b110);
+	assign control_add = (control[`CPU6_ALUCONTROL_SIZE-1:0] == `CPU6_ALUCONTROL_SIZE'b010);
+	assign control_sub = (control[`CPU6_ALUCONTROL_SIZE-1:0] == `CPU6_ALUCONTROL_SIZE'b110);
 	
 	assign add_result = a + b;
 	assign sub_result = a - b;

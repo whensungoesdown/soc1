@@ -28,7 +28,7 @@ module cpu6_core (
    wire [`CPU6_BRANCHTYPE_SIZE-1:0] branchtype;
    wire zero;
 
-   wire [`CPU6_ALU_CONTROL_SIZE-1:0] alucontrol;
+   wire [`CPU6_ALUCONTROL_SIZE-1:0] alucontrol;
    wire [`CPU6_IMMTYPE_SIZE-1:0] immtype;
 
    wire [`CPU6_XLEN-1:0] instrF;
@@ -39,7 +39,7 @@ module cpu6_core (
    wire alusrcE;
    wire regwriteE;
    wire jumpE;
-   wire [`CPU6_ALU_CONTROL_SIZE-1:0] alucontrolE;
+   wire [`CPU6_ALUCONTROL_SIZE-1:0] alucontrolE;
    wire [`CPU6_IMMTYPE_SIZE-1:0] immtypeE;
    wire [`CPU6_XLEN-1:0] instrE;
 

@@ -9,7 +9,7 @@ module cpu6_datapath (
 		      input  alusrcE,
 		      input  regwriteE,
 		      input  jumpE,
-		      input  [`CPU6_ALU_CONTROL_SIZE-1:0] alucontrolE,
+		      input  [`CPU6_ALUCONTROL_SIZE-1:0] alucontrolE,
                       input  [`CPU6_IMMTYPE_SIZE-1:0] immtypeE,
 		      input  [`CPU6_XLEN-1:0] pcE,
                       output [`CPU6_XLEN-1:0] pcnextE,

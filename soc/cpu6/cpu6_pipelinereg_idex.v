@@ -20,7 +20,7 @@ module cpu6_pipelinereg_idex (
    input  alusrc,
    input  regwrite,
    input  jump,
-   input  [`CPU6_ALU_CONTROL_SIZE-1:0] alucontrol,
+   input  [`CPU6_ALUCONTROL_SIZE-1:0] alucontrol,
    input  [`CPU6_IMMTYPE_SIZE-1:0] immtype,
    input  [`CPU6_XLEN-1:0] pc,
    input  [`CPU6_XLEN-1:0] instrF,
@@ -41,7 +41,7 @@ module cpu6_pipelinereg_idex (
    output alusrcE,
    output regwriteE,
    output jumpE,
-   output [`CPU6_ALU_CONTROL_SIZE-1:0] alucontrolE,
+   output [`CPU6_ALUCONTROL_SIZE-1:0] alucontrolE,
    output [`CPU6_IMMTYPE_SIZE-1:0] immtypeE,
    output [`CPU6_XLEN-1:0] pcE,
    output [`CPU6_XLEN-1:0] instrE,
@@ -63,7 +63,7 @@ module cpu6_pipelinereg_idex (
    cpu6_dffr#(1) alusrc_r({1{~flash}} & alusrc, alusrcE, clk, reset);
    cpu6_dffr#(1) regwrite_r({1{~flash}} & regwrite, regwriteE, clk, reset);
    cpu6_dffr#(1) jump_r({1{~flash}} & jump, jumpE, clk, reset);
-   cpu6_dffr#(`CPU6_ALU_CONTROL_SIZE) alucontrol_r({`CPU6_ALU_CONTROL_SIZE{~flash}} & alucontrol, alucontrolE, clk, reset);
+   cpu6_dffr#(`CPU6_ALUCONTROL_SIZE) alucontrol_r({`CPU6_ALUCONTROL_SIZE{~flash}} & alucontrol, alucontrolE, clk, reset);
    cpu6_dffr#(`CPU6_IMMTYPE_SIZE) immtype_r({`CPU6_IMMTYPE_SIZE{~flash}} & immtype, immtypeE, clk, reset);
 
    cpu6_dffr#(`CPU6_XLEN) pc_r({`CPU6_XLEN{~flash}} & pc, pcE, clk, reset);

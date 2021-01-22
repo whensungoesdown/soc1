@@ -7,12 +7,20 @@
 `define CPU6_RFIDX_WIDTH  5
 `define CPU6_XLEN         32
 
-`define CPU6_ALU_CONTROL_SIZE     3
+`define CPU6_ALUCONTROL_SIZE     3
+`define CPU6_ALUCONTROL_ADD      3'b010
+`define CPU6_ALUCONTROL_SUB      3'b110
+`define CPU6_ALUCONTROL_AND      3'b000
+`define CPU6_ALUCONTROL_OR       3'b001
+`define CPU6_ALUCONTROL_SLT      3'b111
 
-`define CPU6_ALU_OP_SIZE          2
-`define CPU6_ALU_OP_ADD           2'b00
-`define CPU6_ALU_OP_SUB           2'b01
-`define CPU6_ALU_OP_OTHER         2'b11
+`define CPU6_ALUOP_SIZE          2
+`define CPU6_ALUOP_LWSWJALR      2'b00
+`define CPU6_ALUOP_BRANCH        2'b01
+`define CPU6_ALUOP_ARITHMETIC    2'b10
+//`define CPU6_ALU_OP_ADD           2'b00
+//`define CPU6_ALU_OP_SUB           2'b01
+//`define CPU6_ALU_OP_OTHER         2'b11
 
 `define CPU6_FUNCT3_HIGH         14
 `define CPU6_FUNCT3_LOW          12
