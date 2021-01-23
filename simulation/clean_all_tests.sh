@@ -100,3 +100,7 @@ cd ..
 cd test25_andi
 ./clean.sh
 cd ..
+
+cd test26_and
+./clean.sh
+cd ..

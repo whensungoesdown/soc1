@@ -100,3 +100,7 @@ cd ..
 cd test25_andi
 ./simulate.sh | grep simulation
 cd ..
+
+cd test26_and
+./simulate.sh | grep simulation
+cd ..
