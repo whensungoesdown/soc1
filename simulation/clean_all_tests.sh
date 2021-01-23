@@ -96,3 +96,7 @@ cd ..
 cd test24_auipc
 ./clean.sh
 cd ..
+
+cd test25_andi
+./clean.sh
+cd ..

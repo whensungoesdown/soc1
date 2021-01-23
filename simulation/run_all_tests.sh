@@ -96,3 +96,7 @@ cd ..
 cd test24_auipc
 ./simulate.sh | grep simulation
 cd ..
+
+cd test25_andi
+./simulate.sh | grep simulation
+cd ..
