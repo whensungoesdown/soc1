@@ -110,6 +110,7 @@ module cpu6_maindec (
 
    wire rv32_andi = op_i_arithmatic & funct3_111;
    wire rv32_and  = op_r_instructions & funct3_111 & funct7_0000000;
+   wire rv32_ori  = op_i_arithmatic & funct3_110;
 
    
    assign illinstr = ~(rv32_lw | rv32_sw
@@ -122,6 +123,7 @@ module cpu6_maindec (
 		     | rv32_mret
 		     | rv32_lui | rv32_auipc
 		     | rv32_andi| rv32_and
+		     | rv32_ori
 		     );
 
 
@@ -473,6 +475,24 @@ module cpu6_maindec (
 				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm 
 				    };
    
+   wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_ori_controls = {
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
+				    1'b0, // mret: no
+				    1'b0, // csr: no
+				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
+				    2'b00, // csr_wsc: ignore
+				    1'b0, // memtoreg: no
+				    1'b0, // memwrite: no
+				    `CPU6_BRANCHTYPE_NOBRANCH, // branch: no
+				    `MAINDEC_CONTROL_ALUSRC_IMM, // alusrc: imm
+				    1'b1, // regwrite: yes
+				    1'b0, // jump: no
+				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I    
+				    };
+
+   
    assign controls = //({`MAINDEC_CONTROL_SIZE{rv32_invalid}} & rv32_invalid_controls)
                      ({`MAINDEC_CONTROL_SIZE{rv32_lw}} & rv32_lw_controls)
                    | ({`MAINDEC_CONTROL_SIZE{rv32_sw}} & rv32_sw_controls)
@@ -493,6 +513,7 @@ module cpu6_maindec (
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_auipc}} & rv32_auipc_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_andi}} & rv32_andi_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_and}} & rv32_and_controls)
+		   | ({`MAINDEC_CONTROL_SIZE{rv32_ori}} & rv32_ori_controls)
 		     ;
 endmodule
 

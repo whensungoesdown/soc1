@@ -104,3 +104,7 @@ cd ..
 cd test26_and
 ./clean.sh
 cd ..
+
+cd test27_ori
+./clean.sh
+cd ..

@@ -104,3 +104,7 @@ cd ..
 cd test26_and
 ./simulate.sh | grep simulation
 cd ..
+
+cd test27_ori
+./simulate.sh | grep simulation
+cd ..
