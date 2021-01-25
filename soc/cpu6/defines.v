@@ -18,9 +18,6 @@
 `define CPU6_ALUOP_LWSWJALR      2'b00
 `define CPU6_ALUOP_BRANCH        2'b01
 `define CPU6_ALUOP_ARITHMETIC    2'b10
-//`define CPU6_ALU_OP_ADD           2'b00
-//`define CPU6_ALU_OP_SUB           2'b01
-//`define CPU6_ALU_OP_OTHER         2'b11
 
 `define CPU6_FUNCT3_HIGH         14
 `define CPU6_FUNCT3_LOW          12

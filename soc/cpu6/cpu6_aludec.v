@@ -17,7 +17,7 @@ module cpu6_aludec (
    
    wire funct3_000 = (funct3 == `CPU6_FUNCT3_SIZE'b000);
 //   wire funct3_010 = (funct3 == `CPU6_FUNCT3_SIZE'b010);
-//   wire funct3_011 = (funct3 == `CPU6_FUNCT3_SIZE'b011);
+   wire funct3_011 = (funct3 == `CPU6_FUNCT3_SIZE'b011); // SLTIU SLTU
 //   wire funct3_100 = (funct3 == `CPU6_FUNCT3_SIZE'b011);
    wire funct3_110 = (funct3 == `CPU6_FUNCT3_SIZE'b110);
    wire funct3_111 = (funct3 == `CPU6_FUNCT3_SIZE'b111);
@@ -38,6 +38,7 @@ module cpu6_aludec (
                      | ({`CPU6_ALUCONTROL_SIZE{aluop_10 & rv32_sub}} & `CPU6_ALUCONTROL_SUB ) // sub 
                      | ({`CPU6_ALUCONTROL_SIZE{aluop_10 & funct3_111}} & `CPU6_ALUCONTROL_AND ) // andi and 
                      | ({`CPU6_ALUCONTROL_SIZE{aluop_10 & funct3_110}} & `CPU6_ALUCONTROL_OR ) // ori or 
+                     | ({`CPU6_ALUCONTROL_SIZE{aluop_10 & funct3_011}} & `CPU6_ALUCONTROL_SLT ) // sltu or  sltiu
 			;
 
 endmodule // cpu6_aludec

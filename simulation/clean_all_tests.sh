@@ -112,3 +112,11 @@ cd ..
 cd test28_or
 ./clean.sh
 cd ..
+
+cd test29_sltiu
+./clean.sh
+cd ..
+
+cd test30_sltu
+./clean.sh
+cd ..

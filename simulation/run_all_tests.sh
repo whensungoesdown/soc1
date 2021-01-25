@@ -112,3 +112,11 @@ cd ..
 cd test28_or
 ./simulate.sh | grep simulation
 cd ..
+
+cd test29_sltiu
+./simulate.sh | grep simulation
+cd ..
+
+cd test30_sltu
+./simulate.sh | grep simulation
+cd ..
