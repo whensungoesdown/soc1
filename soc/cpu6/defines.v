@@ -13,6 +13,7 @@
 `define CPU6_ALUCONTROL_AND      3'b000
 `define CPU6_ALUCONTROL_OR       3'b001
 `define CPU6_ALUCONTROL_SLT      3'b111
+`define CPU6_ALUCONTROL_XOR      3'b011
 
 `define CPU6_ALUOP_SIZE          2
 `define CPU6_ALUOP_LWSWJALR      2'b00

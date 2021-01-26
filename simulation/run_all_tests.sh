@@ -120,3 +120,11 @@ cd ..
 cd test30_sltu
 ./simulate.sh | grep simulation
 cd ..
+
+cd test31_xori
+./simulate.sh | grep simulation
+cd ..
+
+cd test32_xor
+./simulate.sh | grep simulation
+cd ..

@@ -120,3 +120,11 @@ cd ..
 cd test30_sltu
 ./clean.sh
 cd ..
+
+cd test31_xori
+./clean.sh
+cd ..
+
+cd test32_xor
+./clean.sh
+cd ..
