@@ -5,7 +5,11 @@ Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
 
 * Cpu6 is a RISC-V core that has four-stage pipeline. IFID, EX, MEM, WB.
 
-    * RV32I: lw sw addi add sub beq bne jalr lui auipc andi and ori or sltiu sltu xori xor ... implementing 
+    * RV32I: addi add sub beq bne jalr lui auipc andi and ori or sltiu sltu xori xor sw lw lh lhu lb lbu ... implementing 
+    
+    (lh lhu lb lbu only supports 4-byte aligned access. lh 2-byte alighed access and lb 1-byte aligned access can be 
+    implemented through exception. Need misaligned exeception though)
+    
     
     * CSR instructions:  csrrw csrrs csrrc csrrwi csrrsi csrrci
 
