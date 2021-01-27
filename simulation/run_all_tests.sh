@@ -128,3 +128,19 @@ cd ..
 cd test32_xor
 ./simulate.sh | grep simulation
 cd ..
+
+cd test33_lh
+./simulate.sh | grep simulation
+cd ..
+
+cd test34_lhu
+./simulate.sh | grep simulation
+cd ..
+
+cd test35_lb
+./simulate.sh | grep simulation
+cd ..
+
+cd test36_lbu
+./simulate.sh | grep simulation
+cd ..

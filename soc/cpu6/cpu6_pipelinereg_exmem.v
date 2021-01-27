@@ -4,6 +4,10 @@ module cpu6_pipelinereg_exmem (
    input  clk,
    input  reset,
    input  flashM,
+
+   input  [`CPU6_LSWIDTH_SIZE-1:0] lswidthE,
+   input  loadsignextE,
+   
    input  memwriteE,
    input  [`CPU6_XLEN-1:0] writedataE,
    input  [`CPU6_XLEN-1:0] aluoutE, // used in MEM, but also pass to WB
@@ -25,7 +29,9 @@ module cpu6_pipelinereg_exmem (
    input  empty_pipeline_reqE,
    
    
-   output  memwriteM,
+   output [`CPU6_LSWIDTH_SIZE-1:0] lswidthM,
+   output loadsignextM,
+   output memwriteM,
    output [`CPU6_XLEN-1:0] writedataM,
    output [`CPU6_XLEN-1:0] aluoutM,
    output [`CPU6_RFIDX_WIDTH-1:0] writeregM,
@@ -47,6 +53,9 @@ module cpu6_pipelinereg_exmem (
    output empty_pipeline_reqM
 );
 
+   cpu6_dffr#(`CPU6_LSWIDTH_SIZE) lswidth_r({`CPU6_LSWIDTH_SIZE{~flashM}} & lswidthE, lswidthM, clk, reset);
+   cpu6_dffr#(1) loadsignext_r({1{~flashM}} & loadsignextE, loadsignextM, clk, reset);
+   
    cpu6_dffr#(1) memwrite_r({1{~flashM}} & memwriteE, memwriteM, clk, reset);
    cpu6_dffr#(`CPU6_XLEN) writedata_r({`CPU6_XLEN{~flashM}} & writedataE, writedataM, clk, reset);
    cpu6_dffr#(`CPU6_XLEN) aluout_r({`CPU6_XLEN{~flashM}} & aluoutE, aluoutM, clk, reset);

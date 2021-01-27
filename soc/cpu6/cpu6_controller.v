@@ -5,6 +5,11 @@ module cpu6_controller (
    input  [`CPU6_FUNCT3_SIZE-1:0] funct3,
    input  [`CPU6_FUNCT7_SIZE-1:0] funct7,
 
+
+   // load store width and load signext
+   output [`CPU6_LSWIDTH_SIZE-1:0] lswidth,
+   output loadsignext,
+   
    output lui,  // lui instruction
    output auipc,// auipc instruction
    output mret, // mret instruction
@@ -38,6 +43,8 @@ module cpu6_controller (
       .funct3    (funct3  ),
       .funct7    (funct7  ),
 
+      .lswidth       (lswidth    ),
+      .loadsignext   (loadsignext),
       .lui           (lui        ),
       .auipc         (auipc      ),
       .mret          (mret       ),

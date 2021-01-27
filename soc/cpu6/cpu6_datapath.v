@@ -16,6 +16,10 @@ module cpu6_datapath (
                       output pcsrcE,
 		      input  [`CPU6_XLEN-1:0] instrE,
 
+
+                      input  [`CPU6_LSWIDTH_SIZE-1:0] lswidthE,
+                      input  loadsignextE,
+
                       input  luiE, // instruction lui
                       input  auipcE, // instruction auipc
                       input  [`CPU6_XLEN-1:0] pc_auipcE, // pcE value for auipc instruction
@@ -34,9 +38,10 @@ module cpu6_datapath (
                       input  empty_pipeline_reqE,
                       output empty_pipeline_ackW,
                       //
+  
 		      output [`CPU6_XLEN-1:0] dataaddrM,
 		      output [`CPU6_XLEN-1:0] writedataM,
-		      input  [`CPU6_XLEN-1:0] readdataM,
+		      input  [`CPU6_XLEN-1:0] readdata_rawM,
                       output memwriteM,
 
                       input  tmr_irq_r,
@@ -92,6 +97,8 @@ module cpu6_datapath (
    //wire [`CPU6_XLEN-1:0] alu_memM;
    wire [`CPU6_XLEN-1:0] rdM;
 
+   wire [`CPU6_LSWIDTH_SIZE-1:0] lswidthM;
+   wire loadsignextM;
 
    
    wire [`CPU6_RFIDX_WIDTH-1:0] writeregW;
@@ -262,6 +269,10 @@ module cpu6_datapath (
       .clk                  (~clk  ), 
       .reset                (reset ),
       .flashM               (1'b0  ),
+      
+      .lswidthE             (lswidthE           ),
+      .loadsignextE         (loadsignextE       ),
+      
       .memwriteE            (memwriteE ),
       .writedataE           (writedataE),
       .aluoutE              (aluoutE            ), // used in MEM, but also pass to WB
@@ -281,6 +292,9 @@ module cpu6_datapath (
       .csr_idxE             (csr_idxE        ),
       //
       .empty_pipeline_reqE  (empty_pipeline_reqE),
+      
+      .lswidthM             (lswidthM           ),
+      .loadsignextM         (loadsignextM       ),
       
       .memwriteM            (memwriteM          ),
       .writedataM           (writedataM         ),
@@ -370,6 +384,46 @@ module cpu6_datapath (
    // if 0==jumpE, rd either comes from alu (e.g add) or mem (LW instruction)
    //cpu6_mux2#(`CPU6_XLEN) jumpmux(alu_memM, pcplus4M, jumpM, rdM);
 
+
+   // todo
+   wire [`CPU6_XLEN-1:0] readdataM;
+   wire [`CPU6_XLEN-1:0] readdata_wM;
+   wire [`CPU6_XLEN-1:0] readdata_hM;
+   wire [`CPU6_XLEN-1:0] readdata_bM;
+   wire [`CPU6_XLEN-1:0] readdata_huM;
+   wire [`CPU6_XLEN-1:0] readdata_buM;
+
+   wire load_wM;
+   wire load_hM;
+   wire load_bM;
+   wire load_huM;
+   wire load_buM;
+
+   assign readdata_wM  = readdata_rawM;
+   assign readdata_hM  = {{16{readdata_rawM[15]}}, readdata_rawM[15:0]}; 
+   assign readdata_bM  = {{24{readdata_rawM[7]}}, readdata_rawM[7:0]}; 
+   assign readdata_huM = {16'b0, readdata_rawM[15:0]}; 
+   assign readdata_buM = {24'b0, readdata_rawM[7:0]}; 
+   
+   assign load_wM = (lswidthM == `CPU6_LSWIDTH_W);
+   assign load_hM = ((lswidthM == `CPU6_LSWIDTH_H) && (loadsignextM == 1'b1));
+   assign load_bM = ((lswidthM == `CPU6_LSWIDTH_B) && (loadsignextM == 1'b1));
+   assign load_huM = ((lswidthM == `CPU6_LSWIDTH_H) && (loadsignextM == 1'b0));
+   assign load_buM = ((lswidthM == `CPU6_LSWIDTH_B) && (loadsignextM == 1'b0));
+   
+   dp_mux5ds #(`CPU6_XLEN) loadwidth_mux (
+      .dout (readdataM   ),
+      .in0  (readdata_wM ),
+      .in1  (readdata_hM ),
+      .in2  (readdata_bM ),
+      .in3  (readdata_huM),
+      .in4  (readdata_buM),
+      .sel0_l (~load_wM  ),
+      .sel1_l (~load_hM  ),
+      .sel2_l (~load_bM  ),
+      .sel3_l (~load_huM ),
+      .sel4_l (~load_buM )
+      );
 
    assign rdM = csrM      ? csr_read_datM    :
 		jumpM     ? pcplus4M         :

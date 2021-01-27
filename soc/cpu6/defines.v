@@ -108,3 +108,10 @@
 
 `define CPU6_CSR_RS1              1'b0
 `define CPU6_CSR_UIMM             1'b1
+
+
+// LOAD STORE WIDTH
+`define CPU6_LSWIDTH_SIZE         2
+`define CPU6_LSWIDTH_W            2'b00
+`define CPU6_LSWIDTH_H            2'b01
+`define CPU6_LSWIDTH_B            2'b10

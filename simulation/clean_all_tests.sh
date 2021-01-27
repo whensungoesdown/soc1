@@ -128,3 +128,19 @@ cd ..
 cd test32_xor
 ./clean.sh
 cd ..
+
+cd test33_lh
+./clean.sh
+cd ..
+
+cd test34_lhu
+./clean.sh
+cd ..
+
+cd test35_lb
+./clean.sh
+cd ..
+
+cd test36_lbu
+./clean.sh
+cd ..

@@ -65,6 +65,13 @@ module cpu6_core (
    wire hazard_flashE;
 
 
+   wire [`CPU6_LSWIDTH_SIZE-1:0] lswidth;  // for LW LH LB, SW SH SB
+   wire loadsignext; // for LHU LBU
+
+   wire [`CPU6_LSWIDTH_SIZE-1:0] lswidthE;  // for LW LH LB, SW SH SB
+   wire loadsignextE; // for LHU LBU
+
+   
    wire lui;  // instruction lui, goes to EX
    wire auipc; // instruction auipc, goes to EX
 
@@ -170,6 +177,9 @@ module cpu6_core (
       .funct3      (instrF[`CPU6_FUNCT3_HIGH:`CPU6_FUNCT3_LOW]),
       .funct7      (instrF[`CPU6_FUNCT7_HIGH:`CPU6_FUNCT7_LOW]),
 
+      .lswidth     (lswidth        ),
+      .loadsignext (loadsignext    ),
+      
       .lui         (lui            ),
       .auipc       (auipc          ),
       .mret        (mret           ),
@@ -204,11 +214,14 @@ module cpu6_core (
       .reset        (reset  ),
       .flash        (flashE ),
 
-      .lui          (lui    ),
-      .auipc        (auipc  ),
-      .pc_auipc     (excp_pc),
+      .lswidth      (lswidth        ),
+      .loadsignext  (loadsignext    ),
+      
+      .lui          (lui            ),
+      .auipc        (auipc          ),
+      .pc_auipc     (excp_pc        ),
       // csr
-      .csr          (csr    ),
+      .csr          (csr            ),
       .csr_rs1uimm  (csr_rs1uimm    ),
       .csr_wsc      (csr_wsc        ),
       //
@@ -224,6 +237,10 @@ module cpu6_core (
       .instrF       (instrF         ),
       .empty_pipeline_req  (empty_pipeline_req ),
 
+
+      .lswidthE     (lswidthE       ),
+      .loadsignextE (loadsignextE   ),
+      
       .luiE         (luiE           ),
       .auipcE       (auipcE         ),
       .pc_auipcE    (pc_auipcE      ),
@@ -261,6 +278,10 @@ module cpu6_core (
       .pcsrcE       (pcsrcE   ),
       .instrE       (instrE   ),
 
+
+      .lswidthE     (lswidthE     ),
+      .loadsignextE (loadsignextE ),
+      
       .luiE         (luiE         ),
       .auipcE       (auipcE       ),
       .pc_auipcE    (pc_auipcE    ), // the current pc value for EX stage, just for the use of auipc instruction
@@ -281,7 +302,7 @@ module cpu6_core (
       //
       .dataaddrM    (dataaddr     ),
       .writedataM   (writedata    ),
-      .readdataM    (readdata     ),
+      .readdata_rawM(readdata     ),
       .memwriteM    (memwriteM    ),
 
       .tmr_irq_r    (tmr_irq_r    ),
