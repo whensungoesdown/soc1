@@ -144,3 +144,7 @@ cd ..
 cd test36_lbu
 ./simulate.sh | grep simulation
 cd ..
+
+cd test37_srl
+./simulate.sh | grep simulation
+cd ..

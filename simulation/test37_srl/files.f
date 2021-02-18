@@ -35,5 +35,5 @@
 ../../soc/lic/lic.v
 ../../soc/uart/uart.v
 ../../soc/soc_top.v
-../../tb/test33_lh_soc_top_tb.v
+../../tb/test37_srl_soc_top_tb.v
 

@@ -144,3 +144,7 @@ cd ..
 cd test36_lbu
 ./clean.sh
 cd ..
+
+cd test37_srl
+./clean.sh
+cd ..

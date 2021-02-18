@@ -28,7 +28,7 @@ module cpu6_core (
    wire [`CPU6_BRANCHTYPE_SIZE-1:0] branchtype;
    wire zero;
 
-   wire [`CPU6_ALUCONTROL_SIZE-1:0] alucontrol;
+   wire [`CPU6_ALUCONTROL_SIZE-1:0] alucontrol;   
    wire [`CPU6_IMMTYPE_SIZE-1:0] immtype;
 
    wire [`CPU6_XLEN-1:0] instrF;
@@ -95,6 +95,13 @@ module cpu6_core (
    wire [`CPU6_XLEN-1:0] csr_mepc;
 
    wire csr_mstatus_mie_r;
+
+   wire shft_en;
+   wire shft_lr;
+   
+   wire shft_enE;
+   wire shft_lrE;
+
 
    
    cpu6_excp excp(
@@ -196,7 +203,10 @@ module cpu6_core (
       .jump        (jump           ),
       .alucontrol  (alucontrol     ),
       .immtype     (immtype        ),
-      .illinstr    (excp_illinstr  )
+      .illinstr    (excp_illinstr  ),
+
+      .shft_en     (shft_en        ),
+      .shft_lr     (shft_lr        )
       );
 
    
@@ -236,7 +246,10 @@ module cpu6_core (
       .pc           (pcF            ),
       .instrF       (instrF         ),
       .empty_pipeline_req  (empty_pipeline_req ),
-
+      
+      .shft_en      (shft_en        ),
+      .shft_lr      (shft_lr        ),
+      
 
       .lswidthE     (lswidthE       ),
       .loadsignextE (loadsignextE   ),
@@ -259,7 +272,10 @@ module cpu6_core (
       .immtypeE     (immtypeE       ),
       .pcE          (pcE      ),
       .instrE       (instrE   ),
-      .empty_pipeline_reqE (empty_pipeline_reqE )
+      .empty_pipeline_reqE (empty_pipeline_reqE ),
+
+      .shft_enE     (shft_enE       ),
+      .shft_lrE     (shft_lrE       )
       );
   
    cpu6_datapath dp(
@@ -310,7 +326,10 @@ module cpu6_core (
       .csr_mtie_r   (csr_mtie_r   ),
       .csr_meie_r   (csr_meie_r   ),
       .csr_mstatus_mie_r (csr_mstatus_mie_r),
-      .mret_ena     (mret         ) // execute mret instruction, 
-                                    // mret does not go down the pipeline further than D
+      .mret_ena     (mret         ), // execute mret instruction, 
+                                     // mret does not go down the pipeline further than D
+
+      .shft_enE     (shft_enE     ),
+      .shft_lrE     (shft_lrE     )
       );
 endmodule   

@@ -26,7 +26,10 @@ module cpu6_controller (
    output jump,
    output [`CPU6_ALUCONTROL_SIZE-1:0] alucontrol,
    output [`CPU6_IMMTYPE_SIZE-1:0] immtype,
-   output illinstr
+   output illinstr,
+
+   output shft_en,
+   output shft_lr // shift left right
 );
    
    wire [`CPU6_ALUOP_SIZE-1:0] aluop;
@@ -69,7 +72,9 @@ module cpu6_controller (
       .funct3        (funct3     ),
       .funct7        (funct7     ),
       .aluop         (aluop      ),
-      .alucontrol    (alucontrol )
+      .alucontrol    (alucontrol ),
+      .shft_en       (shft_en    ),
+      .shft_lr       (shft_lr    )
       );
 
 endmodule

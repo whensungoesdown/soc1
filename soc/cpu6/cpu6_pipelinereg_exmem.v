@@ -10,7 +10,7 @@ module cpu6_pipelinereg_exmem (
    
    input  memwriteE,
    input  [`CPU6_XLEN-1:0] writedataE,
-   input  [`CPU6_XLEN-1:0] aluoutE, // used in MEM, but also pass to WB
+   input  [`CPU6_XLEN-1:0] alushftoutE, // used in MEM, but also pass to WB
    input  [`CPU6_RFIDX_WIDTH-1:0] writeregE, // not used in MEM, pass to WB
    input  regwriteE, // not used in MEM, pass to WB
    input  memtoregE, // not used in MEM, pass to WB
@@ -33,7 +33,7 @@ module cpu6_pipelinereg_exmem (
    output loadsignextM,
    output memwriteM,
    output [`CPU6_XLEN-1:0] writedataM,
-   output [`CPU6_XLEN-1:0] aluoutM,
+   output [`CPU6_XLEN-1:0] alushftoutM,
    output [`CPU6_RFIDX_WIDTH-1:0] writeregM,
    output regwriteM,
    output memtoregM,
@@ -58,7 +58,7 @@ module cpu6_pipelinereg_exmem (
    
    cpu6_dffr#(1) memwrite_r({1{~flashM}} & memwriteE, memwriteM, clk, reset);
    cpu6_dffr#(`CPU6_XLEN) writedata_r({`CPU6_XLEN{~flashM}} & writedataE, writedataM, clk, reset);
-   cpu6_dffr#(`CPU6_XLEN) aluout_r({`CPU6_XLEN{~flashM}} & aluoutE, aluoutM, clk, reset);
+   cpu6_dffr#(`CPU6_XLEN) alushftout_r({`CPU6_XLEN{~flashM}} & alushftoutE, alushftoutM, clk, reset);
    cpu6_dffr#(`CPU6_RFIDX_WIDTH) writereg_r({`CPU6_RFIDX_WIDTH{~flashM}} & writeregE, writeregM, clk, reset);
    cpu6_dffr#(1) regwrite_r({1{~flashM}} & regwriteE, regwriteM, clk, reset);
    cpu6_dffr#(1) memtoreg_r({1{~flashM}} & memtoregE, memtoregM, clk, reset);

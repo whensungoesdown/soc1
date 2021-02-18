@@ -127,6 +127,8 @@ module cpu6_maindec (
    wire rv32_lb  = ((op == `CPU6_OPCODE_SIZE'b0000011) & funct3_000);
    wire rv32_lbu = ((op == `CPU6_OPCODE_SIZE'b0000011) & funct3_100);
 
+   wire rv32_srl  = op_r_instructions & funct3_101 & funct7_0000000;
+   wire rv32_sra  = op_r_instructions & funct3_101 & funct7_0100000;
    
    assign illinstr = ~(rv32_lw | rv32_sw
 		     | rv32_addi
@@ -142,6 +144,7 @@ module cpu6_maindec (
 		     | rv32_sltiu | rv32_sltu
 		     | rv32_xori | rv32_xor
 		     | rv32_lh | rv32_lhu | rv32_lb | rv32_lbu
+		     | rv32_srl| rv32_sra
 		     );
 
 
@@ -723,6 +726,44 @@ module cpu6_maindec (
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
    
+   wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_srl_controls = {
+                                    2'b00,// ignore, (load store width 32)
+                                    1'b0, // ignore, (load zero extent)   
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
+				    1'b0, // mret: no
+				    1'b0, // csr: no
+				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
+				    2'b0, // csr_wsc: ignore
+				    1'b0, // memtoreg: no
+				    1'b0, // memwrite: no
+				    `CPU6_BRANCHTYPE_NOBRANCH, // branch: no
+				    `MAINDEC_CONTROL_ALUSRC_RS2, // alusrc: rs2
+				    1'b1, // regwrite: yes
+				    1'b0, // jump: no
+				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm 
+				    };
+   
+   wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_sra_controls = {
+                                    2'b00,// ignore, (load store width 32)
+                                    1'b0, // ignore, (load zero extent)   
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
+				    1'b0, // mret: no
+				    1'b0, // csr: no
+				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
+				    2'b0, // csr_wsc: ignore
+				    1'b0, // memtoreg: no
+				    1'b0, // memwrite: no
+				    `CPU6_BRANCHTYPE_NOBRANCH, // branch: no
+				    `MAINDEC_CONTROL_ALUSRC_RS2, // alusrc: rs2
+				    1'b1, // regwrite: yes
+				    1'b0, // jump: no
+				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm 
+				    };
+
    
    assign controls = //({`MAINDEC_CONTROL_SIZE{rv32_invalid}} & rv32_invalid_controls)
                      ({`MAINDEC_CONTROL_SIZE{rv32_lw}} & rv32_lw_controls)
@@ -754,6 +795,8 @@ module cpu6_maindec (
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_lhu}} & rv32_lhu_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_lb}} & rv32_lb_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_lbu}} & rv32_lbu_controls)
+		   | ({`MAINDEC_CONTROL_SIZE{rv32_srl}} & rv32_srl_controls) // further decoding in aludec
+		   | ({`MAINDEC_CONTROL_SIZE{rv32_sra}} & rv32_sra_controls) // further decoding in aludec
 		     ;
 endmodule
 

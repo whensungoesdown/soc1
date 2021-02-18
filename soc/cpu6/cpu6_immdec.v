@@ -2,7 +2,7 @@
 
 module cpu6_immdec (
    input  [`CPU6_XLEN-1:0] instr,
-   input  [`CPU6_BRANCHTYPE_SIZE-1:0] immtype,
+   input  [`CPU6_IMMTYPE_SIZE-1:0] immtype,
    output [`CPU6_XLEN-1:0] signimm
    );
 

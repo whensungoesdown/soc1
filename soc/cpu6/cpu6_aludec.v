@@ -5,7 +5,9 @@ module cpu6_aludec (
    input  [`CPU6_FUNCT3_SIZE-1:0] funct3,
    input  [`CPU6_FUNCT7_SIZE-1:0] funct7,
    input  [`CPU6_ALUOP_SIZE-1:0] aluop,
-   output [`CPU6_ALUCONTROL_SIZE-1:0] alucontrol
+   output [`CPU6_ALUCONTROL_SIZE-1:0] alucontrol,
+   output shft_en,
+   output shft_lr
    );
    
    wire aluop_00 = (aluop == `CPU6_ALUOP_LWSWJALR);
@@ -16,9 +18,11 @@ module cpu6_aludec (
    wire op_0110011 = (op == `CPU6_OPCODE_SIZE'b0110011);
    
    wire funct3_000 = (funct3 == `CPU6_FUNCT3_SIZE'b000);
+   wire funct3_001 = (funct3 == `CPU6_FUNCT3_SIZE'b001);
 //   wire funct3_010 = (funct3 == `CPU6_FUNCT3_SIZE'b010);
    wire funct3_011 = (funct3 == `CPU6_FUNCT3_SIZE'b011); // SLTIU SLTU
    wire funct3_100 = (funct3 == `CPU6_FUNCT3_SIZE'b100); // XORI XOR 
+   wire funct3_101 = (funct3 == `CPU6_FUNCT3_SIZE'b101); // SLL SLLI 
    wire funct3_110 = (funct3 == `CPU6_FUNCT3_SIZE'b110);
    wire funct3_111 = (funct3 == `CPU6_FUNCT3_SIZE'b111);
    
@@ -42,5 +46,13 @@ module cpu6_aludec (
                      | ({`CPU6_ALUCONTROL_SIZE{aluop_10 & funct3_100}} & `CPU6_ALUCONTROL_XOR ) // xori or  xor
 			;
 
+   assign shft_en = (op_0110011 & funct3_101) // SRL  SRA
+                   | (op_0010011 & funct3_101) // SRLI SRAI
+		   | (op_0110011 & funct3_001) // SLL
+		   | (op_0010011 & funct3_001) // SLLI
+		      ;
+
+   assign shft_lr = funct3_101 ? 1'b1: 1'b0;
+   
 endmodule // cpu6_aludec
  

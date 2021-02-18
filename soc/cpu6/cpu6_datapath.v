@@ -49,7 +49,10 @@ module cpu6_datapath (
                       output csr_mtie_r,
                       output csr_meie_r,
                       output csr_mstatus_mie_r,
-                      input  mret_ena
+                      input  mret_ena,
+
+                      input  shft_enE,
+                      input  shft_lrE
 		      );
 
    wire [`CPU6_XLEN-1:0] aluoutE;
@@ -87,7 +90,7 @@ module cpu6_datapath (
    
 
    //wire writedataM;
-   wire [`CPU6_XLEN-1:0] aluoutM;
+   wire [`CPU6_XLEN-1:0] alushftoutM;
    wire [`CPU6_RFIDX_WIDTH-1:0] writeregM;
    wire regwriteM;
    wire memtoregM;
@@ -242,8 +245,25 @@ module cpu6_datapath (
       .zero   (zeroE                  )
       );
 
+   wire [`CPU6_XLEN-1:0] alushftoutE;
+   wire [`CPU6_XLEN-1:0] shft_outE;
+
+   
+
+   cpu6_shft shft(
+      .rs1_data    (forwardrs1_rs1_zero_pcE),  // use the same as alu does
+      .rs2_data    (rs2_immE               ),
+      .shft_lr     (shft_lrE               ),
+      .shft_out    (shft_outE              )
+      );
 
 
+   cpu6_mux2 #(`CPU6_XLEN) alushftmux(
+      .d0  (aluoutE      ),
+      .d1  (shft_outE    ),
+      .s   (shft_enE     ),
+      .y   (alushftoutE  )
+      );
    
    // csr
    wire csrM;
@@ -275,7 +295,7 @@ module cpu6_datapath (
       
       .memwriteE            (memwriteE ),
       .writedataE           (writedataE),
-      .aluoutE              (aluoutE            ), // used in MEM, but also pass to WB
+      .alushftoutE          (alushftoutE        ), // used in MEM, but also pass to WB
       .writeregE            (writeregE          ), // not used in MEM, pass to WB
       .regwriteE            (regwriteE          ), // not used in MEM, pass to WB
       .memtoregE            (memtoregE          ), // not used in MEM, pass to WB
@@ -298,7 +318,7 @@ module cpu6_datapath (
       
       .memwriteM            (memwriteM          ),
       .writedataM           (writedataM         ),
-      .aluoutM              (aluoutM            ),
+      .alushftoutM          (alushftoutM        ),
       .writeregM            (writeregM          ),
       .regwriteM            (regwriteM          ),
       .memtoregM            (memtoregM          ),
@@ -372,7 +392,7 @@ module cpu6_datapath (
    // for csrrw, csr_read_datM --> rdM
    
  
-   assign dataaddrM = aluoutM;
+   assign dataaddrM = alushftoutM;
        
    // memtoreg: 1 means it's a LW, data comes from memory,
    // otherwise the alu_mem comes from ALU
@@ -428,7 +448,7 @@ module cpu6_datapath (
    assign rdM = csrM      ? csr_read_datM    :
 		jumpM     ? pcplus4M         :
 		memtoregM ? readdataM        :
-		            aluoutM ;
+		            alushftoutM ;
 
 
 
