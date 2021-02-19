@@ -152,3 +152,7 @@ cd ..
 cd test38_sra
 ./clean.sh
 cd ..
+
+cd test39_sll
+./clean.sh
+cd ..
