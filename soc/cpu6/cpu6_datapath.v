@@ -52,7 +52,8 @@ module cpu6_datapath (
                       input  mret_ena,
 
                       input  shft_enE,
-                      input  shft_lrE
+                      input  shft_lrE,
+                      input  shft_laE
 		      );
 
    wire [`CPU6_XLEN-1:0] aluoutE;
@@ -251,10 +252,11 @@ module cpu6_datapath (
    
 
    cpu6_shft shft(
-      .rs1_data    (forwardrs1_rs1_zero_pcE),  // use the same as alu does
-      .rs2_data    (rs2_immE               ),
-      .shft_lr     (shft_lrE               ),
-      .shft_out    (shft_outE              )
+      .rs1_data       (forwardrs1_rs1_zero_pcE),  // use the same as alu does
+      .rs2_data       (rs2_immE               ),
+      .shft_lr        (shft_lrE               ),
+      .shft_la        (shft_laE               ),
+      .shft_out       (shft_outE              )
       );
 
 

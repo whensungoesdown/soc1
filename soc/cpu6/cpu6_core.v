@@ -98,9 +98,11 @@ module cpu6_core (
 
    wire shft_en;
    wire shft_lr;
+   wire shft_la;
    
    wire shft_enE;
    wire shft_lrE;
+   wire shft_laE;
 
 
    
@@ -180,33 +182,34 @@ module cpu6_core (
 
    
    cpu6_controller c(
-      .op          (instrF[`CPU6_OPCODE_HIGH:`CPU6_OPCODE_LOW]),
-      .funct3      (instrF[`CPU6_FUNCT3_HIGH:`CPU6_FUNCT3_LOW]),
-      .funct7      (instrF[`CPU6_FUNCT7_HIGH:`CPU6_FUNCT7_LOW]),
+      .op             (instrF[`CPU6_OPCODE_HIGH:`CPU6_OPCODE_LOW]),
+      .funct3         (instrF[`CPU6_FUNCT3_HIGH:`CPU6_FUNCT3_LOW]),
+      .funct7         (instrF[`CPU6_FUNCT7_HIGH:`CPU6_FUNCT7_LOW]),
 
-      .lswidth     (lswidth        ),
-      .loadsignext (loadsignext    ),
+      .lswidth        (lswidth        ),
+      .loadsignext    (loadsignext    ),
       
-      .lui         (lui            ),
-      .auipc       (auipc          ),
-      .mret        (mret           ),
+      .lui            (lui            ),
+      .auipc          (auipc          ),
+      .mret           (mret           ),
       // csr
-      .csr         (csr            ),
-      .csr_rs1uimm (csr_rs1uimm    ),
-      .csr_wsc     (csr_wsc        ),
+      .csr            (csr            ),
+      .csr_rs1uimm    (csr_rs1uimm    ),
+      .csr_wsc        (csr_wsc        ),
       //
-      .memtoreg    (memtoreg       ),
-      .memwrite    (memwrite       ),
-      .branchtype  (branchtype     ),
-      .alusrc      (alusrc         ),
-      .regwrite    (regwrite       ),
-      .jump        (jump           ),
-      .alucontrol  (alucontrol     ),
-      .immtype     (immtype        ),
-      .illinstr    (excp_illinstr  ),
+      .memtoreg       (memtoreg       ),
+      .memwrite       (memwrite       ),
+      .branchtype     (branchtype     ),
+      .alusrc         (alusrc         ),
+      .regwrite       (regwrite       ),
+      .jump           (jump           ),
+      .alucontrol     (alucontrol     ),
+      .immtype        (immtype        ),
+      .illinstr       (excp_illinstr  ),
 
-      .shft_en     (shft_en        ),
-      .shft_lr     (shft_lr        )
+      .shft_en        (shft_en        ),
+      .shft_lr        (shft_lr        ),
+      .shft_la        (shft_la        )
       );
 
    
@@ -220,62 +223,64 @@ module cpu6_core (
    //
    
    cpu6_pipelinereg_idex pipelinereg_idex(
-      .clk          (clk    ),
-      .reset        (reset  ),
-      .flash        (flashE ),
+      .clk              (clk            ),
+      .reset            (reset          ),
+      .flash            (flashE         ),
 
-      .lswidth      (lswidth        ),
-      .loadsignext  (loadsignext    ),
+      .lswidth          (lswidth        ),
+      .loadsignext      (loadsignext    ),
       
-      .lui          (lui            ),
-      .auipc        (auipc          ),
-      .pc_auipc     (excp_pc        ),
+      .lui              (lui            ),
+      .auipc            (auipc          ),
+      .pc_auipc         (excp_pc        ),
       // csr
-      .csr          (csr            ),
-      .csr_rs1uimm  (csr_rs1uimm    ),
-      .csr_wsc      (csr_wsc        ),
+      .csr              (csr            ),
+      .csr_rs1uimm      (csr_rs1uimm    ),
+      .csr_wsc          (csr_wsc        ),
       //
-      .memwrite     (memwrite       ),
-      .memtoreg     (memtoreg       ),
-      .branchtype   (branchtype     ),
-      .alusrc       (alusrc         ),
-      .regwrite     (regwrite       ),
-      .jump         (jump           ),
-      .alucontrol   (alucontrol     ),
-      .immtype      (immtype        ),
-      .pc           (pcF            ),
-      .instrF       (instrF         ),
+      .memwrite         (memwrite       ),
+      .memtoreg         (memtoreg       ),
+      .branchtype       (branchtype     ),
+      .alusrc           (alusrc         ),
+      .regwrite         (regwrite       ),
+      .jump             (jump           ),
+      .alucontrol       (alucontrol     ),
+      .immtype          (immtype        ),
+      .pc               (pcF            ),
+      .instrF           (instrF         ),
       .empty_pipeline_req  (empty_pipeline_req ),
       
-      .shft_en      (shft_en        ),
-      .shft_lr      (shft_lr        ),
+      .shft_en          (shft_en        ),
+      .shft_lr          (shft_lr        ),
+      .shft_la          (shft_la ),
       
 
-      .lswidthE     (lswidthE       ),
-      .loadsignextE (loadsignextE   ),
+      .lswidthE         (lswidthE       ),
+      .loadsignextE     (loadsignextE   ),
       
-      .luiE         (luiE           ),
-      .auipcE       (auipcE         ),
-      .pc_auipcE    (pc_auipcE      ),
+      .luiE             (luiE           ),
+      .auipcE           (auipcE         ),
+      .pc_auipcE        (pc_auipcE      ),
       // csr
-      .csrE         (csrE    ),
-      .csr_rs1uimmE (csr_rs1uimmE   ),
-      .csr_wscE     (csr_wscE       ),
+      .csrE             (csrE           ),
+      .csr_rs1uimmE     (csr_rs1uimmE   ),
+      .csr_wscE         (csr_wscE       ),
       //
-      .memwriteE    (memwriteE      ),
-      .memtoregE    (memtoregE      ),
-      .branchtypeE  (branchtypeE    ),
-      .alusrcE      (alusrcE        ),
-      .regwriteE    (regwriteE      ),
-      .jumpE        (jumpE          ),
-      .alucontrolE  (alucontrolE    ),
-      .immtypeE     (immtypeE       ),
-      .pcE          (pcE      ),
-      .instrE       (instrE   ),
+      .memwriteE        (memwriteE      ),
+      .memtoregE        (memtoregE      ),
+      .branchtypeE      (branchtypeE    ),
+      .alusrcE          (alusrcE        ),
+      .regwriteE        (regwriteE      ),
+      .jumpE            (jumpE          ),
+      .alucontrolE      (alucontrolE    ),
+      .immtypeE         (immtypeE       ),
+      .pcE              (pcE            ),
+      .instrE           (instrE         ),
       .empty_pipeline_reqE (empty_pipeline_reqE ),
 
-      .shft_enE     (shft_enE       ),
-      .shft_lrE     (shft_lrE       )
+      .shft_enE         (shft_enE       ),
+      .shft_lrE         (shft_lrE       ),
+      .shft_laE         (shft_laE       )
       );
   
    cpu6_datapath dp(
@@ -330,6 +335,7 @@ module cpu6_core (
                                      // mret does not go down the pipeline further than D
 
       .shft_enE     (shft_enE     ),
-      .shft_lrE     (shft_lrE     )
+      .shft_lrE     (shft_lrE     ),
+      .shft_laE     (shft_laE     )
       );
 endmodule   

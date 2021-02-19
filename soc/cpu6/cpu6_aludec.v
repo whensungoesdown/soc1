@@ -7,7 +7,8 @@ module cpu6_aludec (
    input  [`CPU6_ALUOP_SIZE-1:0] aluop,
    output [`CPU6_ALUCONTROL_SIZE-1:0] alucontrol,
    output shft_en,
-   output shft_lr
+   output shft_lr,
+   output shft_la
    );
    
    wire aluop_00 = (aluop == `CPU6_ALUOP_LWSWJALR);
@@ -52,7 +53,8 @@ module cpu6_aludec (
 		   | (op_0010011 & funct3_001) // SLLI
 		      ;
 
-   assign shft_lr = funct3_101 ? 1'b1: 1'b0;
+   assign shft_lr = funct3_101 ? 1'b1: 1'b0;  // 0 shift left, 1 shift right
+   assign shft_la = funct7_0100000;
    
 endmodule // cpu6_aludec
  

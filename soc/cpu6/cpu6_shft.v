@@ -3,7 +3,8 @@
 module cpu6_shft(
    input  [`CPU6_XLEN-1:0] rs1_data,
    input  [`CPU6_XLEN-1:0] rs2_data,
-   input  shft_lr, // 1: left shift, 0: right shift
+   input  shft_lr, // 0: left shift, 1: right shift
+   input  shft_la, // 0: logical shift, 1: arithmetic shift 
    output [`CPU6_XLEN-1:0] shft_out 
    );
 
@@ -12,7 +13,7 @@ module cpu6_shft(
    wire [3:0] shift1;  // [3, 2, 1, 0] shift
 
 
-   wire [15:0] shft_extendbit;
+   wire [15:0] extendbit;
    
    wire [`CPU6_XLEN-1:0] rshifterinput;
    wire [`CPU6_XLEN-1:0] rshifterinput_b1;
@@ -29,7 +30,7 @@ module cpu6_shft(
    wire [`CPU6_XLEN-1:0] rshift4_b1;
    
    // tmp
-   assign shft_extendbit = 15'b0;
+   assign extendbit = {16{shft_la & rs1_data[31]}};
 
    assign rshifterinput[31:0] = rs1_data[31:0]; 
 
@@ -59,7 +60,7 @@ module cpu6_shft(
    // right shift muxes
    mux2ds #(32) mux_right16(
       .dout  (rshift16[31:0]        ),
-      .in0   ({shft_extendbit[15:0], rshifterinput_b1[31:16]}),
+      .in0   ({extendbit[15:0], rshifterinput_b1[31:16]}),
       .in1   (rshifterinput_b1[31:0]),
       .sel0  (shift16[1]            ),
       .sel1  (shift16[0]            )   
@@ -68,9 +69,9 @@ module cpu6_shft(
 
    mux4ds #(32) mux_right4(
       .dout  (rshift4[31:0]         ),
-      .in0   ({shft_extendbit[15: 4], rshift16_b1[31:12]}),
-      .in1   ({shft_extendbit[15: 8], rshift16_b1[31: 8]}),
-      .in2   ({shft_extendbit[15:12], rshift16_b1[31: 4]}),
+      .in0   ({extendbit[15: 4], rshift16_b1[31:12]}),
+      .in1   ({extendbit[15: 8], rshift16_b1[31: 8]}),
+      .in2   ({extendbit[15:12], rshift16_b1[31: 4]}),
       .in3   (rshift16_b1[31:0] ),
       .sel0  (shift4[3]         ),
       .sel1  (shift4[2]         ),
@@ -80,9 +81,9 @@ module cpu6_shft(
 
    mux4ds #(32) mux_right1 (
       .dout  (rshift1[31:0]          ),
-      .in0   ({shft_extendbit[15:13], rshift4_b1[31:3]}),
-      .in1   ({shft_extendbit[15:14], rshift4_b1[31:2]}),
-      .in2   ({shft_extendbit[15], rshift4_b1[31:1]}),
+      .in0   ({extendbit[15:13], rshift4_b1[31:3]}),
+      .in1   ({extendbit[15:14], rshift4_b1[31:2]}),
+      .in2   ({extendbit[15], rshift4_b1[31:1]}),
       .in3   (rshift4_b1[31:0]  ),
       .sel0  (shift1[3]         ),
       .sel1  (shift1[2]         ),

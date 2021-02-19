@@ -29,7 +29,8 @@ module cpu6_controller (
    output illinstr,
 
    output shft_en,
-   output shft_lr // shift left right
+   output shft_lr, // shift left right
+   output shft_la
 );
    
    wire [`CPU6_ALUOP_SIZE-1:0] aluop;
@@ -68,13 +69,14 @@ module cpu6_controller (
       );
 
    cpu6_aludec ad(
-      .op            (op         ),
-      .funct3        (funct3     ),
-      .funct7        (funct7     ),
-      .aluop         (aluop      ),
-      .alucontrol    (alucontrol ),
-      .shft_en       (shft_en    ),
-      .shft_lr       (shft_lr    )
+      .op              (op             ),
+      .funct3          (funct3         ),
+      .funct7          (funct7         ),
+      .aluop           (aluop          ),
+      .alucontrol      (alucontrol     ),
+      .shft_en         (shft_en        ),
+      .shft_lr         (shft_lr        ),
+      .shft_la         (shft_la        )
       );
 
 endmodule

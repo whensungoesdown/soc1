@@ -31,6 +31,7 @@ module cpu6_pipelinereg_idex (
 
    input  shft_en,
    input  shft_lr,
+   input  shft_la,
 
 
    output [`CPU6_LSWIDTH_SIZE-1:0] lswidthE,
@@ -57,7 +58,8 @@ module cpu6_pipelinereg_idex (
    output empty_pipeline_reqE,
 
    output shft_enE,
-   output shft_lrE
+   output shft_lrE,
+   output shft_laE
    );
 
    cpu6_dffr#(`CPU6_LSWIDTH_SIZE) lswidth_r({`CPU6_LSWIDTH_SIZE{~flash}} & lswidth, lswidthE, clk, reset);
@@ -87,4 +89,5 @@ module cpu6_pipelinereg_idex (
    
    cpu6_dffr#(1) shft_en_r({1{~flash}} & shft_en, shft_enE, clk, reset);
    cpu6_dffr#(1) shft_lr_r({1{~flash}} & shft_lr, shft_lrE, clk, reset);
+   cpu6_dffr#(1) shft_la_r({1{~flash}} & shft_la, shft_laE, clk, reset);
 endmodule // cpu6_pipelinereg_idex

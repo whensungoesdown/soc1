@@ -148,3 +148,7 @@ cd ..
 cd test37_srl
 ./clean.sh
 cd ..
+
+cd test38_sra
+./clean.sh
+cd ..
