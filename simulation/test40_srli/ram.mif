@@ -28,42 +28,42 @@ CONTENT BEGIN
 -- <reset>:
 	2:		2f000293;  --		addi x5 x0 0x2f0
 	3:		00400313;  --		addi x6 x0 4
-	4:		0062d2b3;  --		srl x5 x5 x6
-	5:		0062d3b3;  --		srl x7 x5 x6
+	4:		0042d293;  --		srli x5 x5 4
+	5:		0042d393;  --		srli x7 x5 4
 
 	6:		fff0f2b7;  --		lui x5 0xfff0f
 	7:		2f028293;  --		addi x5 x5 0x2f0
-	8:		0062d2b3;  --		srl x5 x5 x6
-	9:		0062d3b3;  --		srl x7 x5 x6
+	8:		0042d293;  --		srli x5 x5 4
+	9:		0042d393;  --		srli x7 x5 4
 
 	a:		00100313;  --		addi x6 x0 1
 	b:		fff0f2b7;  --		lui x5 0xfff0f
 	c:		2f028293;  --		addi x5 x5 0x2f0
-	d:		0062d2b3;  --		srl x5 x5 x6
-	e:		0062d3b3;  --		srl x7 x5 x6
+	d:		0012d293;  --		srli x5 x5 1
+	e:		0012d393;  --		srli x7 x5 1
 
 	f:		02000313;  --		addi x6 x0 32
 	10:		fff0f2b7;  --		lui x5 0xfff0f
 	11:		2f028293;  --		addi x5 x5 0x2f0
-	12:		0062d2b3;  --		srl x5 x5 x6
-	13:		0062d3b3;  --		srl x7 x5 x6
+	12:		0002d293;  --		srli x5 x5 0  // 32 causes illegal instruction
+	13:		0002d393;  --		srli x7 x5 0 
 
 	14:		00500313;  --		addi x6 x0 5
 	15:		fff0f2b7;  --		lui x5 0xfff0f
 	16:		2f028293;  --		addi x5 x5 0x2f0
-	17:		0062d2b3;  --		srl x5 x5 x6
-	18:		0062d3b3;  --		srl x7 x5 x6
+	17:		0052d293;  --		srli x5 x5 5
+	18:		0052d393;  --		srli x7 x5 5
 
 	19:		01000313;  --		addi x6 x0 16
 	1a:		fff0f2b7;  --		lui x5 0xfff0f
 	1b:		2f028293;  --		addi x5 x5 0x2f0
-	1c:		0062d2b3;  --		srl x5 x5 x6
-	1d:		0062d3b3;  --		srl x7 x5 x6
+	1c:		0102d293;  --		srli x5 x5 16
+	1d:		0102d393;  --		srli x7 x5 16
 
 	1e:		01f00313;  --		addi x6 x0 31
 	1f:		fff0f2b7;  --		lui x5 0x1048335
 	20:		2f028293;  --		addi x5 x5 752
-	21:		0062d2b3;  --		srl x5 x5 x6
+	21:		01f2d293;  --		srli x5 x5 31
 	22:		00000013;  --		nop
 	23:		00000013;  --		nop
 	24:		00000013;  --		nop
