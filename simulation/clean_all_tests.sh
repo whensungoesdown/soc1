@@ -160,3 +160,7 @@ cd ..
 cd test40_srli
 ./clean.sh
 cd ..
+
+cd test41_srai
+./clean.sh
+cd ..
