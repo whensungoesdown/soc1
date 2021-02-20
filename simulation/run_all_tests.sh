@@ -164,3 +164,7 @@ cd ..
 cd test41_srai
 ./simulate.sh | grep simulation
 cd ..
+
+cd test42_slli
+./simulate.sh | grep simulation
+cd ..
