@@ -4,42 +4,42 @@ beq x0 x0 trap
 reset:
 addi x5 x0 0x2f0
 addi x6 x0 0x4
-sll x5 x5 x6
-sll x7 x5 x6
+slli x5 x5 4
+slli x7 x5 4
 
 lui x5 0xfff0f
 addi x5 x5 0x2f0
-sll x5 x5 x6
-sll x7 x5 x6
+slli x5 x5 4
+slli x7 x5 4
 
 addi x6 x0 0x1
 lui x5 0xfff0f
 addi x5 x5 0x2f0
-sll x5 x5 x6
-sll x7 x5 x6
+slli x5 x5 1
+slli x7 x5 1
 
 addi x6 x0 32
 lui x5 0xfff0f
 addi x5 x5 0x2f0
-sll x5 x5 x6
-sll x7 x5 x6
+slli x5 x5 0
+slli x7 x5 0
 
 addi x6 x0 0x5
 lui x5 0xfff0f
 addi x5 x5 0x2f0
-sll x5 x5 x6
-sll x7 x5 x6
+slli x5 x5 5
+slli x7 x5 5
 
 addi x6 x0 16
 lui x5 0xfff0f
 addi x5 x5 0x2f0
-sll x5 x5 x6
-sll x7 x5 x6
+slli x5 x5 16
+slli x7 x5 16
 
 addi x6 x0 31
 lui x5 0xfff0f
 addi x5 x5 0x2f0
-sll x5 x5 x6
+slli x5 x5 31
 nop
 nop
 nop
