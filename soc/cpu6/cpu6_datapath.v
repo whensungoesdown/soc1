@@ -20,9 +20,11 @@ module cpu6_datapath (
                       input  [`CPU6_LSWIDTH_SIZE-1:0] lswidthE,
                       input  loadsignextE,
 
+                      input  jalE, // instruction jal
                       input  luiE, // instruction lui
                       input  auipcE, // instruction auipc
                       input  [`CPU6_XLEN-1:0] pc_auipcE, // pcE value for auipc instruction
+
                       // csr
                       input  csrE, // csr enable
                       input  csr_rs1uimmE, // uimm: rs1 field as uimm
@@ -68,7 +70,7 @@ module cpu6_datapath (
    wire [`CPU6_XLEN-1:0] pcbranchE;
 
    wire [`CPU6_XLEN-1:0] signimmE; 
-   wire [`CPU6_XLEN-1:0] signimmshE;
+   //wire [`CPU6_XLEN-1:0] signimmshE;
    
    wire [`CPU6_XLEN-1:0] rs1E;  // should be D, later
    wire [`CPU6_XLEN-1:0] rs2E;
@@ -151,9 +153,10 @@ module cpu6_datapath (
    //cpu6_dffr#(`CPU6_XLEN) pcreg(stallF, pcnext, pc, clk, reset);
    
    cpu6_adder pcadd1(pcE, 32'b100, pcplus4E); // jump instruction need this to load it to rd
-   cpu6_sl1 immsh(signimmE, signimmshE);
+   //cpu6_sl1 immsh(signimmE, signimmshE);
    // risc-v counts begin at the current branch instruction
-   cpu6_adder pcadd2(pcE, signimmshE, pcbranchE);
+   //cpu6_adder pcadd2(pcE, signimmshE, pcbranchE);
+   cpu6_adder pcadd2(pcE, signimmE, pcbranchE);
    // branch desides if to take next instruction or branch to pcbranch
    // pcnextbr means pc next br 
    cpu6_mux2#(`CPU6_XLEN) pcbrmux(pcplus4E, pcbranchE, branchE, pcnextbrE);
@@ -220,7 +223,8 @@ module cpu6_datapath (
    // too many mux, should be a better way
 
    wire [`CPU6_XLEN-1:0] forwardrs1_rs1_zeroE;
-   wire [`CPU6_XLEN-1:0] forwardrs1_rs1_zero_pcE;
+   wire [`CPU6_XLEN-1:0] forwardrs1_rs1_zero_pcauipcE;
+   wire [`CPU6_XLEN-1:0] forwardrs1_rs1_zero_pcauipc_pcE;
 
    cpu6_mux2#(`CPU6_XLEN) luimux(
       .d0     (forwardrs1_rs1E     ),
@@ -231,15 +235,23 @@ module cpu6_datapath (
    
    cpu6_mux2#(`CPU6_XLEN) auipcmux(
       .d0     (forwardrs1_rs1_zeroE    ),
-      .d1     (pc_auipcE               ), // pcE changes at the falling edge, due to the way that impements branch
+      .d1     (pc_auipcE               ), // pcE changes at the falling edge
       .s      (auipcE                  ),
-      .y      (forwardrs1_rs1_zero_pcE )
+      .y      (forwardrs1_rs1_zero_pcauipcE )
       );
 
+   // jal and auipc are different
+   // jal is a jump, it asserts stallF, so excp_pc will not be updated
+   cpu6_mux2#(`CPU6_XLEN) jalpcmux(
+      .d0     (forwardrs1_rs1_zero_pcauipcE ),
+      .d1     (pcE                          ), // pcE is on step faster than pc_auipcE
+      .s      (jalE                         ),
+      .y      (forwardrs1_rs1_zero_pcauipc_pcE )
+      );
    
    cpu6_alu alu(
       //.a      (        forwardrs1_rs1E),
-      .a      (forwardrs1_rs1_zero_pcE),
+      .a      (forwardrs1_rs1_zero_pcauipc_pcE),
       .b      (rs2_immE               ),
       .control(alucontrolE            ),
       .y      (aluoutE                ),
@@ -252,7 +264,7 @@ module cpu6_datapath (
    
 
    cpu6_shft shft(
-      .rs1_data       (forwardrs1_rs1_zero_pcE),  // use the same as alu does
+      .rs1_data       (forwardrs1_rs1_zero_pcauipc_pcE),  // use the same as alu does
       .rs2_data       (rs2_immE               ),
       .shft_lr        (shft_lrE               ),
       .shft_la        (shft_laE               ),

@@ -168,3 +168,19 @@ cd ..
 cd test42_slli
 ./simulate.sh | grep simulation
 cd ..
+
+cd test43_jal
+./simulate.sh | grep simulation
+cd ..
+
+cd test44_beq_jal
+./simulate.sh | grep simulation
+cd ..
+
+cd test45_beq
+./simulate.sh | grep simulation
+cd ..
+
+cd test46_jal2
+./simulate.sh | grep simulation
+cd ..

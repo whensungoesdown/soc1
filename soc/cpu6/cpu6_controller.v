@@ -10,6 +10,7 @@ module cpu6_controller (
    output [`CPU6_LSWIDTH_SIZE-1:0] lswidth,
    output loadsignext,
    
+   output jal,  // jal instruction
    output lui,  // lui instruction
    output auipc,// auipc instruction
    output mret, // mret instruction
@@ -49,6 +50,7 @@ module cpu6_controller (
 
       .lswidth       (lswidth    ),
       .loadsignext   (loadsignext),
+      .jal           (jal        ),
       .lui           (lui        ),
       .auipc         (auipc      ),
       .mret          (mret       ),

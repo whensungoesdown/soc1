@@ -67,12 +67,13 @@
 `define CPU6_B_IMM2_LOW          25
 `define CPU6_B_IMM1_HIGH         11
 `define CPU6_B_IMM1_LOW           8
-`define CPU6_B_IMM_SIZE          12
+`define CPU6_B_IMM_SIZE          13
 
 // U-type imm
 `define CPU6_U_IMM_HIGH          31
 `define CPU6_U_IMM_LOW           12
 `define CPU6_U_IMM_SIZE          20
+
 
 
 `define CPU6_OPCODE_HIGH          6

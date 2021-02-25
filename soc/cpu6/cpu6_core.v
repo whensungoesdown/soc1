@@ -72,9 +72,11 @@ module cpu6_core (
    wire loadsignextE; // for LHU LBU
 
    
+   wire jal;  // instruction jal, goes to EX
    wire lui;  // instruction lui, goes to EX
    wire auipc; // instruction auipc, goes to EX
 
+   wire jalE;
    wire luiE;
    wire auipcE;
    wire [`CPU6_XLEN-1:0] pc_auipcE;
@@ -145,7 +147,7 @@ module cpu6_core (
    cpu6_dfflr#(`CPU6_XLEN) pcreg(!stallF, pcnextF, pcF, ~clk, reset);
    
    // It is a trick, pcF updated in the *falling edge* in order to be ahead of time,
-   // so pcF is ready for the RAM when the rasing edge comes.
+   // so that pcF is ready for the RAM when the rasing edge comes.
    // But other modules such as cpu6_excp still works on the rasing edge.
    // When excp sends the pcF to csr to write, the pcF is already updated in the previous
    // falling edge. So there have to be an extra pc to store the previous pcF value. 
@@ -189,6 +191,7 @@ module cpu6_core (
       .lswidth        (lswidth        ),
       .loadsignext    (loadsignext    ),
       
+      .jal            (jal            ),
       .lui            (lui            ),
       .auipc          (auipc          ),
       .mret           (mret           ),
@@ -230,6 +233,7 @@ module cpu6_core (
       .lswidth          (lswidth        ),
       .loadsignext      (loadsignext    ),
       
+      .jal              (jal            ),
       .lui              (lui            ),
       .auipc            (auipc          ),
       .pc_auipc         (excp_pc        ),
@@ -258,6 +262,7 @@ module cpu6_core (
       .lswidthE         (lswidthE       ),
       .loadsignextE     (loadsignextE   ),
       
+      .jalE             (jalE           ),
       .luiE             (luiE           ),
       .auipcE           (auipcE         ),
       .pc_auipcE        (pc_auipcE      ),
@@ -303,6 +308,7 @@ module cpu6_core (
       .lswidthE     (lswidthE     ),
       .loadsignextE (loadsignextE ),
       
+      .jalE         (jalE         ),
       .luiE         (luiE         ),
       .auipcE       (auipcE       ),
       .pc_auipcE    (pc_auipcE    ), // the current pc value for EX stage, just for the use of auipc instruction

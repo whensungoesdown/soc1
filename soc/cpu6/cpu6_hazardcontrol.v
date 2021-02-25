@@ -9,7 +9,7 @@ module cpu6_hazardcontrol (
    output stallF,
    output flashE
    );
- 
+
    assign stallF = (((branchtype != `CPU6_BRANCHTYPE_NOBRANCH) | jump) & !pcsrcE);
    assign flashE = (((branchtypeE != `CPU6_BRANCHTYPE_NOBRANCH) | jumpE));
    

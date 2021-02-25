@@ -51,8 +51,8 @@ module soc_top_tb();
 	      // $display("core.pcnextF %x", dut.core.pcnextF);
 	      // $display("core.pcreg %x", dut.core.pcreg.qout);
 	      // $display("core.stallF %x", dut.core.stallF);
-	       $display("dp.pcE %x", dut.core.dp.pcE);
-	       $display("dp.pc_auipcE %x", dut.core.dp.pc_auipcE);
+	       $display("core.alusrcE %x", dut.core.alusrcE);
+	       $display("dp.alusrcE %x", dut.core.dp.alusrcE);
 		end
       end
    
@@ -76,7 +76,6 @@ module soc_top_tb();
 	       $display("reg[9] %x", dut.core.dp.rf.regs[9].other_regs.rf_dffl.qout);
 	       $display("mepc %x", dut.core.dp.csr.epc_dfflr.qout);
 	       $display("dp.pcE %x", dut.core.dp.pcE);
-	       $display("dp.pc_auipcE %x", dut.core.dp.pc_auipcE);
 	       $display("dp.core.excp_illinstr %x", dut.core.excp_illinstr);
 	       $display("lic.mtime %d", dut.u_lic.mtime_dfflr.qout);
 	       $display("lic.mtimecmp %d", dut.u_lic.mtimecmp_dfflr.qout);
@@ -90,8 +89,15 @@ module soc_top_tb();
 	       $display("core.tmr_irq_r %x", dut.core.tmr_irq_r);
 	       $display("core.ext_irq_r %x", dut.core.ext_irq_r);
 	       $display("csr.mstatus.mie %x", dut.core.dp.csr.csr_mstatus_mie_r);
-	       $display("dp.pcE %x", dut.core.dp.pcE);
+	       $display("dp.alu.control %x", dut.core.dp.alu.control);
 	       $display("dp.pc_auipcE %x", dut.core.dp.pc_auipcE);
+	       $display("dp.pcE %x", dut.core.dp.pcE);
+	       $display("dp.pcnextE %x", dut.core.dp.pcnextE);
+	       $display("core.excp_pc %x", dut.core.excp_pc);
+	       $display("core.pcF %x", dut.core.pcF);
+	       $display("core.pcnextF %x", dut.core.pcnextF);
+	       $display("core.pcsrcE %x", dut.core.pcsrcE);
+	       $display("core.pcnextE %x", dut.core.pcnextE);
 	       //$display("reg[5] %x", dut.core.dp.rf.rf_r[5]);
 	       // if (memwrite) begin
 	       //     if (dataadr === 84 & writedata === 7) begin
@@ -104,35 +110,35 @@ module soc_top_tb();
 	       // end     
 
 
-		if (32'h00000018 == dut.pc) 
+		if (32'h0000002C == dut.pc) 
 		  begin
-		     if (32'h12345008 == dut.core.dp.rf.regs[5].other_regs.rf_dffl.qout)
+		     if (32'h00000018 == dut.core.dp.rf.regs[1].other_regs.rf_dffl.qout)
 			begin
-			   //$display("test24_auipc simulation SUCCESS");
+			   //$display("test46_jal2 simulation SUCCESS");
 			   //$stop;
 			end
 		     else
 			begin
-			   $display("test24_auipc simulation FAILED");
+			   $display("test46_jal2 simulation FAILED");
 			   $stop;
 			end
 		  end
 
-		if (32'h0000001c == dut.pc) 
+		if (32'h00000034 == dut.pc) 
 		  begin
-		     if (32'h1234500d == dut.core.dp.rf.regs[3].other_regs.rf_dffl.qout)
+		     if (32'h00000005 == dut.core.dp.rf.regs[5].other_regs.rf_dffl.qout &&
+			    32'h00000000 == dut.core.dp.rf.regs[6].other_regs.rf_dffl.qout )
 			begin
-			   $display("test24_auipc simulation SUCCESS");
+			   $display("test46_jal2 simulation SUCCESS");
 			   $stop;
 			end
 		     else
 			begin
-			   $display("test24_auipc simulation FAILED");
+			   $display("test46_jal2 simulation FAILED");
 			   $stop;
 			end
 		  end
-
-	       //if (32'h00000115 == dut.u_lic.mtime_dfflr.qout) $stop; 	
+	       if (32'h00000015 == dut.u_lic.mtime_dfflr.qout) $stop; 	
 
 	    end
 

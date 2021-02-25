@@ -1,6 +1,6 @@
 `include "defines.v"
 
-`define MAINDEC_CONTROL_SIZE          23
+`define MAINDEC_CONTROL_SIZE          24
 
 
 `define MAINDEC_CONTROL_ALUSRC_RS2     1'b0
@@ -20,10 +20,11 @@ module cpu6_maindec (
 		     input  [`CPU6_OPCODE_SIZE-1:0] op,
                      input  [`CPU6_FUNCT3_SIZE-1:0] funct3,
                      input  [`CPU6_FUNCT7_SIZE-1:0] funct7,
-
+ 
                      output [`CPU6_LSWIDTH_SIZE-1:0] lswidth,
                      output loadsignext,
    
+                     output jal,
                      output lui,
                      output auipc,
                      output mret, // later there will be URET SRET MRET 
@@ -45,8 +46,9 @@ module cpu6_maindec (
 
    wire [`MAINDEC_CONTROL_SIZE-1:0] controls;
 
-   assign lswidth = controls[22:21];
-   assign loadsignext = controls[20];
+   assign lswidth = controls[23:22];
+   assign loadsignext = controls[21];
+   assign jal = controls[20];
    assign lui = controls[19];
    assign auipc = controls[18];
    assign mret = controls[17];
@@ -99,7 +101,7 @@ module cpu6_maindec (
    wire rv32_bne = op_b_branch & funct3_001;
    
    wire rv32_jalr = (op == `CPU6_OPCODE_SIZE'b1100111) & funct3_000; // jalr i-type
-   //wire rv32_jal = (op == `CPU6_OPCODE_SIZE'b01110011);
+   wire rv32_jal  = (op == `CPU6_OPCODE_SIZE'b1101111); // jal j-type
 
    wire rv32_csrrw = (op == `CPU6_OPCODE_SIZE'b1110011) & funct3_001;
    wire rv32_csrrs = (op == `CPU6_OPCODE_SIZE'b1110011) & funct3_010;
@@ -140,7 +142,7 @@ module cpu6_maindec (
 		     | rv32_addi
 		     | rv32_add | rv32_sub
 		     | rv32_beq | rv32_bne
-		     | rv32_jalr
+		     | rv32_jalr | rv32_jal
 		     | rv32_csrrw | rv32_csrrs | rv32_csrrc
 		     | rv32_csrrwi | rv32_csrrsi | rv32_csrrci
 		     | rv32_mret
@@ -159,6 +161,7 @@ module cpu6_maindec (
 //   wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_invalid_controls = {
 //                                  2'b00, // ignore, (load store width 32)
 //                                  1'b0,  // ignore, (load zero extent)   
+//                                  1'b0, // jal: no
 //				    1'b0, // lui: no
 //				    1'b0, // auipc: no
 //				    1'b0, // mret: no
@@ -178,6 +181,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_lw_controls = {
                                     2'b00, // load store width 32
                                     1'b0,  // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -197,6 +201,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_sw_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -216,6 +221,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_addi_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -235,6 +241,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_add_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -254,6 +261,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_sub_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -273,6 +281,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_beq_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -292,6 +301,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_bne_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -312,6 +322,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_jalr_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -328,10 +339,30 @@ module cpu6_maindec (
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
 
+   wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_jal_controls = {
+                                    2'b00,// ignore, (load store width 32)
+                                    1'b0, // ignore, (load zero extent)   
+                                  1'b1, // jal: yes
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
+				    1'b0, // mret: no
+				    1'b0, // csr: no
+				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
+				    `CPU6_CSR_WSC_W, // csr_wsc: CSRW
+				    1'b0, // memtoreg: no
+				    1'b0, // memwrite: no
+				    `CPU6_BRANCHTYPE_NOBRANCH, // branch: no
+				    `MAINDEC_CONTROL_ALUSRC_IMM, // alusrc: imm
+				    1'b1, // regwrite: yes
+				    1'b1, // jump: yes
+				    `CPU6_ALUOP_LWSWJALR, // aluop: lwswjalr
+				    `CPU6_IMMTYPE_J // immtype: CPU6_IMMTYPE_J 
+				    };
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_csrrw_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -352,6 +383,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_csrrs_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -372,6 +404,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_csrrc_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -391,6 +424,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_csrrwi_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -411,6 +445,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_csrrsi_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -431,6 +466,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_csrrci_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -450,6 +486,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_mret_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b1, // mret: yes
@@ -469,6 +506,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_lui_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b1, // lui: yes
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -488,6 +526,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_auipc_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b1, // auipc: yes
 				    1'b0, // mret: no
@@ -507,6 +546,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_andi_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -527,6 +567,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_and_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -546,6 +587,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_ori_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -565,6 +607,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_or_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -584,6 +627,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_sltiu_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -603,6 +647,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_sltu_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -622,6 +667,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_xori_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -641,6 +687,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_xor_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -660,6 +707,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_lh_controls = {
                                     `CPU6_LSWIDTH_H, // load store width 16
                                     1'b1,  // load sign extend   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -679,6 +727,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_lhu_controls = {
                                     `CPU6_LSWIDTH_H, // load store width 16
                                     1'b0,  // load zero extend   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -698,6 +747,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_lb_controls = {
                                     `CPU6_LSWIDTH_B, // load store width 8
                                     1'b1,  // load sign extend   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -717,6 +767,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_lbu_controls = {
                                     `CPU6_LSWIDTH_B, // load store width 8
                                     1'b0,  // load zero extend   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -736,6 +787,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_srl_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -755,6 +807,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_sra_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -774,6 +827,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_sll_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -793,6 +847,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_srli_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -812,6 +867,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_srai_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -831,6 +887,7 @@ module cpu6_maindec (
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_slli_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
 				    1'b0, // lui: no
 				    1'b0, // auipc: no
 				    1'b0, // mret: no
@@ -857,6 +914,7 @@ module cpu6_maindec (
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_beq}} & rv32_beq_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_bne}} & rv32_bne_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_jalr}} & rv32_jalr_controls)
+		   | ({`MAINDEC_CONTROL_SIZE{rv32_jal}} & rv32_jal_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_csrrw}} & rv32_csrrw_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_csrrs}} & rv32_csrrs_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_csrrc}} & rv32_csrrc_controls)

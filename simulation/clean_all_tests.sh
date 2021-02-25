@@ -168,3 +168,19 @@ cd ..
 cd test42_slli
 ./clean.sh
 cd ..
+
+cd test43_jal
+./clean.sh
+cd ..
+
+cd test44_beq_jal
+./clean.sh
+cd ..
+
+cd test45_beq
+./clean.sh
+cd ..
+
+cd test46_jal2
+./clean.sh
+cd ..
