@@ -153,9 +153,7 @@ module cpu6_datapath (
    //cpu6_dffr#(`CPU6_XLEN) pcreg(stallF, pcnext, pc, clk, reset);
    
    cpu6_adder pcadd1(pcE, 32'b100, pcplus4E); // jump instruction need this to load it to rd
-   //cpu6_sl1 immsh(signimmE, signimmshE);
    // risc-v counts begin at the current branch instruction
-   //cpu6_adder pcadd2(pcE, signimmshE, pcbranchE);
    cpu6_adder pcadd2(pcE, signimmE, pcbranchE);
    // branch desides if to take next instruction or branch to pcbranch
    // pcnextbr means pc next br 
@@ -250,7 +248,6 @@ module cpu6_datapath (
       );
    
    cpu6_alu alu(
-      //.a      (        forwardrs1_rs1E),
       .a      (forwardrs1_rs1_zero_pcauipc_pcE),
       .b      (rs2_immE               ),
       .control(alucontrolE            ),
