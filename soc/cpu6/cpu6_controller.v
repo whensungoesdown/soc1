@@ -26,6 +26,7 @@ module cpu6_controller (
    output regwrite,
    output jump,
    output [`CPU6_ALUCONTROL_SIZE-1:0] alucontrol,
+   output alusignext,
    output [`CPU6_IMMTYPE_SIZE-1:0] immtype,
    output illinstr,
 
@@ -66,6 +67,7 @@ module cpu6_controller (
       .regwrite      (regwrite   ),
       .jump          (jump       ),
       .aluop         (aluop      ),
+      .alusignext    (alusignext ),
       .immtype       (immtype    ),
       .illinstr      (illinstr   )
       );

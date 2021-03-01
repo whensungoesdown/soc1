@@ -29,6 +29,7 @@ module cpu6_core (
    wire zero;
 
    wire [`CPU6_ALUCONTROL_SIZE-1:0] alucontrol;   
+   wire alusignext;
    wire [`CPU6_IMMTYPE_SIZE-1:0] immtype;
 
    wire [`CPU6_XLEN-1:0] instrF;
@@ -40,6 +41,7 @@ module cpu6_core (
    wire regwriteE;
    wire jumpE;
    wire [`CPU6_ALUCONTROL_SIZE-1:0] alucontrolE;
+   wire alusignextE;
    wire [`CPU6_IMMTYPE_SIZE-1:0] immtypeE;
    wire [`CPU6_XLEN-1:0] instrE;
 
@@ -207,6 +209,7 @@ module cpu6_core (
       .regwrite       (regwrite       ),
       .jump           (jump           ),
       .alucontrol     (alucontrol     ),
+      .alusignext     (alusignext     ),
       .immtype        (immtype        ),
       .illinstr       (excp_illinstr  ),
 
@@ -249,6 +252,7 @@ module cpu6_core (
       .regwrite         (regwrite       ),
       .jump             (jump           ),
       .alucontrol       (alucontrol     ),
+      .alusignext       (alusignext     ),
       .immtype          (immtype        ),
       .pc               (pcF            ),
       .instrF           (instrF         ),
@@ -278,6 +282,7 @@ module cpu6_core (
       .regwriteE        (regwriteE      ),
       .jumpE            (jumpE          ),
       .alucontrolE      (alucontrolE    ),
+      .alusignextE      (alusignextE    ),
       .immtypeE         (immtypeE       ),
       .pcE              (pcE            ),
       .instrE           (instrE         ),
@@ -298,6 +303,7 @@ module cpu6_core (
       .regwriteE    (regwriteE    ),
       .jumpE        (jumpE        ),
       .alucontrolE  (alucontrolE  ),
+      .alusignextE  (alusignextE  ),
       .immtypeE     (immtypeE     ),
       .pcE          (pcE      ),
       .pcnextE      (pcnextE  ),

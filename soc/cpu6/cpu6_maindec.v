@@ -1,6 +1,6 @@
 `include "defines.v"
 
-`define MAINDEC_CONTROL_SIZE          24
+`define MAINDEC_CONTROL_SIZE          25
 
 
 `define MAINDEC_CONTROL_ALUSRC_RS2     1'b0
@@ -40,28 +40,30 @@ module cpu6_maindec (
 		     output regwrite,
 		     output jump,
 		     output [`CPU6_ALUOP_SIZE-1:0] aluop,
+                     output alusignext,
                      output [`CPU6_IMMTYPE_SIZE-1:0] immtype,
                      output illinstr
 		     );
 
    wire [`MAINDEC_CONTROL_SIZE-1:0] controls;
 
-   assign lswidth = controls[23:22];
-   assign loadsignext = controls[21];
-   assign jal = controls[20];
-   assign lui = controls[19];
-   assign auipc = controls[18];
-   assign mret = controls[17];
-   assign csr = controls[16];
-   assign csr_rs1uimm = controls[15];
-   assign csr_wsc = controls[14:13];
-   assign memtoreg = controls[12];
-   assign memwrite = controls[11];
-   assign branchtype = controls[10:8];
-   assign alusrc = controls[7];
-   assign regwrite = controls[6];
-   assign jump = controls[5];
-   assign aluop = controls[4:3];
+   assign lswidth = controls[24:23];
+   assign loadsignext = controls[22];
+   assign jal = controls[21];
+   assign lui = controls[20];
+   assign auipc = controls[19];
+   assign mret = controls[18];
+   assign csr = controls[17];
+   assign csr_rs1uimm = controls[16];
+   assign csr_wsc = controls[15:14];
+   assign memtoreg = controls[13];
+   assign memwrite = controls[12];
+   assign branchtype = controls[11:9];
+   assign alusrc = controls[8];
+   assign regwrite = controls[7];
+   assign jump = controls[6];
+   assign aluop = controls[5:4];
+   assign alusignext = controls[3];
    assign immtype = controls[2:0];
 
 
@@ -121,6 +123,7 @@ module cpu6_maindec (
    wire rv32_and  = op_r_instructions & funct3_111 & funct7_0000000;
    wire rv32_ori  = op_i_arithmatic & funct3_110;
    wire rv32_or   = op_r_instructions & funct3_110 & funct7_0000000;
+   wire rv32_slti = op_i_arithmatic & funct3_010;
    wire rv32_sltiu= op_i_arithmatic & funct3_011;
    wire rv32_sltu = op_r_instructions & funct3_011 & funct7_0000000;
    wire rv32_xori = op_i_arithmatic & funct3_100;
@@ -151,7 +154,7 @@ module cpu6_maindec (
 		     | rv32_lui | rv32_auipc
 		     | rv32_andi| rv32_and
 		     | rv32_ori | rv32_or
-		     | rv32_sltiu | rv32_sltu
+		     | rv32_sltiu | rv32_sltu | rv32_slti
 		     | rv32_xori | rv32_xor
 		     | rv32_lh | rv32_lhu | rv32_lb | rv32_lbu
 		     | rv32_srl| rv32_sra | rv32_sll
@@ -177,6 +180,7 @@ module cpu6_maindec (
 //				    1'b0, // regwrite: yes
 //				    1'b0, // jump: no
 //				    2'b00, // aluop: ignore
+//				    1'b0, // alusignext: no
 //				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R 
 //				    };
 
@@ -197,6 +201,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_LWSWJALR, // aluop: lwsw
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
    
@@ -217,6 +222,7 @@ module cpu6_maindec (
 				    1'b0, // regwrite: no
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_LWSWJALR, // aluop: lwsw
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_S // immtype: CPU6_IMMTYPE_S     
 				    };
 
@@ -237,6 +243,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I    
 				    };
    
@@ -257,6 +264,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm 
 				    };
 
@@ -277,6 +285,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm
 				    };
    
@@ -297,6 +306,7 @@ module cpu6_maindec (
 				    1'b0, // regwrite: no
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_BRANCH, // aluop: branch
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_B // immtype: CPU6_IMMTYPE_B
 				    };
 
@@ -317,6 +327,7 @@ module cpu6_maindec (
 				    1'b0, // regwrite: no
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_BRANCH, // aluop: branch
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_B // immtype: CPU6_IMMTYPE_B 
 				    };
 
@@ -337,6 +348,7 @@ module cpu6_maindec (
 				    1'b0, // regwrite: no
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_BRANCH, // aluop: branch
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_B // immtype: CPU6_IMMTYPE_B 
 				    };
    
@@ -357,6 +369,7 @@ module cpu6_maindec (
 				    1'b0, // regwrite: no
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_BRANCH, // aluop: branch
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_B // immtype: CPU6_IMMTYPE_B 
 				    };
    
@@ -377,6 +390,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b1, // jump: yes
 				    `CPU6_ALUOP_LWSWJALR, // aluop: lwswjalr
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
 
@@ -397,6 +411,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b1, // jump: yes
 				    `CPU6_ALUOP_LWSWJALR, // aluop: lwswjalr
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_J // immtype: CPU6_IMMTYPE_J 
 				    };
    
@@ -417,6 +432,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    2'b00, // aluop: ignore
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
    
@@ -438,6 +454,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    2'b00, // aluop: ignore
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
 
@@ -459,6 +476,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    2'b00, // aluop: ignore
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
    
@@ -479,6 +497,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    2'b00, // aluop: ignore
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
    
@@ -500,6 +519,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    2'b00, // aluop: ignore
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
 
@@ -521,6 +541,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    2'b00, // aluop: ignore
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
 
@@ -541,6 +562,7 @@ module cpu6_maindec (
 				    1'b0, // regwrite: no
 				    1'b0, // jump: no
 				    2'b00, // aluop: ignore
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
    
@@ -561,6 +583,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_LWSWJALR, // aluop: LWSWJALR
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_U // immtype: CPU6_IMMTYPE_U 
 				    };
    
@@ -581,6 +604,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_LWSWJALR, // aluop: lw sw jalr
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_U // immtype: CPU6_IMMTYPE_U 
 				    };
 
@@ -601,6 +625,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I    
 				    };
    
@@ -622,6 +647,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm 
 				    };
    
@@ -642,6 +668,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I    
 				    };
 
@@ -662,6 +689,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm 
 				    };
 
@@ -682,6 +710,28 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
+				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I    
+				    };
+   
+   wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_slti_controls = {
+                                    2'b00,// ignore, (load store width 32)
+                                    1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
+				    1'b0, // mret: no
+				    1'b0, // csr: no
+				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
+				    2'b00, // csr_wsc: ignore
+				    1'b0, // memtoreg: no
+				    1'b0, // memwrite: no
+				    `CPU6_BRANCHTYPE_NOBRANCH, // branch: no
+				    `MAINDEC_CONTROL_ALUSRC_IMM, // alusrc: imm
+				    1'b1, // regwrite: yes
+				    1'b0, // jump: no
+				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b1, // alusignext: yes
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I    
 				    };
 
@@ -702,6 +752,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm 
 				    };
    
@@ -722,6 +773,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I    
 				    };
 
@@ -742,6 +794,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm 
 				    };
 
@@ -762,6 +815,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_LWSWJALR, // aluop: lwsw
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
    
@@ -782,6 +836,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_LWSWJALR, // aluop: lwsw
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
 
@@ -802,6 +857,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_LWSWJALR, // aluop: lwsw
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
 
@@ -822,6 +878,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_LWSWJALR, // aluop: lwsw
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
    
@@ -842,6 +899,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm 
 				    };
    
@@ -862,6 +920,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm 
 				    };
 
@@ -882,6 +941,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm 
 				    };
    
@@ -902,6 +962,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
    
@@ -922,6 +983,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
 
@@ -942,6 +1004,7 @@ module cpu6_maindec (
 				    1'b1, // regwrite: yes
 				    1'b0, // jump: no
 				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b0, // alusignext: no
 				    `CPU6_IMMTYPE_I // immtype: CPU6_IMMTYPE_I 
 				    };
 
@@ -972,6 +1035,7 @@ module cpu6_maindec (
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_ori}} & rv32_ori_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_or}} & rv32_or_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_sltiu}} & rv32_sltiu_controls)
+		   | ({`MAINDEC_CONTROL_SIZE{rv32_slti}} & rv32_slti_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_sltu}} & rv32_sltu_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_xori}} & rv32_xori_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_xor}} & rv32_xor_controls)

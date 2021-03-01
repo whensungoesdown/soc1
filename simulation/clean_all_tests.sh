@@ -196,3 +196,7 @@ cd ..
 cd test48_bgeu
 ./clean.sh
 cd ..
+
+cd test49_slti
+./clean.sh
+cd ..

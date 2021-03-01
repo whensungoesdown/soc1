@@ -10,6 +10,7 @@ module cpu6_datapath (
 		      input  regwriteE,
 		      input  jumpE,
 		      input  [`CPU6_ALUCONTROL_SIZE-1:0] alucontrolE,
+                      input  alusignextE,
                       input  [`CPU6_IMMTYPE_SIZE-1:0] immtypeE,
 		      input  [`CPU6_XLEN-1:0] pcE,
                       output [`CPU6_XLEN-1:0] pcnextE,
@@ -252,6 +253,7 @@ module cpu6_datapath (
       .a      (forwardrs1_rs1_zero_pcauipc_pcE),
       .b      (rs2_immE               ),
       .control(alucontrolE            ),
+      .signext(alusignextE            ), // uty: test
       .y      (aluoutE                ),
       .zero   (zeroE                  ),
       .lt     (ltE                    )
