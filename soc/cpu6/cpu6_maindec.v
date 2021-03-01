@@ -99,6 +99,8 @@ module cpu6_maindec (
    
    wire rv32_beq = op_b_branch & funct3_000;
    wire rv32_bne = op_b_branch & funct3_001;
+   wire rv32_bltu = op_b_branch & funct3_110;
+   wire rv32_bgeu = op_b_branch & funct3_111;
    
    wire rv32_jalr = (op == `CPU6_OPCODE_SIZE'b1100111) & funct3_000; // jalr i-type
    wire rv32_jal  = (op == `CPU6_OPCODE_SIZE'b1101111); // jal j-type
@@ -141,7 +143,7 @@ module cpu6_maindec (
    assign illinstr = ~(rv32_lw | rv32_sw
 		     | rv32_addi
 		     | rv32_add | rv32_sub
-		     | rv32_beq | rv32_bne
+		     | rv32_beq | rv32_bne | rv32_bltu | rv32_bgeu
 		     | rv32_jalr | rv32_jal
 		     | rv32_csrrw | rv32_csrrs | rv32_csrrc
 		     | rv32_csrrwi | rv32_csrrsi | rv32_csrrci
@@ -318,6 +320,45 @@ module cpu6_maindec (
 				    `CPU6_IMMTYPE_B // immtype: CPU6_IMMTYPE_B 
 				    };
 
+   wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_bltu_controls = {
+                                    2'b00,// ignore, (load store width 32)
+                                    1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
+				    1'b0, // mret: no
+				    1'b0, // csr: no
+				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
+				    `CPU6_CSR_WSC_W, // csr_wsc: CSRW
+				    1'b0, // memtoreg: no
+				    1'b0, // memwrite: no
+				    `CPU6_BRANCHTYPE_BLTU, // branch
+				    `MAINDEC_CONTROL_ALUSRC_RS2, // alusrc: rs2
+				    1'b0, // regwrite: no
+				    1'b0, // jump: no
+				    `CPU6_ALUOP_BRANCH, // aluop: branch
+				    `CPU6_IMMTYPE_B // immtype: CPU6_IMMTYPE_B 
+				    };
+   
+   wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_bgeu_controls = {
+                                    2'b00,// ignore, (load store width 32)
+                                    1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
+				    1'b0, // mret: no
+				    1'b0, // csr: no
+				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
+				    `CPU6_CSR_WSC_W, // csr_wsc: CSRW
+				    1'b0, // memtoreg: no
+				    1'b0, // memwrite: no
+				    `CPU6_BRANCHTYPE_BGEU, // branch
+				    `MAINDEC_CONTROL_ALUSRC_RS2, // alusrc: rs2
+				    1'b0, // regwrite: no
+				    1'b0, // jump: no
+				    `CPU6_ALUOP_BRANCH, // aluop: branch
+				    `CPU6_IMMTYPE_B // immtype: CPU6_IMMTYPE_B 
+				    };
    
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_jalr_controls = {
                                     2'b00,// ignore, (load store width 32)
@@ -913,6 +954,8 @@ module cpu6_maindec (
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_sub}} & rv32_sub_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_beq}} & rv32_beq_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_bne}} & rv32_bne_controls)
+		   | ({`MAINDEC_CONTROL_SIZE{rv32_bltu}} & rv32_bltu_controls)
+		   | ({`MAINDEC_CONTROL_SIZE{rv32_bgeu}} & rv32_bgeu_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_jalr}} & rv32_jalr_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_jal}} & rv32_jal_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_csrrw}} & rv32_csrrw_controls)

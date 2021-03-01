@@ -184,3 +184,11 @@ cd ..
 cd test46_jal2
 ./simulate.sh | grep simulation
 cd ..
+
+cd test47_bltu
+./simulate.sh | grep simulation
+cd ..
+
+cd test48_bgeu
+./simulate.sh | grep simulation
+cd ..

@@ -1,6 +1,10 @@
 #!/bin/bash
 echo run tests
 
+cd soc1
+./clean.sh
+cd ..
+
 cd test1_addi
 ./clean.sh
 cd ..
@@ -182,5 +186,13 @@ cd test45_beq
 cd ..
 
 cd test46_jal2
+./clean.sh
+cd ..
+
+cd test47_bltu
+./clean.sh
+cd ..
+
+cd test48_bgeu
 ./clean.sh
 cd ..

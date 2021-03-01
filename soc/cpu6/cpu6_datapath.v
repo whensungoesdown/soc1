@@ -82,6 +82,7 @@ module cpu6_datapath (
 
    wire branchE;
    wire zeroE;
+   wire ltE;
 
 // IFID pipeline should not be here   
 //   wire [`CPU6_XLEN-1:0] pcD;
@@ -147,7 +148,7 @@ module cpu6_datapath (
    cpu6_immdec immdec(instrE, immtypeE, signimmE);
 
    // decode branch
-   cpu6_branchdec branchdec(branchtypeE, zeroE, branchE);
+   cpu6_branchdec branchdec(branchtypeE, zeroE, ltE, branchE);
    
    // next PC logic
    //cpu6_dffr#(`CPU6_XLEN) pcreg(stallF, pcnext, pc, clk, reset);
@@ -252,7 +253,8 @@ module cpu6_datapath (
       .b      (rs2_immE               ),
       .control(alucontrolE            ),
       .y      (aluoutE                ),
-      .zero   (zeroE                  )
+      .zero   (zeroE                  ),
+      .lt     (ltE                    )
       );
 
    wire [`CPU6_XLEN-1:0] alushftoutE;

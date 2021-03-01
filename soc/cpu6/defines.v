@@ -92,6 +92,10 @@
 //`define CPU6_BRANCHTYPE_BEQ       3'b000
 `define CPU6_BRANCHTYPE_BEQ       3'b010
 `define CPU6_BRANCHTYPE_BNE       3'b001
+`define CPU6_BRANCHTYPE_BLT       3'b100
+`define CPU6_BRANCHTYPE_BGE       3'b101
+`define CPU6_BRANCHTYPE_BLTU      3'b110
+`define CPU6_BRANCHTYPE_BGEU      3'b111
 // ...
 
 
