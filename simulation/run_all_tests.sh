@@ -200,3 +200,11 @@ cd ..
 cd test50_slt
 ./simulate.sh | grep simulation
 cd ..
+
+cd test51_blt
+./simulate.sh | grep simulation
+cd ..
+
+cd test52_bge
+./simulate.sh | grep simulation
+cd ..

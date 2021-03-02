@@ -204,3 +204,11 @@ cd ..
 cd test50_slt
 ./clean.sh
 cd ..
+
+cd test51_blt
+./clean.sh
+cd ..
+
+cd test52_bge
+./clean.sh
+cd ..
