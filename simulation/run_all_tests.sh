@@ -196,3 +196,7 @@ cd ..
 cd test49_slti
 ./simulate.sh | grep simulation
 cd ..
+
+cd test50_slt
+./simulate.sh | grep simulation
+cd ..

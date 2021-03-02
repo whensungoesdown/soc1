@@ -200,3 +200,7 @@ cd ..
 cd test49_slti
 ./clean.sh
 cd ..
+
+cd test50_slt
+./clean.sh
+cd ..

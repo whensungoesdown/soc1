@@ -123,9 +123,10 @@ module cpu6_maindec (
    wire rv32_and  = op_r_instructions & funct3_111 & funct7_0000000;
    wire rv32_ori  = op_i_arithmatic & funct3_110;
    wire rv32_or   = op_r_instructions & funct3_110 & funct7_0000000;
-   wire rv32_slti = op_i_arithmatic & funct3_010;
    wire rv32_sltiu= op_i_arithmatic & funct3_011;
+   wire rv32_slti = op_i_arithmatic & funct3_010;
    wire rv32_sltu = op_r_instructions & funct3_011 & funct7_0000000;
+   wire rv32_slt  = op_r_instructions & funct3_010 & funct7_0000000;
    wire rv32_xori = op_i_arithmatic & funct3_100;
    wire rv32_xor  = op_r_instructions & funct3_100 & funct7_0000000;
 
@@ -154,7 +155,7 @@ module cpu6_maindec (
 		     | rv32_lui | rv32_auipc
 		     | rv32_andi| rv32_and
 		     | rv32_ori | rv32_or
-		     | rv32_sltiu | rv32_sltu | rv32_slti
+		     | rv32_sltiu | rv32_sltu | rv32_slti | rv32_slt
 		     | rv32_xori | rv32_xor
 		     | rv32_lh | rv32_lhu | rv32_lb | rv32_lbu
 		     | rv32_srl| rv32_sra | rv32_sll
@@ -756,6 +757,27 @@ module cpu6_maindec (
 				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm 
 				    };
    
+   wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_slt_controls = {
+                                    2'b00,// ignore, (load store width 32)
+                                    1'b0, // ignore, (load zero extent)   
+                                    1'b0, // jal: no
+				    1'b0, // lui: no
+				    1'b0, // auipc: no
+				    1'b0, // mret: no
+				    1'b0, // csr: no
+				    `CPU6_CSR_RS1, // csr_rs1uimm: 0 rs1
+				    2'b0, // csr_wsc: ignore
+				    1'b0, // memtoreg: no
+				    1'b0, // memwrite: no
+				    `CPU6_BRANCHTYPE_NOBRANCH, // branch: no
+				    `MAINDEC_CONTROL_ALUSRC_RS2, // alusrc: rs2
+				    1'b1, // regwrite: yes
+				    1'b0, // jump: no
+				    `CPU6_ALUOP_ARITHMETIC, // aluop: arithmetic
+				    1'b1, // alusignext: yes
+				    `CPU6_IMMTYPE_R // immtype: CPU6_IMMTYPE_R, no imm 
+				    };
+   
    wire [`MAINDEC_CONTROL_SIZE-1:0] rv32_xori_controls = {
                                     2'b00,// ignore, (load store width 32)
                                     1'b0, // ignore, (load zero extent)   
@@ -1037,6 +1059,7 @@ module cpu6_maindec (
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_sltiu}} & rv32_sltiu_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_slti}} & rv32_slti_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_sltu}} & rv32_sltu_controls)
+		   | ({`MAINDEC_CONTROL_SIZE{rv32_slt}} & rv32_slt_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_xori}} & rv32_xori_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_xor}} & rv32_xor_controls)
 		   | ({`MAINDEC_CONTROL_SIZE{rv32_lh}} & rv32_lh_controls)
