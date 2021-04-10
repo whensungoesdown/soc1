@@ -16,7 +16,7 @@ Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
     
     * Zicsr:  csrrw csrrs csrrc csrrwi csrrsi csrrci
 
-    * CSR registers: mepc mtvec mie mip
+    * CSR registers: mepc mtvec mstatus mie mip
 
     
 
@@ -27,7 +27,16 @@ Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
 
 * Timer0  (mtime mtimecmp)
 
-* UART0   (9600 8n1)
+* UART0   (115200 8n1) 
+
+  Need to enable interrupt and external interrupt in mstatus and mie, respectively.
+
+````````````
+        8:              005001b3;  --           add x3 x0 x5
+        9:              30419073;  --           csrrw x0 mie x3 (csrw mie rs) ; enable external interrupt
+        a:              0ff00193;  --           addi x3 x0 0x8    ; enable interrupt
+        b:              30019073;  --           csrrw x0 mstatus x3 (csrw mstatus rs)
+````````````
 
 ## Exceptions
 * illegal instruction
@@ -132,4 +141,8 @@ See doc/test*.md for details
 
 ## Game
 ### Tic-Tac-Toe
+Play the game through the serial port.
+`````````
+$ sudo screen /dev/ttyUSB0 115200 
+`````````
 ![tic-tac-toe](doc/image/tic-tac-toe.jpg)
