@@ -11,6 +11,8 @@ lw x5 1572(x0)
 sw x5 8(x6)
 nop
 
+addi x3 x0 0x5    # enable interrupt
+nop               # 30419073; csrrw x0 mie x3 (csrw mie rs)
 addi x3 x0 0x8    # enable interrupt
 nop               # 30019073; csrrw x0 mstatus x3 (csrw mstatus rs)
 
