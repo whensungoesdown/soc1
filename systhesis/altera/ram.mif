@@ -22,104 +22,143 @@ DATA_RADIX=HEX;
 
 CONTENT BEGIN
 
+-- Disassembly of section .text:
+
 -- 00000000 <takesomespace>:
-   0:	02000063; --          	beq	zero,zero,20 <reset_stub>
-   1:	06000063; --          	beq	zero,zero,64 <trap_stub>
-   2:	00000000; --
-   3:	00000000; --          	
-   4:	00000000; --          	
-   5:	00000000; --          	
-   6:	00000000; --          	
-   7:	00000013; --          	addi	zero,zero,0
+  00:	02000863;  --          	beq	zero,zero,30 <reset_stub>
+  01:	06000e63;  --          	beq	zero,zero,80 <trap_stub>
+  02:	00000000;  -- 
+  03:	00000000;  -- 
+  04:	00010000;  -- 
+  05:	00000000;  -- 
+  06:	00000000;  -- 
+  07:	00000000;  -- 
+  08:	00000000;  -- 
+  09:	00000000;  -- 
+  0a:	00000000;  -- 
+  0b:	00000013;  --          	addi	zero,zero,0
 
--- 00000020 <reset_stub>:
-  08:	7ff00113; --          	addi	sp,zero,2047
-  09:	00111113; --          	slli	sp,sp,0x1
-  0a:	008000ef; --          	jal	ra,30 <reset>
-  0b:	0000006f; --          	jal	zero,2c <reset_stub+0xc>
+-- 00000030 <reset_stub>:
+  0c:	7ff00113;  --          	addi	sp,zero,2047
+  0d:	00111113;  --          	slli	sp,sp,0x1
+  0e:	008000ef;  --          	jal	ra,40 <reset>
+  0f:	0000006f;  --          	jal	zero,3c <reset_stub+0xc>
 
--- 00000030 <reset>:
-  0c:	ff010113; --          	addi	sp,sp,-16
-  0d:	00112623; --          	sw	ra,12(sp)
-  0e:	00812423; --          	sw	s0,8(sp)
-  0f:	01010413; --          	addi	s0,sp,16
-  10:	13802783; --          	lw	a5,312(zero) # 138 <hellostring>
-  11:	00c00593; --          	addi	a1,zero,12
-  12:	00078513; --          	addi	a0,a5,0
-  13:	048000ef; --          	jal	ra,94 <print_string>
-  14:	00000013; --          	addi	zero,zero,0
-  15:	00c12083; --          	lw	ra,12(sp)
-  16:	00812403; --          	lw	s0,8(sp)
-  17:	01010113; --          	addi	sp,sp,16
-  18:	00008067; --          	jalr	zero,0(ra)
+-- 00000040 <reset>:
+  10:	ff010113;  --          	addi	sp,sp,-16
+  11:	00112623;  --          	sw	ra,12(sp)
+  12:	00812423;  --          	sw	s0,8(sp)
+  13:	01010413;  --          	addi	s0,sp,16
+  14:	00000593;  --          	addi	a1,zero,0
+  15:	00200513;  --          	addi	a0,zero,2
+  16:	0f8000ef;  --          	jal	ra,150 <set_cursor_pos>
+  17:	1b402783;  --          	lw	a5,436(zero) # 1b4 <hellostring>
+  18:	00c00593;  --          	addi	a1,zero,12
+  19:	00078513;  --          	addi	a0,a5,0
+  1a:	048000ef;  --          	jal	ra,b0 <print_string>
+  1b:	00000013;  --          	addi	zero,zero,0
+  1c:	00c12083;  --          	lw	ra,12(sp)
+  1d:	00812403;  --          	lw	s0,8(sp)
+  1e:	01010113;  --          	addi	sp,sp,16
+  1f:	00008067;  --          	jalr	zero,0(ra)
 
--- 00000064 <trap_stub>:
-  19:	7ff00113; --          	addi	sp,zero,2047
-  1a:	00111113; --          	slli	sp,sp,0x1
-  1b:	00c000ef; --          	jal	ra,78 <trap>
-  1c:	30200073; --          	mret
-  1d:	00000013; --          	addi	zero,zero,0
+-- 00000080 <trap_stub>:
+  20:	7ff00113;  --          	addi	sp,zero,2047
+  21:	00111113;  --          	slli	sp,sp,0x1
+  22:	00c000ef;  --          	jal	ra,94 <trap>
+  23:	30200073;  --          	mret
+  24:	00000013;  --          	addi	zero,zero,0
 
--- 00000078 <trap>:
-  1e:	ff010113; --          	addi	sp,sp,-16
-  1f:	00812623; --          	sw	s0,12(sp)
-  20:	01010413; --          	addi	s0,sp,16
-  21:	00000013; --          	addi	zero,zero,0
-  22:	00c12403; --          	lw	s0,12(sp)
-  23:	01010113; --          	addi	sp,sp,16
-  24:	00008067; --          	jalr	zero,0(ra)
+-- 00000094 <trap>:
+  25:	ff010113;  --          	addi	sp,sp,-16
+  26:	00812623;  --          	sw	s0,12(sp)
+  27:	01010413;  --          	addi	s0,sp,16
+  28:	00000013;  --          	addi	zero,zero,0
+  29:	00c12403;  --          	lw	s0,12(sp)
+  2a:	01010113;  --          	addi	sp,sp,16
+  2b:	00008067;  --          	jalr	zero,0(ra)
 
--- 00000094 <print_string>:
-  25:	fd010113; --          	addi	sp,sp,-48
-  26:	02812623; --          	sw	s0,44(sp)
-  27:	03010413; --          	addi	s0,sp,48
-  28:	fca42e23; --          	sw	a0,-36(s0)
-  29:	fcb42c23; --          	sw	a1,-40(s0)
-  2a:	fe042423; --          	sw	zero,-24(s0)
-  2b:	fe042623; --          	sw	zero,-20(s0)
-  2c:	fd842783; --          	lw	a5,-40(s0)
-  2d:	41f7d713; --          	srai	a4,a5,0x1f
-  2e:	00377713; --          	andi	a4,a4,3
-  2f:	00f707b3; --          	add	a5,a4,a5
-  30:	4027d793; --          	srai	a5,a5,0x2
-  31:	fef42423; --          	sw	a5,-24(s0)
-  32:	fe042623; --          	sw	zero,-20(s0)
-  33:	0400006f; --          	jal	zero,10c <print_string+0x78>
-  34:	fec42783; --          	lw	a5,-20(s0)
-  35:	00279793; --          	slli	a5,a5,0x2
-  36:	00078713; --          	addi	a4,a5,0
-  37:	fdc42783; --          	lw	a5,-36(s0)
-  38:	00e787b3; --          	add	a5,a5,a4
-  39:	fec42683; --          	lw	a3,-20(s0)
-  3a:	00004737; --          	lui	a4,0x4
-  3b:	02070713; --          	addi	a4,a4,32 # 4020 <hellostring+0x3ee4>
-  3c:	00e68733; --          	add	a4,a3,a4
-  3d:	00271713; --          	slli	a4,a4,0x2
-  3e:	0007a783; --          	lw	a5,0(a5)
-  3f:	00f72023; --          	sw	a5,0(a4)
- 040:	fec42783; --          	lw	a5,-20(s0)
- 041:	00178793; --          	addi	a5,a5,1
- 042:	fef42623; --          	sw	a5,-20(s0)
- 043:	fec42703; --          	lw	a4,-20(s0)
- 044:	fe842783; --          	lw	a5,-24(s0)
- 045:	faf74ee3; --          	blt	a4,a5,d0 <print_string+0x3c>
- 046:	00000013; --          	addi	zero,zero,0
- 047:	00000013; --          	addi	zero,zero,0
- 048:	02c12403; --          	lw	s0,44(sp)
- 049:	03010113; --          	addi	sp,sp,48
- 04a:	00008067; --          	jalr	zero,0(ra)
+
+-- 000000b0 <print_string>:
+  2c:	fd010113;  --          	addi	sp,sp,-48
+  2d:	02812623;  --          	sw	s0,44(sp)
+  2e:	03010413;  --          	addi	s0,sp,48
+  2f:	fca42e23;  --          	sw	a0,-36(s0)
+  30:	fcb42c23;  --          	sw	a1,-40(s0)
+  31:	fe042423;  --          	sw	zero,-24(s0)
+  32:	fe042623;  --          	sw	zero,-20(s0)
+  33:	fd842783;  --          	lw	a5,-40(s0)
+  34:	41f7d713;  --          	srai	a4,a5,0x1f
+  35:	00377713;  --          	andi	a4,a4,3
+  36:	00f707b3;  --          	add	a5,a4,a5
+  37:	4027d793;  --          	srai	a5,a5,0x2
+  38:	fef42423;  --          	sw	a5,-24(s0)
+  39:	fe042623;  --          	sw	zero,-20(s0)
+  3a:	0480006f;  --          	jal	zero,130 <print_string+0x80>
+  3b:	fec42783;  --          	lw	a5,-20(s0)
+  3c:	00279793;  --          	slli	a5,a5,0x2
+  3d:	00078713;  --          	addi	a4,a5,0
+  3e:	fdc42783;  --          	lw	a5,-36(s0)
+  3f:	00e787b3;  --          	add	a5,a5,a4
+ 040:	01000713;  --          	addi	a4,zero,16
+ 041:	00072703;  --          	lw	a4,0(a4)
+ 042:	0007a783;  --          	lw	a5,0(a5)
+ 043:	00f72023;  --          	sw	a5,0(a4)
+ 044:	01000793;  --          	addi	a5,zero,16
+ 045:	0007a703;  --          	lw	a4,0(a5)
+ 046:	01000793;  --          	addi	a5,zero,16
+ 047:	00470713;  --          	addi	a4,a4,4
+ 048:	00e7a023;  --          	sw	a4,0(a5)
+ 049:	fec42783;  --          	lw	a5,-20(s0)
+ 04a:	00178793;  --          	addi	a5,a5,1
+ 04b:	fef42623;  --          	sw	a5,-20(s0)
+ 04c:	fec42703;  --          	lw	a4,-20(s0)
+ 04d:	fe842783;  --          	lw	a5,-24(s0)
+ 04e:	faf74ae3;  --          	blt	a4,a5,ec <print_string+0x3c>
+ 04f:	00000013;  --          	addi	zero,zero,0
+ 050:	00000013;  --          	addi	zero,zero,0
+ 051:	02c12403;  --          	lw	s0,44(sp)
+ 052:	03010113;  --          	addi	sp,sp,48
+ 053:	00008067;  --          	jalr	zero,0(ra)
+
+-- 00000150 <set_cursor_pos>:
+
+ 054:	fe010113;  --          	addi	sp,sp,-32
+ 055:	00812e23;  --          	sw	s0,28(sp)
+ 056:	02010413;  --          	addi	s0,sp,32
+ 057:	fea42623;  --          	sw	a0,-20(s0)
+ 058:	feb42423;  --          	sw	a1,-24(s0)
+ 059:	fec42703;  --          	lw	a4,-20(s0)
+ 05a:	00070793;  --          	addi	a5,a4,0
+ 05b:	00279793;  --          	slli	a5,a5,0x2
+ 05c:	00e787b3;  --          	add	a5,a5,a4
+ 05d:	00479793;  --          	slli	a5,a5,0x4
+ 05e:	00078713;  --          	addi	a4,a5,0
+ 05f:	000107b7;  --          	lui	a5,0x10
+ 060:	00f706b3;  --          	add	a3,a4,a5
+ 061:	01000793;  --          	addi	a5,zero,16
+ 062:	fe842703;  --          	lw	a4,-24(s0)
+ 063:	00e68733;  --          	add	a4,a3,a4
+ 064:	00e7a023;  --          	sw	a4,0(a5) # 10000 <hellostring+0xfe48>
+ 065:	00000013;  --          	addi	zero,zero,0
+ 066:	01c12403;  --          	lw	s0,28(sp)
+ 067:	02010113;  --          	addi	sp,sp,32
+ 068:	00008067;  --          	jalr	zero,0(ra)
+
 
 -- Disassembly of section .rodata:
 
--- 0000012c <.rodata>:
- 04b:	6c6c6548; -- Hello World!
- 04c:	6f57206f; -- 
- 04d:	21646c72; --
+-- 000001a4 <.rodata>:
 
--- 0000013c <hellostring>:
- 04e:	0000012c;
+ 069:	6c6c6548; -- Hello World!
+ 06a:	6f57206f; -- 
+ 06b:	21646c72; --
+ 06c:   00000000; --
+
+-- 000001b4 <hellostring>:
+ 06d:	000001a4;
 
 
-	[04f..7FF]  :   00000000;
+	[06e..7FF]  :   00000000;
 
 END;
