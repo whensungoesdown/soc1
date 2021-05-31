@@ -297,6 +297,20 @@ module soc_top_tb();
 		  begin
 		     if (32'hffffffff == dut.core.dp.rf.regs[5].other_regs.rf_dffl.qout)
 			begin
+			   //$display("test41_srai simulation SUCCESS");
+			   //$stop;
+			end
+		     else
+			begin
+			   $display("test41_srai simulation FAILED");
+			   $stop;
+			end
+		  end
+
+		if (32'h0000009c == dut.pc) 
+		  begin
+		     if (32'h00000000 == dut.core.dp.rf.regs[6].other_regs.rf_dffl.qout)
+			begin
 			   $display("test41_srai simulation SUCCESS");
 			   $stop;
 			end
