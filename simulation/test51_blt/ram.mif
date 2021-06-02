@@ -36,9 +36,16 @@ CONTENT BEGIN
 	9:		0aa00313;  --		addi x6 x0 170
 	a:		00100393;  --		addi x7 x0 1
 	b:		00734c63;  --		blt x6 x7 24 <error>
-	c:		fffff337;  --		lui x6 0xfffff
-	d:		00a00393;  --		addi x7 x0 10
-	e:		00734863;  --		blt x6 x7 16 <exit>
+
+--	c:		00900213;  --		addi x4 x0 9
+
+	c:		60002203;  --		lw x4 1536(x0)
+	d:		00800293;  --		addi x5 x0 8
+	e:		0042c863;  --		blt x5 x4 16 <exit>
+
+--	c:		fffff337;  --		lui x6 0xfffff
+--	d:		00a00393;  --		addi x7 x0 10
+--	e:		00734863;  --		blt x6 x7 16 <exit>
 	f:		00000013;  --		nop
 	10:		00000013;  --		nop
 
@@ -62,6 +69,14 @@ CONTENT BEGIN
 	1b:		00000013;  --		nop
 	1c:		30200073;  --                mret
 
-	[1d..7FF]  :   00000000;
+	[1d..17f]  :   00000000;
+
+-- <data>:
+
+	180  :   00000009;
+	181  :   ff007a20;
+	182  :   00000000;
+	183  :   00000000;
+	[184..7FF]  :   00000000;
 
 END;
