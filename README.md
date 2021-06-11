@@ -146,3 +146,18 @@ Play the game through the serial port.
 $ sudo screen /dev/ttyUSB0 115200 
 `````````
 ![tic-tac-toe](doc/image/tic-tac-toe.jpg)
+
+### SpaceInvaders
+First, send the binary through uart. Don't press any key into the terminal.
+
+The soc1_bootloader loads the first 2KB input as the binary.
+
+In screen terminal:
+````````
+Ctrl-A + :
+:readreg p /home/uty/prjs/soc1prjs/spaceinvaders/space.bin
+
+Ctrl-A + :
+:paste p
+````````
+![spaceinvaders](doc/image/spaceinvaders.gif)
