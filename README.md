@@ -84,7 +84,7 @@ Currently, soc1 is composed cpu6, ram, vga controller, timer, uart.
 
 ## VGA Text Mode
 
-* 640x400 70Hz 
+* 640x480 70Hz 
 
 * 80x25 screen
 
